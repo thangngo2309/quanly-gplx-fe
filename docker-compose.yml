@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    restart: always
+    ports:
+      - "3101:3101"      # Map 3101 host → 3101 container
+    env_file:
+      - .env             # (tuỳ chọn) nếu bạn có .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3101        # Đảm bảo Next.js dùng port này (có thể bỏ nếu đã có trong .env)
