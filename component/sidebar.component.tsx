@@ -66,7 +66,7 @@ export default function Sidebar() {
               <NavLink href={path}>
                 <ItemButton
                   open={open}
-                  selected={pathname.includes(path)}
+                  selected={path === '/' ? pathname === '/' : pathname.includes(path)}
                 >
                   <ItemIcon open={open}>
                     <Icon />
@@ -94,7 +94,7 @@ export default function Sidebar() {
                   ) : (
                     <ItemButton
                       open={open}
-                      selected={pathname.includes(path)}>
+                      selected={path === '/' ? pathname === '/' : pathname.includes(path)}>
                       <ItemIcon open={open}>
                         <Icon />
                       </ItemIcon>
