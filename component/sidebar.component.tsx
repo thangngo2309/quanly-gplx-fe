@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import List from '@mui/material/List';
@@ -10,15 +9,22 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { menuItems, bottomMenuItems } from '@/lib/menu-item';
+import { menuItems, bottomMenuItems } from '@/constants/menu-item';
 import { Drawer, DrawerHeader, BoxContainer, BottomListWrapper, DrawerIconButton, ItemButton, ItemIcon, ItemText, ListItemm, LogoImage, NavLink, ItemButtonDanger } from '@/style object/sidebar.style';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { clearAuthTokens } from '@/lib/localstorage';
 
 export default function Sidebar() {
   const theme = useTheme();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  const handleLogout = () => {
+    clearAuthTokens();
+    router.push("/auth/login");
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -85,23 +91,24 @@ export default function Sidebar() {
           <List>
             {bottomMenuItems.map(({ label, icon: Icon, path, danger }) => (
               <ListItemm key={label} disablePadding>
-                <NavLink href={path}>
-                  {danger ? (
-                    <ItemButtonDanger open={open}>
-                      <ItemIcon open={open}><Icon /></ItemIcon>
-                      <ItemText primary={label} open={open} />
-                    </ItemButtonDanger>
-                  ) : (
+                {danger ? (
+                  <ItemButtonDanger open={open} onClick={handleLogout}>
+                    <ItemIcon open={open}><Icon /></ItemIcon>
+                    <ItemText primary={label} open={open} />
+                  </ItemButtonDanger>
+                ) : (
+                  <NavLink href={path}>
                     <ItemButton
                       open={open}
-                      selected={path === '/' ? pathname === '/' : pathname.includes(path)}>
+                      selected={path === '/' ? pathname === '/' : pathname.includes(path)}
+                    >
                       <ItemIcon open={open}>
                         <Icon />
                       </ItemIcon>
                       <ItemText primary={label} open={open} />
                     </ItemButton>
-                  )}
-                </NavLink>
+                  </NavLink>
+                )}
               </ListItemm>
             ))}
           </List>
