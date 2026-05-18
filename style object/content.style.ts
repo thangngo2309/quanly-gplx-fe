@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
+import { Backdrop} from '@mui/material';
 
 export const Container = styled(Box)({
   width: '100%',
@@ -21,3 +21,12 @@ export const Subtitle = styled(Typography)({
   fontSize: '1rem',
   color: 'gray',
 });
+
+export const ErrorStyle = styled(Typography)({
+  color: 'red',
+});
+
+export const BackdropStyle = styled(Backdrop)( ({ theme }) => ({
+  zIndex: 1301,
+  color: '#fff',
+}));

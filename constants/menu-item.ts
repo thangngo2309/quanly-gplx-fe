@@ -14,7 +14,7 @@ export const menuItems = [
 ];
 
 export const bottomMenuItems = [
-  { label: 'Thông tin tài khoản', icon: ManageAccountsIcon, path: '/account' },
+  { label: 'Thông tin tài khoản', icon: ManageAccountsIcon, path: '/profile' },
   { label: 'Thông báo', icon: NotificationsIcon, path: '/notifications' },
   { label: 'Đăng xuất', icon: LogoutIcon, path: '/login', danger: true },
 ];
