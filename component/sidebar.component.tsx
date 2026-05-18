@@ -23,7 +23,7 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     clearAuthTokens();
-    router.push("/auth/login");
+    router.push("/login");
   };
 
   const handleDrawerOpen = () => {
