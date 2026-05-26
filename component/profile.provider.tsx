@@ -7,8 +7,7 @@ import { getProfile } from '@/lib/auth';
 import { useUserStore } from '@/store/useUser.store';
 import Loading from '@/component/loading.component';
 import { ReactNode } from 'react';
-
-const MIN_LOADING_MS = 200;
+import {MIN_LOADING_MS} from '@/constants/min-max-value';
  
 export default function ProfileProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
