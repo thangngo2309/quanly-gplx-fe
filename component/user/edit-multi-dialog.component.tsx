@@ -4,31 +4,30 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  FormControl,
   TextField,
   DialogActions,
   Button,
-  FormLabel,
   MenuItem,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Checkbox,
 } from "@mui/material";
 
-import { RecruitmentType, TeachingSubject } from "@/enum/user.enum";
-import { UpdateUserModel } from "@/model/user.model";
 import { memo, useEffect } from "react";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { Form } from "@/component/form.component";
-import { EditUserDialogProps } from "@/model/grid-data/user-dialog-props";
-import {
-  SubmitHandler,
-  useForm,
-  Controller,
-} from "react-hook-form";
+import { UpdateMultiUserModel } from "@/model/user.model";
+import { RecruitmentType, TeachingSubject } from "@/enum/user.enum";
+import { EditMultiUserDialogProps } from "@/model/user-dialog-props";
 
-export const EditDialog = memo(
-  ({ open, onClose, onSave,}: EditUserDialogProps) => {
+export const EditMultiUserDialog = memo(
+  ({open, selectedIds, onClose, onSave,}: EditMultiUserDialogProps) => {
 
-    const methods = useForm<UpdateUserModel>({
-      mode: 'onTouched',
-      reValidateMode: 'onChange',
+    const methods = useForm<UpdateMultiUserModel>({
+      mode: "onTouched",
+      reValidateMode: "onChange",
+      defaultValues: {},
     });
 
     const errors = methods.formState.errors;
@@ -37,28 +36,37 @@ export const EditDialog = memo(
       if (open) { methods.reset();}
     }, [open]);
 
-    const onSubmit: SubmitHandler<UpdateUserModel> = async (data) => {onSave(data);};
+    useEffect(() => {
+      if (!open) return;
+      methods.reset({});
+    }, [open]);
+
+    const onSubmit: SubmitHandler<UpdateMultiUserModel> = async (
+      data
+    ) => {onSave(selectedIds, data);};
 
     return (
       <Dialog
         open={open}
         onClose={onClose}
-        keepMounted
         maxWidth="sm"
         fullWidth
         scroll="paper"
       >
-        <DialogTitle>Chỉnh sửa người dùng</DialogTitle>
+        <DialogTitle>
+          Chỉnh sửa nhiều người dùng
+        </DialogTitle>
 
         {open && (
-          <Form<UpdateUserModel>
+          <Form<UpdateMultiUserModel>
             onSubmit={onSubmit}
             methods={methods}
           >
             <DialogContent>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>Họ và tên</FormLabel>
+                <FormLabel>Tên</FormLabel>
+
                 <Controller
                   name="fullname"
                   control={methods.control}
@@ -78,46 +86,8 @@ export const EditDialog = memo(
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>Ngày sinh</FormLabel>
-                <Controller
-                  name="date_of_birth"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      value={field.value ?? ''}
-                      type="date"
-                      fullWidth
-                      variant="outlined"
-                      error={!!errors.date_of_birth}
-                      helperText={errors.date_of_birth?.message}
-                    />
-                  )}
-                />
-              </FormControl>
-
-              <FormControl fullWidth margin="dense">
-                <FormLabel>CCCD</FormLabel>
-                <Controller
-                  name="citizen_id"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      value={field.value ?? ''}
-                      fullWidth
-                      variant="outlined"
-                      error={!!errors.citizen_id}
-                      helperText={
-                        errors.citizen_id?.message
-                      }
-                    />
-                  )}
-                />
-              </FormControl>
-
-              <FormControl fullWidth margin="dense">
                 <FormLabel>Địa chỉ</FormLabel>
+
                 <Controller
                   name="address"
                   control={methods.control}
@@ -136,10 +106,30 @@ export const EditDialog = memo(
                 />
               </FormControl>
 
+              <Controller
+                name="is_active"
+                control={methods.control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    label="Kích hoạt"
+                    control={
+                      <Checkbox
+                        checked={!!field.value}
+                        onChange={(e) =>
+                          field.onChange(e.target.checked)
+                        }
+                        color="primary"
+                      />
+                    }
+                  />
+                )}
+              />
+
               <FormControl fullWidth margin="dense">
                 <FormLabel>
                   Loại hợp đồng
                 </FormLabel>
+
                 <Controller
                   name="recruitment_type"
                   control={methods.control}
@@ -170,6 +160,7 @@ export const EditDialog = memo(
                 <FormLabel>
                   Trình độ học vấn
                 </FormLabel>
+
                 <Controller
                   name="education_level"
                   control={methods.control}
@@ -188,6 +179,7 @@ export const EditDialog = memo(
                 <FormLabel>
                   Trình độ chuyên môn
                 </FormLabel>
+
                 <Controller
                   name="professional_level"
                   control={methods.control}
@@ -206,6 +198,7 @@ export const EditDialog = memo(
                 <FormLabel>
                   Trình độ sư phạm
                 </FormLabel>
+
                 <Controller
                   name="pedagogy_level"
                   control={methods.control}
@@ -222,6 +215,7 @@ export const EditDialog = memo(
 
               <FormControl fullWidth margin="dense">
                 <FormLabel>Môn học</FormLabel>
+
                 <Controller
                   name="teaching_subject"
                   control={methods.control}
@@ -250,26 +244,9 @@ export const EditDialog = memo(
 
               <FormControl fullWidth margin="dense">
                 <FormLabel>
-                  Số chứng chỉ giáo viên
-                </FormLabel>
-                <Controller
-                  name="teacher_certificate_number"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      value={field.value ?? ''}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  )}
-                />
-              </FormControl>
-
-              <FormControl fullWidth margin="dense">
-                <FormLabel>
                   Ngày cấp chứng chỉ
                 </FormLabel>
+
                 <Controller
                   name="teacher_certificate_issue_date"
                   control={methods.control}
@@ -294,6 +271,7 @@ export const EditDialog = memo(
                 <FormLabel>
                   Nơi cấp chứng chỉ
                 </FormLabel>
+
                 <Controller
                   name="teacher_certificate_issue_place"
                   control={methods.control}
@@ -310,26 +288,9 @@ export const EditDialog = memo(
 
               <FormControl fullWidth margin="dense">
                 <FormLabel>
-                  Số chứng chỉ sức khỏe
-                </FormLabel>
-                <Controller
-                  name="health_certificate_number"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      value={field.value ?? ''}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  )}
-                />
-              </FormControl>
-
-              <FormControl fullWidth margin="dense">
-                <FormLabel>
                   Ngày hết hạn chứng chỉ sức khỏe
                 </FormLabel>
+
                 <Controller
                   name="health_certificate_expiry_date"
                   control={methods.control}
@@ -352,26 +313,9 @@ export const EditDialog = memo(
 
               <FormControl fullWidth margin="dense">
                 <FormLabel>
-                  Số hợp đồng
-                </FormLabel>
-                <Controller
-                  name="contract_number"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      value={field.value ?? ''}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  )}
-                />
-              </FormControl>
-
-              <FormControl fullWidth margin="dense">
-                <FormLabel>
                   Ngày ký hợp đồng
                 </FormLabel>
+
                 <Controller
                   name="contract_signed_date"
                   control={methods.control}
@@ -396,6 +340,7 @@ export const EditDialog = memo(
                 <FormLabel>
                   Ngày hết hạn hợp đồng
                 </FormLabel>
+
                 <Controller
                   name="contract_expiry_date"
                   control={methods.control}
@@ -426,6 +371,7 @@ export const EditDialog = memo(
               <Button
                 type="submit"
                 variant="contained"
+                disabled={selectedIds.length === 0}
               >
                 Lưu
               </Button>
@@ -436,3 +382,6 @@ export const EditDialog = memo(
     );
   }
 );
+
+EditMultiUserDialog.displayName =
+  "EditMultiUserDialog";

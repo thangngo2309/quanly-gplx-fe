@@ -1,4 +1,4 @@
-import { CreateUserModel, UpdateMultiUserModel, UpdateUserModel } from "../user.model";
+import { CreateUserModel, UpdateMultiUserModel, UpdateUserModel } from "@/model/user.model";
 
 export interface CreateUserDialogProps {
     open: boolean;

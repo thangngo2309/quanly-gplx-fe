@@ -1,6 +1,6 @@
 import api from "./axios.config";
 import { toast } from 'react-toastify';
-import { clearAuthTokens, getAccessToken, getRefreshToken, setAuthTokens, isTokenExpired } from "./localstorage";
+import { clearAuthTokens, getAccessToken, getRefreshToken, setAuthTokens, isTokenExpired } from "../utils/localstorage";
 
 // Gắn token vào header mỗi request
 api.interceptors.request.use((config) => {

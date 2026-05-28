@@ -1,5 +1,5 @@
 import { GridColDef } from '@mui/x-data-grid';
-import {formatDateTime} from '@/lib/format-date';
+import {formatDateTime} from '@/utils/format-date';
 
 export const USER_COLUMNS: GridColDef[] = [
   {

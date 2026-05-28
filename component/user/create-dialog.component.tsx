@@ -17,7 +17,7 @@ import { CreateUserModel} from "@/model/user.model";
 import { memo, useEffect } from "react";
 import { Form } from "@/component/form.component";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
-import { CreateUserDialogProps } from "@/model/grid-data/user-dialog-props";
+import { CreateUserDialogProps } from "@/model/user-dialog-props";
 
 export const CreateDialog = memo(
     ({ open, onClose, onSave }: CreateUserDialogProps) => {

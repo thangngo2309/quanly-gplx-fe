@@ -13,7 +13,7 @@ import { menuItems, bottomMenuItems } from '@/constants/menu-item';
 import { Drawer, DrawerHeader, BoxContainer, BottomListWrapper, DrawerIconButton, ItemButton, ItemIcon, ItemText, ListItemm, LogoImage, NavLink, ItemButtonDanger } from '@/style object/sidebar.style';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { clearAuthTokens } from '@/lib/localstorage';
+import { clearAuthTokens } from '@/utils/localstorage';
 
 export default function Sidebar() {
   const theme = useTheme();
