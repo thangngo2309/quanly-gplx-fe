@@ -1,4 +1,4 @@
-import { CreateUserModel, UpdateMultiUserModel, UpdateUserModel } from "@/model/user.model";
+import { CreateUserModel, UpdateMultiUserModel, UpdateUserModel, UserDataModel } from "@/model/user.model";
 
 export interface CreateUserDialogProps {
     open: boolean;
@@ -12,6 +12,7 @@ export interface EditUserDialogProps {
   selectedId: number;
   onClose: () => void;
   onSave: ( formData: UpdateUserModel ) => void;
+  data: UpdateUserModel;
 }
 
 export interface EditMultiUserDialogProps {
