@@ -6,9 +6,6 @@ import { DataGrid, GridRowSelectionModel } from '@mui/x-data-grid';
 
 import {
   Button,
-  FormControl,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -230,13 +227,16 @@ export default function UsersManagement() {
         onSave={handleCreate}
       />
 
-      <EditDialog
-        open={editOpen}
-        selectedId={selectedUser?.user_id || 0}
-        onClose={() => setEditOpen(false)}
-        onSave={handleEdit}
-      />
-
+      {selectedUser && (
+        <EditDialog
+          open={editOpen}
+          selectedId={selectedUser?.user_id || 0}
+          onClose={() => setEditOpen(false)}
+          onSave={handleEdit}
+          data={selectedUser}
+        />
+      )}
+      
       <EditMultiUserDialog
         open={multiEditOpen}
         selectedIds={selectedIds}

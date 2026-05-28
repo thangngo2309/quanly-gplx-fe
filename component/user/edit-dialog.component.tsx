@@ -24,7 +24,7 @@ import {
 } from "react-hook-form";
 
 export const EditDialog = memo(
-  ({ open, onClose, onSave, }: EditUserDialogProps) => {
+  ({ open, onClose, onSave, data }: EditUserDialogProps) => {
 
     const methods = useForm<UpdateUserModel>({
       mode: 'onTouched',
@@ -34,8 +34,10 @@ export const EditDialog = memo(
     const errors = methods.formState.errors;
 
     useEffect(() => {
-      if (open) { methods.reset(); }
-    }, [open]);
+      if (open && data) {
+        methods.reset(data);
+      }
+    }, [open, data]);
 
     const onSubmit: SubmitHandler<UpdateUserModel> = async (data) => { onSave(data); };
 
