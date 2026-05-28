@@ -14,3 +14,8 @@ export enum RecruitmentType {
     BIENCHE = 'bienche',
     HOPDONG = 'hopdong',
 }
+
+export const RecruitmentTypeLabel: Record<RecruitmentType, string> = {
+    [RecruitmentType.BIENCHE]: 'Biên chế',
+    [RecruitmentType.HOPDONG]: 'Hợp đồng',
+};

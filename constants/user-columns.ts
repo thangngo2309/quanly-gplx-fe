@@ -1,5 +1,6 @@
 import { GridColDef } from '@mui/x-data-grid';
 import {formatDateTime} from '@/utils/format-date';
+import { RecruitmentType, RecruitmentTypeLabel } from '@/enum/user.enum';
 
 export const USER_COLUMNS: GridColDef[] = [
   {
@@ -38,10 +39,11 @@ export const USER_COLUMNS: GridColDef[] = [
     width: 140,
   },
   {
-    field: 'recuitment_type',
+    field: 'recruitment_type',
     headerName: 'Loại tuyển dụng',
     width: 180,
     editable: true,
+    valueFormatter: (value: RecruitmentType) => RecruitmentTypeLabel[value] ?? value,
   },
   {
     field: 'education_level',

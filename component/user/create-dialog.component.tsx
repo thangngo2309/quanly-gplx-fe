@@ -12,7 +12,7 @@ import {
     MenuItem,
 } from "@mui/material";
 
-import { RecruitmentType, TeachingSubject, UserRole } from "@/enum/user.enum";
+import { RecruitmentType, RecruitmentTypeLabel, TeachingSubject, UserRole } from "@/enum/user.enum";
 import { CreateUserModel} from "@/model/user.model";
 import { memo, useEffect } from "react";
 import { Form } from "@/component/form.component";
@@ -244,12 +244,12 @@ export const CreateDialog = memo(
                                         >
                                             {Object.values(
                                                 RecruitmentType
-                                            ).map((type) => (
+                                            ).map((RecruitmentType) => (
                                                 <MenuItem
-                                                    key={type}
-                                                    value={type}
+                                                    key={RecruitmentType}
+                                                    value={RecruitmentType}
                                                 >
-                                                    {type}
+                                                    {RecruitmentTypeLabel[RecruitmentType] ?? RecruitmentType}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
