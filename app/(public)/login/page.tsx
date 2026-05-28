@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import { login } from '@/lib/auth';
-import { setAuthTokens } from '@/lib/localstorage';
+import { login } from '@/api/auth';
+import { setAuthTokens } from '@/utils/localstorage';
 import { toast } from 'react-toastify';
 import { PageContainer, StyledCard } from '@/style object/login.style';
 import { Form } from '@/component/form.component';

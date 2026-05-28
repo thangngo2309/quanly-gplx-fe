@@ -26,15 +26,15 @@ import {
   getAllUser,
   updateUser,
   UpdateMultipleUser,
-} from '@/lib/user';
+} from '@/api/user';
 
 import { useCallback, useEffect, useMemo, useState, } from 'react';
 
 import { USER_COLUMNS } from '@/constants/user-columns';
 import { ActionColumn } from '@/component/data-grid/action-column';
-import { CreateDialog } from '@/component/data-grid/user/create-dialog.component';
-import { EditDialog } from '@/component/data-grid/user/edit-dialog.component';
-import { EditMultiUserDialog } from '@/component/data-grid/user/edit-multi-dialog.component';
+import { CreateDialog } from '@/component/user/create-dialog.component';
+import { EditDialog } from '@/component/user/edit-dialog.component';
+import { EditMultiUserDialog } from '@/component/user/edit-multi-dialog.component';
 import { SearchIconButtonStyle } from '@/style object/user-page.style';
 import { FilterUserForm } from '@/model/user.model';
 

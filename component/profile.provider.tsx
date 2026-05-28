@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { getProfile } from '@/lib/auth';
+import { getProfile } from '@/api/auth';
 import { useUserStore } from '@/store/useUser.store';
 import Loading from '@/component/loading.component';
 import { ReactNode } from 'react';

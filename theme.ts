@@ -2,8 +2,15 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
-  typography: {
-    // fontFamily: 'var(--font-roboto)',
+  components: {
+    MuiFormLabel: {
+      styleOverrides: {
+        asterisk: {
+          color: 'red',
+          fontSize: '1.4em',
+        },
+      },
+    },
   },
 });
 
