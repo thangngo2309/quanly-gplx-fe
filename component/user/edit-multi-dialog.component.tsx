@@ -18,11 +18,11 @@ import { memo, useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { Form } from "@/component/form.component";
 import { UpdateMultiUserModel } from "@/model/user.model";
-import { RecruitmentType, TeachingSubject } from "@/enum/user.enum";
+import { RecruitmentType, RecruitmentTypeLabel, TeachingSubject } from "@/enum/user.enum";
 import { EditMultiUserDialogProps } from "@/model/user-dialog-props";
 
 export const EditMultiUserDialog = memo(
-  ({open, selectedIds, onClose, onSave,}: EditMultiUserDialogProps) => {
+  ({ open, selectedIds, onClose, onSave, }: EditMultiUserDialogProps) => {
 
     const methods = useForm<UpdateMultiUserModel>({
       mode: "onTouched",
@@ -33,7 +33,7 @@ export const EditMultiUserDialog = memo(
     const errors = methods.formState.errors;
 
     useEffect(() => {
-      if (open) { methods.reset();}
+      if (open) { methods.reset(); }
     }, [open]);
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export const EditMultiUserDialog = memo(
 
     const onSubmit: SubmitHandler<UpdateMultiUserModel> = async (
       data
-    ) => {onSave(selectedIds, data);};
+    ) => { onSave(selectedIds, data); };
 
     return (
       <Dialog
@@ -143,12 +143,12 @@ export const EditMultiUserDialog = memo(
                     >
                       {Object.values(
                         RecruitmentType
-                      ).map((type) => (
+                      ).map((RecruitmentType) => (
                         <MenuItem
-                          key={type}
-                          value={type}
+                          key={RecruitmentType}
+                          value={RecruitmentType}
                         >
-                          {type}
+                          {RecruitmentTypeLabel[RecruitmentType] ?? RecruitmentType}
                         </MenuItem>
                       ))}
                     </TextField>

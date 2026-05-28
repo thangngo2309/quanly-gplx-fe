@@ -12,7 +12,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-import { RecruitmentType, TeachingSubject } from "@/enum/user.enum";
+import { RecruitmentType, RecruitmentTypeLabel, TeachingSubject } from "@/enum/user.enum";
 import { UpdateUserModel } from "@/model/user.model";
 import { memo, useEffect } from "react";
 import { Form } from "@/component/form.component";
@@ -24,7 +24,7 @@ import {
 } from "react-hook-form";
 
 export const EditDialog = memo(
-  ({ open, onClose, onSave,}: EditUserDialogProps) => {
+  ({ open, onClose, onSave, }: EditUserDialogProps) => {
 
     const methods = useForm<UpdateUserModel>({
       mode: 'onTouched',
@@ -34,10 +34,10 @@ export const EditDialog = memo(
     const errors = methods.formState.errors;
 
     useEffect(() => {
-      if (open) { methods.reset();}
+      if (open) { methods.reset(); }
     }, [open]);
 
-    const onSubmit: SubmitHandler<UpdateUserModel> = async (data) => {onSave(data);};
+    const onSubmit: SubmitHandler<UpdateUserModel> = async (data) => { onSave(data); };
 
     return (
       <Dialog
@@ -153,12 +153,12 @@ export const EditDialog = memo(
                     >
                       {Object.values(
                         RecruitmentType
-                      ).map((type) => (
+                      ).map((RecruitmentType) => (
                         <MenuItem
-                          key={type}
-                          value={type}
+                          key={RecruitmentType}
+                          value={RecruitmentType}
                         >
-                          {type}
+                          {RecruitmentTypeLabel[RecruitmentType] ?? RecruitmentType}
                         </MenuItem>
                       ))}
                     </TextField>
