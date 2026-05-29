@@ -10,17 +10,21 @@ import {
     Button,
     FormLabel,
     MenuItem,
+    InputAdornment,
+    IconButton,
 } from "@mui/material";
-
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { RecruitmentType, RecruitmentTypeLabel, TeachingSubject, UserRole } from "@/enum/user.enum";
 import { CreateUserModel} from "@/model/user.model";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { Form } from "@/component/form.component";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { CreateUserDialogProps } from "@/model/user-dialog-props";
 
 export const CreateDialog = memo(
     ({ open, onClose, onSave }: CreateUserDialogProps) => {
+        const [showPassword, setShowPassword] = useState(false);
+        const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
         const methods = useForm<CreateUserModel>({
             mode: 'onTouched',
@@ -30,15 +34,17 @@ export const CreateDialog = memo(
 
         const errors = methods.formState.errors;
 
-        useEffect(() => { if (open) { methods.reset();}}, [open]);
+        useEffect(() => { if (open) { methods.reset(); } }, [open]);
 
-        const onSubmit: SubmitHandler<CreateUserModel> = async (data) => {onSave(data);};
+        const onSubmit: SubmitHandler<CreateUserModel> = async (data) => {
+            const { confirmPassword, ...formData } = data;
+            onSave(formData);
+        };
 
         return (
             <Dialog
                 open={open}
                 onClose={onClose}
-                keepMounted
                 maxWidth="sm"
                 fullWidth
                 scroll="paper"
@@ -98,13 +104,64 @@ export const CreateDialog = memo(
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                methods.trigger('confirmPassword');
+                                            }}
                                             value={field.value ?? ''}
-
-                                            type="password"
+                                            type={showPassword ? 'text' : 'password'}
                                             fullWidth
                                             variant="outlined"
                                             error={!!errors.password}
                                             helperText={errors.password?.message}
+                                            slotProps={{
+                                                input: {
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton onClick={() => setShowPassword(!showPassword)}>
+                                                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    )
+                                                }
+                                            }}
+                                        />
+                                    )}
+                                />
+                            </FormControl>
+
+
+                            <FormControl fullWidth margin="dense">
+                                <FormLabel>Xác nhận mật khẩu</FormLabel>
+                                <Controller
+                                    name="confirmPassword"
+                                    control={methods.control}
+                                    rules={{
+                                        required: 'Vui lòng xác nhận mật khẩu',
+                                        validate: (value) =>
+                                            value === methods.watch('password') ||
+                                            'Mật khẩu xác nhận không khớp'
+                                    }}
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            value={field.value ?? ''}
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            fullWidth
+                                            variant="outlined"
+                                            error={!!errors.confirmPassword}
+                                            helperText={errors.confirmPassword?.message}
+                                            slotProps={{
+                                                input: {
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                                                {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    )
+                                                }
+                                            }}
                                         />
                                     )}
                                 />

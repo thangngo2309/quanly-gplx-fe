@@ -4,6 +4,7 @@ import { MetaPaging } from './meta-paging.model';
 export interface CreateUserModel {
   username: string;
   password: string;
+  confirmPassword?: string;
   fullname: string;
   date_of_birth: string;
   citizen_id: string;
@@ -96,4 +97,3 @@ export type FilterUserForm = {
   cccd: string;
   active: boolean | undefined;
 };
-
