@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box';
 
-import { DataGrid, GridRowSelectionModel } from '@mui/x-data-grid';
+import { DataGrid, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 
 import {
   Button,
@@ -25,7 +25,7 @@ import {
   UpdateMultipleUser,
 } from '@/api/user';
 
-import { useCallback, useEffect, useMemo, useState, } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 import { USER_COLUMNS } from '@/constants/user-columns';
 import { ActionColumn } from '@/component/data-grid/action-column';
@@ -40,36 +40,58 @@ import {
   UpdateMultiUserModel,
   UpdateUserModel,
   UserDataModel,
-  UserModel,
 } from '@/model/user.model';
 import { toast } from 'react-toastify';
 import { Form } from '@/component/form.component';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { DataGridStyle } from '@/style object/data-grid.style';
 
 export default function UsersManagement() {
 
-  const [data, setData] = useState<UserModel | null>(null);
+  const [data, setData] = useState<any>();
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [multiEditOpen, setMultiEditOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserDataModel | null>(null);
-
-  const methods = useForm<FilterUserForm>({
-    defaultValues: {
-      name: '',
-      cccd: '',
-      active: undefined,
-    },
+  const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
+  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const [filter, setFilter] = useState<FilterUserForm>({
+    name: '',
+    cccd: '',
+    active: undefined,
+    sortBy: 'user_id',
+    sortDirection: 'DESC',
   });
 
-  const fetchData = useCallback(async (filters?: FilterUserForm) => {
-    const res = await getAllUser(filters);
-    setData(res);
-  }, []);
+  useEffect(() => {
+    fetchData();
+  }, [])
 
-  const onSubmit = (data: FilterUserForm) => {
-    fetchData(data);
+  useEffect(() => {
+    fetchData();
+  }, [pagination, filter, sortModel])
+
+  const methods = useForm<FilterUserForm>();
+
+  const fetchData = async () => {
+    const res = await getAllUser(
+      {
+        name: filter.name,
+        cccd: filter.cccd,
+        active: filter.active,
+        sortBy: sortModel[0]?.field || 'user_id',
+        sortDirection: sortModel[0]?.sort === 'desc' ? 'DESC' : 'ASC',
+      },
+      pagination.page + 1,
+      pagination.pageSize
+    );
+    setData(res);
+  };
+
+  const onSubmit = (formData: FilterUserForm) => {
+    setFilter(formData);
+    setPagination(prev => ({ ...prev, page: 0 }));
   };
 
   const handleCreate = async (formData: CreateUserModel) => {
@@ -122,7 +144,6 @@ export default function UsersManagement() {
     ];
   }, []);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
 
   return (
     <Box>
@@ -153,8 +174,8 @@ export default function UsersManagement() {
             disabled={!selectedIds.length}
             onClick={() => {
               const selectedNames = data?.data
-                ?.filter((user) => selectedIds.includes(user.user_id))
-                .map((user) => user.fullname)
+                ?.filter((user: UserDataModel) => selectedIds.includes(user.user_id))
+                .map((user: UserDataModel) => user.fullname)
                 .join(', ');
 
               if (confirm(`Bạn có chắc chắn muốn xóa: ${selectedNames}?`)) {
@@ -205,20 +226,33 @@ export default function UsersManagement() {
 
       </Stack>
 
-      <DataGrid
-        checkboxSelection
-        disableRowSelectionOnClick
-        rows={data?.data || []}
-        columns={columns}
-        rowCount={data?.meta.itemCount || 0}
-        getRowId={(row) => row.user_id}
-        paginationMode="server"
-        sortingMode="server"
-        filterMode="server"
-        onRowSelectionModelChange={(model: GridRowSelectionModel) => {
-          setSelectedIds(Array.from(model.ids) as number[]);
-        }}
-      />
+      <DataGridStyle>
+        <DataGrid
+          checkboxSelection
+          disableRowSelectionOnClick
+          columns={columns}
+          rows={data?.data || []}
+          rowCount={data?.meta?.itemCount || 0}
+          pagination
+          onPaginationModelChange={setPagination}
+          paginationMode="server"
+          pageSizeOptions={[10, 25, 50]}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 10 },
+            },
+          }}
+          sortingMode="server"
+          onSortModelChange={(model) => setSortModel(model)}
+          getRowId={(row) => row.user_id}
+          onRowSelectionModelChange={(model: GridRowSelectionModel) => {
+            setSelectedIds(Array.from(model.ids) as number[]);
+            if (model.type === 'exclude') {
+              setSelectedIds(data?.data?.map((row: UserDataModel) => row.user_id) || []);
+            }
+          }}
+        />
+      </DataGridStyle>
 
       <CreateDialog
         open={createOpen}
@@ -236,7 +270,7 @@ export default function UsersManagement() {
           data={selectedUser}
         />
       )}
-      
+
       <EditMultiUserDialog
         open={multiEditOpen}
         selectedIds={selectedIds}

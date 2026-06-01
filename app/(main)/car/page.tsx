@@ -4,11 +4,8 @@ import Box from '@mui/material/Box';
 
 import {
   DataGrid,
-  GridDataSource,
-  GridGetRowsParams,
-  GridGetRowsResponse,
   GridRowSelectionModel,
-  useGridApiRef,
+  GridSortModel,
 } from '@mui/x-data-grid';
 
 import {
@@ -32,7 +29,7 @@ import {
   updateMultipleCar,
 } from '@/api/car';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { CAR_COLUMNS } from '@/constants/car-columns';
 import { ActionColumn } from '@/component/data-grid/action-column';
@@ -40,7 +37,8 @@ import { CreateDialog } from '@/component/car/create-dialog.component';
 import { EditDialog } from '@/component/car/edit-dialog.component';
 import { EditMultiCarDialog } from '@/component/car/edit-multi-dialog.component';
 import { SearchIconButtonStyle } from '@/style object/user-page.style';
-import { FilterCarForm } from '@/model/car.model';
+import { CarModel, FilterCarForm } from '@/model/car.model';
+import { DataGridStyle } from '@/style object/data-grid.style';
 
 import {
   CreateCarModel,
@@ -51,59 +49,56 @@ import {
 import { toast } from 'react-toastify';
 import { Form } from '@/component/form.component';
 import { useForm } from 'react-hook-form';
-import { OrderBy } from '@/enum/order-by.enum';
 
 export default function CarsManagement() {
 
-  const apiRef = useGridApiRef();
-
+  const [data, setData] = useState<CarModel | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [multiEditOpen, setMultiEditOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [selectedCar, setSelectedCar] = useState<CarDataModel | null>(null);
-  const [currentFilters, setCurrentFilters] = useState<FilterCarForm | undefined>(undefined);
-  const [gridKey, setGridKey] = useState(0);
-  const [orderBy, setOrderBy] = useState<OrderBy>(OrderBy.DESC);
-
-  const refreshGrid = () => setGridKey(k => k + 1);
-
-  const dataSource: GridDataSource = useMemo(
-    () => ({
-      getRows: async (params: GridGetRowsParams): Promise<GridGetRowsResponse> => {
-        const page = params.paginationModel?.page ?? 0;
-        const pageSize = params.paginationModel?.pageSize ?? 10;
-
-        const res = await getAllCar(
-          currentFilters,
-          page + 1,
-          pageSize,
-          orderBy
-        );
-
-        return {
-          rows: res.data,
-          rowCount: res.meta.itemCount,
-        };
-      },
-    }),
-    [currentFilters, orderBy],
-  );
-
-  const methods = useForm<FilterCarForm>({
-    defaultValues: {
-      registrationNumber: '',
-      imeiDat: '',
-      active: undefined,
-    },
+  const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
+  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const [filter, setFilter] = useState<FilterCarForm>({
+    registrationNumber: '',
+    imeiDat: '',
+    active: undefined,
+    sortDirection: 'DESC',
   });
 
-  const onSubmit = (data: FilterCarForm) => { setCurrentFilters(data); };
+  const methods = useForm<FilterCarForm>();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [pagination, sortModel, filter]);
+
+  const fetchData = async () => {    const res = await getAllCar(
+      {
+        registrationNumber: filter.registrationNumber,
+        imeiDat: filter.imeiDat,
+        active: filter.active,
+        sortDirection: sortModel[0]?.sort === 'asc' ? 'ASC' : 'DESC',
+      },
+      pagination.page + 1,
+      pagination.pageSize
+    );
+    setData(res);
+  };
+
+  const onSubmit = (formData: FilterCarForm) => {
+    setFilter(formData);
+    setPagination(prev => ({ ...prev, page: 0 }));
+  };
 
   const handleCreate = async (formData: CreateCarModel) => {
     await createCar(formData);
     setCreateOpen(false);
-    refreshGrid();
+    fetchData();
     toast.success('Tạo xe thành công');
   };
 
@@ -111,20 +106,20 @@ export default function CarsManagement() {
     if (!selectedCar) return;
     await updateCar(selectedCar.car_id, formData);
     setEditOpen(false);
-    refreshGrid();
+    fetchData();
     toast.success('Cập nhật xe thành công');
   };
 
   const handleMultiEdit = async (CarIds: number[], formData: UpdateMultiCarModel) => {
     await updateMultipleCar(CarIds, formData);
     setMultiEditOpen(false);
-    refreshGrid();
+    fetchData();
     toast.success('Cập nhật xe thành công');
   };
 
   const handleDelete = async (id: number) => {
     await deleteCar(id);
-    refreshGrid();
+    fetchData();
     toast.success('Xóa xe thành công');
   };
 
@@ -132,7 +127,7 @@ export default function CarsManagement() {
     if (!selectedIds.length) return;
     await deleteMultipleCar(selectedIds);
     setSelectedIds([]);
-    refreshGrid();
+    fetchData();
     toast.success('Xóa xe thành công');
   };
 
@@ -180,10 +175,9 @@ export default function CarsManagement() {
             color="error"
             disabled={!selectedIds.length}
             onClick={() => {
-              const currentRows = apiRef.current?.getSortedRows() ?? [];
-              const selectedNames = currentRows
-                .filter((row) => selectedIds.includes(row.car_id as number))
-                .map((row) => row.registrationNumber)
+              const selectedNames = data?.data
+                ?.filter((car: CarDataModel) => selectedIds.includes(car.car_id))
+                .map((car: CarDataModel) => car.registrationNumber)
                 .join(', ');
 
               if (confirm(`Bạn có chắc chắn muốn xóa: ${selectedNames}?`)) {
@@ -234,41 +228,34 @@ export default function CarsManagement() {
 
       </Stack>
 
-      <DataGrid
-        key={gridKey}
-        apiRef={apiRef}
-        checkboxSelection
-        disableRowSelectionOnClick
-        columns={columns}
-        dataSource={dataSource}
-        pagination
-        pageSizeOptions={[10, 25, 50]}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
-          },
-        }}
-        sortingMode="server"
-        onSortModelChange={(model) => {
-          const sort = model[0];
-          setOrderBy(sort?.sort === "asc" ? OrderBy.ASC : OrderBy.DESC);
-        }}
-        getRowId={(row) => row.car_id}
-        onRowSelectionModelChange={(model: GridRowSelectionModel) => {
-          if (model.type === 'exclude') {
-            // Select all — lấy tất cả rows đang hiển thị, trừ những id bị excluded
-            const excludedIds = new Set(model.ids);
-            const currentRows = apiRef.current?.getSortedRows() ?? [];
-            const allIds = currentRows
-              .map((row) => row.car_id as number)
-              .filter((id) => !excludedIds.has(id));
-            setSelectedIds(allIds);
-          } else {
+      <DataGridStyle>
+        <DataGrid
+          columnBufferPx={100}
+          checkboxSelection
+          disableRowSelectionOnClick
+          columns={columns}
+          rows={data?.data || []}
+          rowCount={data?.meta?.itemCount || 0}
+          pagination
+          onPaginationModelChange={setPagination}
+          paginationMode="server"
+          pageSizeOptions={[10, 25, 50]}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 10 },
+            },
+          }}
+          sortingMode="server"
+          onSortModelChange={(model) => setSortModel(model)}
+          getRowId={(row) => row.car_id}
+          onRowSelectionModelChange={(model: GridRowSelectionModel) => {
             setSelectedIds(Array.from(model.ids) as number[]);
-          }
-        }
-      }
-      />
+            if (model.type === 'exclude') {
+              setSelectedIds(data?.data?.map((row: CarDataModel) => row.car_id) || []);
+            }
+          }}
+        />
+      </DataGridStyle>
 
       <CreateDialog
         open={createOpen}

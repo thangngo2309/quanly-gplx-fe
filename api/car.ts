@@ -1,6 +1,5 @@
 import { CarModel, CreateCarModel, FilterCarForm } from "@/model/car.model";
 import api from "./axios.config";
-import { OrderBy } from "@/enum/order-by.enum";
 
 export async function createCar(carData: CreateCarModel): Promise<CarModel> {
     try {
@@ -12,10 +11,10 @@ export async function createCar(carData: CreateCarModel): Promise<CarModel> {
     }
 }
 
-export async function getAllCar(filters?: FilterCarForm, page?: number, limit?: number, orderBy?: OrderBy): Promise<CarModel> {
+export async function getAllCar(filters?: FilterCarForm, page?: number, limit?: number): Promise<CarModel> {
     const res = await api.post<CarModel>('/car/find-all', 
         { ...filters,},
-        { params: { page, limit, orderBy: orderBy || OrderBy.DESC,}}
+        { params: { page, limit }}
     );
     return res.data;
 }
