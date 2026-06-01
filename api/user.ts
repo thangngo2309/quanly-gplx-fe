@@ -1,6 +1,5 @@
 import api from "./axios.config";
 import { toast } from "react-toastify";
-import { OrderBy } from "@/enum/order-by.enum";
 import { CreateUserModel, UpdateMultiUserModel, UpdateUserModel, UserModel } from "@/model/user.model";
 import {FilterUserForm} from '@/model/user.model';
 
@@ -14,13 +13,11 @@ export async function createUser(userData: CreateUserModel): Promise<UserModel> 
     }
 }
 
-export async function getAllUser(filters?: FilterUserForm, page = 1, limit = 10, orderBy?: OrderBy): Promise<UserModel> {
-    const res = await api.post<UserModel>('/user/search', {
-        ...filters,
-        page,
-        limit,
-        orderBy: orderBy || OrderBy.DESC,
-    });
+export async function getAllUser(filters?: FilterUserForm, page?: number, limit?: number): Promise<UserModel> {
+    const res = await api.post<UserModel>('/user/find-all', 
+        { ...filters,},
+        { params: { page, limit }}
+    );
     return res.data;
 }
 

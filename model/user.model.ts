@@ -96,4 +96,6 @@ export type FilterUserForm = {
   name: string;
   cccd: string;
   active: boolean | undefined;
+  sortBy: string | 'user_id';
+  sortDirection: 'ASC' | 'DESC';
 };
