@@ -1,4 +1,4 @@
-import { RecruitmentType, TeachingSubject, UserRole } from '@/enum/user.enum';
+import { RecruitmentType, TeachingSubject, UserRole, UserPedagogyLevel} from '@/enum/user.enum';
 import { MetaPaging } from './meta-paging.model';
 
 export interface CreateUserModel {
@@ -10,11 +10,11 @@ export interface CreateUserModel {
   citizen_id: string;
   address: string;
   role: UserRole;
-  recruitment_type?: RecruitmentType;
+  recruitment_type?: RecruitmentType | null;
   education_level?: string;
   professional_level?: string;
-  pedagogy_level?: string;
-  teaching_subject?: TeachingSubject;
+  pedagogy_level?: UserPedagogyLevel | null;
+  teaching_subject?: TeachingSubject | null;
   teacher_certificate_number?: string;
   teacher_certificate_issue_date?: Date;
   teacher_certificate_issue_place?: string;
@@ -36,7 +36,7 @@ export interface UserDataModel {
   recruitment_type: RecruitmentType;
   education_level: string;
   professional_level: string;
-  pedagogy_level: string;
+  pedagogy_level: UserPedagogyLevel;
   teaching_subject: TeachingSubject;
   teacher_certificate_number: string;
   teacher_certificate_issue_date: Date;
@@ -60,11 +60,11 @@ export interface UpdateMultiUserModel {
     fullname?: string;
     is_active?: boolean;
     address?: string;
-    recruitment_type?: RecruitmentType;
+    recruitment_type?: RecruitmentType | null;
     education_level?: string;
     professional_level?: string;
-    pedagogy_level?: string;
-    teaching_subject?: TeachingSubject;
+    pedagogy_level?: UserPedagogyLevel | null;
+    teaching_subject?: TeachingSubject | null;
     teacher_certificate_issue_date?: Date;
     teacher_certificate_issue_place?: string;
     health_certificate_expiry_date?: Date;
@@ -73,15 +73,16 @@ export interface UpdateMultiUserModel {
 }
 
 export interface UpdateUserModel {
+  user_id?: number;
   fullname?: string;
   date_of_birth?: string;
   citizen_id?: string;
   address?: string;
-  recruitment_type?: RecruitmentType;
+  recruitment_type?: RecruitmentType | null;
   education_level?: string;
   professional_level?: string;
-  pedagogy_level?: string;
-  teaching_subject?: TeachingSubject;
+  pedagogy_level?: UserPedagogyLevel | null;
+  teaching_subject?: TeachingSubject | null;
   teacher_certificate_number?: string;
   teacher_certificate_issue_date?: Date;
   teacher_certificate_issue_place?: string;

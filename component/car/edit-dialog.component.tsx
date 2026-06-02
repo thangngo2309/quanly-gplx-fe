@@ -20,7 +20,7 @@ import { Form } from "@/component/form.component";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { EditCarDialogProps } from "@/model/car-dialog-props";
 import { UpdateCarModel } from "@/model/car.model";
-import { autoTrim, autoTrimUppercaseRemoveSpecialChars } from "@/utils/car-format-input";
+import { autoTrim, autoTrimUppercaseRemoveSpecialChars } from "@/utils/format-input";
 import { CarCategory } from "@/enum/car.enum";
 
 export const EditDialog = memo(

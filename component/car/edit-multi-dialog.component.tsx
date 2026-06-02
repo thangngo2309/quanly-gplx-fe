@@ -21,7 +21,7 @@ import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { EditMultiCarDialogProps } from "@/model/car-dialog-props";
 import { UpdateMultiCarModel } from "@/model/car.model";
 import { CarCategory } from "@/enum/car.enum";
-import { autoTrim } from "@/utils/car-format-input";
+import { autoTrim } from "@/utils/format-input";
 
 export const EditMultiCarDialog = memo(
     ({ open, selectedIds, onClose, onSave, }: EditMultiCarDialogProps) => {
