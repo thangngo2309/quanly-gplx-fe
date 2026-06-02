@@ -18,14 +18,18 @@ import { memo, useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { Form } from "@/component/form.component";
 import { UpdateMultiUserModel } from "@/model/user.model";
-import { RecruitmentType, RecruitmentTypeLabel, TeachingSubject } from "@/enum/user.enum";
+import { RecruitmentType, RecruitmentTypeLabel, TeachingSubject, UserPedagogyLevel } from "@/enum/user.enum";
 import { EditMultiUserDialogProps } from "@/model/user-dialog-props";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { emptyToNull } from "@/utils/format-input";
 
 export const EditMultiUserDialog = memo(
   ({ open, selectedIds, onClose, onSave, }: EditMultiUserDialogProps) => {
 
     const methods = useForm<UpdateMultiUserModel>({
-      mode: "onTouched",
+      mode: "onChange",
       reValidateMode: "onChange",
       defaultValues: {},
     });
@@ -36,14 +40,16 @@ export const EditMultiUserDialog = memo(
       if (open) { methods.reset(); }
     }, [open]);
 
-    useEffect(() => {
-      if (!open) return;
-      methods.reset({});
-    }, [open]);
-
     const onSubmit: SubmitHandler<UpdateMultiUserModel> = async (
       data
-    ) => { onSave(selectedIds, data); };
+    ) => {
+      onSave(selectedIds, {
+        ...data,
+        recruitment_type: emptyToNull(data.recruitment_type),
+        pedagogy_level: emptyToNull(data.pedagogy_level),
+        teaching_subject: emptyToNull(data.teaching_subject),
+      });
+    };
 
     return (
       <Dialog
@@ -65,21 +71,25 @@ export const EditMultiUserDialog = memo(
             <DialogContent>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>Tên</FormLabel>
-
+                <FormLabel>Họ và tên</FormLabel>
                 <Controller
                   name="fullname"
                   control={methods.control}
+                  rules={{
+                    pattern: {
+                      value: /^[^\s]+(\s[^\s]+)+$/,
+                      message: 'Họ và tên phải bao gồm ít nhất hai từ và không chứa khoảng trắng ở đầu hoặc cuối'
+                    }
+                  }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       value={field.value ?? ''}
+                      placeholder="Ví dụ: Nguyễn Văn An"
                       fullWidth
                       variant="outlined"
                       error={!!errors.fullname}
-                      helperText={
-                        errors.fullname?.message
-                      }
+                      helperText={errors.fullname?.message}
                     />
                   )}
                 />
@@ -87,7 +97,6 @@ export const EditMultiUserDialog = memo(
 
               <FormControl fullWidth margin="dense">
                 <FormLabel>Địa chỉ</FormLabel>
-
                 <Controller
                   name="address"
                   control={methods.control}
@@ -95,12 +104,11 @@ export const EditMultiUserDialog = memo(
                     <TextField
                       {...field}
                       value={field.value ?? ''}
+                      placeholder="Ví dụ: Xóm A, Xã B, Tỉnh C"
                       fullWidth
                       variant="outlined"
                       error={!!errors.address}
-                      helperText={
-                        errors.address?.message
-                      }
+                      helperText={errors.address?.message}
                     />
                   )}
                 />
@@ -141,6 +149,7 @@ export const EditMultiUserDialog = memo(
                       fullWidth
                       variant="outlined"
                     >
+                      <MenuItem value="">-- Trống --</MenuItem>
                       {Object.values(
                         RecruitmentType
                       ).map((RecruitmentType) => (
@@ -157,29 +166,32 @@ export const EditMultiUserDialog = memo(
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>
-                  Trình độ học vấn
-                </FormLabel>
-
+                <FormLabel>Trình độ học vấn</FormLabel>
                 <Controller
                   name="education_level"
                   control={methods.control}
+                  rules={{
+                    pattern: {
+                      value: /^(?:[1-9]|1[0-2])\/12$/,
+                      message: 'Trình độ học vấn phải có định dạng "x/12"',
+                    },
+                  }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       value={field.value ?? ''}
+                      placeholder="Ví dụ: 12/12"
                       fullWidth
                       variant="outlined"
+                      error={!!errors.education_level}
+                      helperText={errors.education_level?.message}
                     />
                   )}
                 />
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>
-                  Trình độ chuyên môn
-                </FormLabel>
-
+                <FormLabel>Trình độ chuyên môn</FormLabel>
                 <Controller
                   name="professional_level"
                   control={methods.control}
@@ -188,17 +200,17 @@ export const EditMultiUserDialog = memo(
                       {...field}
                       value={field.value ?? ''}
                       fullWidth
+                      placeholder="Ví dụ: Đại học, Cao đẳng + Chuyên ngành"
                       variant="outlined"
+                      error={!!errors.professional_level}
+                      helperText={errors.professional_level?.message}
                     />
                   )}
                 />
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>
-                  Trình độ sư phạm
-                </FormLabel>
-
+                <FormLabel>Trình độ sư phạm</FormLabel>
                 <Controller
                   name="pedagogy_level"
                   control={methods.control}
@@ -206,9 +218,15 @@ export const EditMultiUserDialog = memo(
                     <TextField
                       {...field}
                       value={field.value ?? ''}
+                      select
                       fullWidth
                       variant="outlined"
-                    />
+                    >
+                      <MenuItem value="">-- Trống --</MenuItem>
+                      {Object.values(UserPedagogyLevel).map((l) => (
+                        <MenuItem key={l} value={l}>{l}</MenuItem>
+                      ))}
+                    </TextField>
                   )}
                 />
               </FormControl>
@@ -227,15 +245,11 @@ export const EditMultiUserDialog = memo(
                       fullWidth
                       variant="outlined"
                     >
+                      <MenuItem value="">-- Trống --</MenuItem>
                       {Object.values(
                         TeachingSubject
                       ).map((subject) => (
-                        <MenuItem
-                          key={subject}
-                          value={subject}
-                        >
-                          {subject}
-                        </MenuItem>
+                        <MenuItem key={subject} value={subject}>{subject}</MenuItem>
                       ))}
                     </TextField>
                   )}
@@ -243,35 +257,44 @@ export const EditMultiUserDialog = memo(
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>
-                  Ngày cấp chứng chỉ
-                </FormLabel>
-
-                <Controller
-                  name="teacher_certificate_issue_date"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      value={field.value ?? ''}
-                      type="date"
-                      fullWidth
-                      variant="outlined"
-                      slotProps={{
-                        inputLabel: {
-                          shrink: true,
-                        },
-                      }}
-                    />
-                  )}
-                />
+                <FormLabel>Ngày cấp chứng chỉ</FormLabel>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                    name="teacher_certificate_issue_date"
+                    control={methods.control}
+                    rules={{
+                      validate: {
+                        notInFuture: (value) => {
+                          if (!value) return true;
+                          const d = dayjs(value).startOf('day');
+                          const today = dayjs().startOf('day');
+                          return d.isBefore(today) || d.isSame(today) || 'Không được là ngày tương lai';
+                        }
+                      }
+                    }}
+                    render={({ field, fieldState }) => (
+                      <DatePicker
+                        {...field}
+                        format="DD/MM/YYYY"
+                        value={field.value ? dayjs(field.value) : null}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            variant: "outlined",
+                            error: !!fieldState.error,
+                            helperText: fieldState.error?.message
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
               </FormControl>
 
               <FormControl fullWidth margin="dense">
                 <FormLabel>
                   Nơi cấp chứng chỉ
                 </FormLabel>
-
                 <Controller
                   name="teacher_certificate_issue_place"
                   control={methods.control}
@@ -279,86 +302,110 @@ export const EditMultiUserDialog = memo(
                     <TextField
                       {...field}
                       value={field.value ?? ''}
+                      placeholder="Ví dụ: Sở Giáo dục và Đào tạo TP.HCM"
                       fullWidth
                       variant="outlined"
+                      error={!!errors.teacher_certificate_issue_place}
+                      helperText={errors.teacher_certificate_issue_place?.message}
                     />
                   )}
                 />
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>
-                  Ngày hết hạn chứng chỉ sức khỏe
-                </FormLabel>
-
-                <Controller
-                  name="health_certificate_expiry_date"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      value={field.value ?? ''}
-                      type="date"
-                      fullWidth
-                      variant="outlined"
-                      slotProps={{
-                        inputLabel: {
-                          shrink: true,
-                        },
-                      }}
-                    />
-                  )}
-                />
+                <FormLabel>Ngày hết hạn chứng chỉ sức khỏe</FormLabel>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                    name="health_certificate_expiry_date"
+                    control={methods.control}
+                    render={({ field, fieldState }) => (
+                      <DatePicker
+                        {...field}
+                        format="DD/MM/YYYY"
+                        value={field.value ? dayjs(field.value) : null}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            variant: "outlined",
+                            error: !!fieldState.error,
+                            helperText: fieldState.error?.message
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>
-                  Ngày ký hợp đồng
-                </FormLabel>
-
-                <Controller
-                  name="contract_signed_date"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      value={field.value ?? ''}
-                      type="date"
-                      fullWidth
-                      variant="outlined"
-                      slotProps={{
-                        inputLabel: {
-                          shrink: true,
-                        },
-                      }}
-                    />
-                  )}
-                />
+                <FormLabel>Ngày ký hợp đồng</FormLabel>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                    name="contract_signed_date"
+                    control={methods.control}
+                    rules={{
+                      validate: {
+                        notInFuture: (value) => {
+                          if (!value) return true;
+                          const d = dayjs(value).startOf('day');
+                          const today = dayjs().startOf('day');
+                          return d.isBefore(today) || d.isSame(today) || 'Không được là ngày tương lai';
+                        }
+                      }
+                    }}
+                    render={({ field, fieldState }) => (
+                      <DatePicker
+                        {...field}
+                        format="DD/MM/YYYY"
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={(date) => {
+                          field.onChange(date);
+                          methods.trigger('contract_expiry_date');
+                        }}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            variant: "outlined",
+                            error: !!fieldState.error,
+                            helperText: fieldState.error?.message
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>
-                  Ngày hết hạn hợp đồng
-                </FormLabel>
-
-                <Controller
-                  name="contract_expiry_date"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      value={field.value ?? ''}
-                      type="date"
-                      fullWidth
-                      variant="outlined"
-                      slotProps={{
-                        inputLabel: {
-                          shrink: true,
-                        },
-                      }}
-                    />
-                  )}
-                />
+                <FormLabel>Ngày hết hạn hợp đồng</FormLabel>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                    name="contract_expiry_date"
+                    control={methods.control}
+                    rules={{
+                      validate: (value) => {
+                        const signed = methods.getValues('contract_signed_date');
+                        if (!value || !signed) return true;
+                        return dayjs(value).startOf('day').isAfter(dayjs(signed).startOf('day')) || 'Ngày hết hạn phải sau ngày ký hợp đồng';
+                      }
+                    }}
+                    render={({ field, fieldState }) => (
+                      <DatePicker
+                        {...field}
+                        format="DD/MM/YYYY"
+                        value={field.value ? dayjs(field.value) : null}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            variant: "outlined",
+                            error: !!fieldState.error,
+                            helperText: fieldState.error?.message
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
               </FormControl>
 
             </DialogContent>

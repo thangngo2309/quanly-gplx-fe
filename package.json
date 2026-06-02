@@ -16,6 +16,8 @@
     "@mui/material-nextjs": "^7.0.0",
     "@mui/system": "^7.0.0",
     "@mui/x-data-grid": "^9.3.0",
+    "@mui/x-date-pickers": "^9.3.0",
+    "awesome-debounce-promise": "^2.1.0",
     "axios": "^1.16.1",
     "dayjs": "^1.11.20",
     "next": "16.2.6",
