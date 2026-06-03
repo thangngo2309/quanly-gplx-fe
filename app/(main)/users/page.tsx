@@ -80,8 +80,10 @@ export default function UsersManagement() {
         name: filter.name,
         cccd: filter.cccd,
         active: filter.active,
-        sortBy: sortModel[0]?.field || 'user_id',
-        sortDirection: sortModel[0]?.sort === 'desc' ? 'DESC' : 'ASC',
+        sortBy: sortModel[0]?.field || filter.sortBy, 
+        sortDirection: sortModel[0]
+        ? sortModel[0].sort === 'desc' ? 'DESC' : 'ASC'
+        : filter.sortDirection, 
       },
       pagination.page + 1,
       pagination.pageSize
