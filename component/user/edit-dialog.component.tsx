@@ -10,6 +10,9 @@ import {
   Button,
   FormLabel,
   MenuItem,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
 } from "@mui/material";
 
 import { RecruitmentType, RecruitmentTypeLabel, TeachingSubject, UserPedagogyLevel } from "@/enum/user.enum";
@@ -187,6 +190,24 @@ export const EditDialog = memo(
                       error={!!errors.address}
                       helperText={errors.address?.message}
                     />
+                  )}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <FormLabel>Trạng thái hoạt động</FormLabel>
+                <Controller
+                  name="is_active"
+                  control={methods.control}
+                  render={({ field }) => (
+                    <RadioGroup
+                      row
+                      value={field.value ?? ''}
+                      onChange={(e) => field.onChange(e.target.value === 'true')}
+                    >
+                      <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
+                      <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />
+                    </RadioGroup>
                   )}
                 />
               </FormControl>
