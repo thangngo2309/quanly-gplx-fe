@@ -87,11 +87,12 @@ export const EditDialog = memo(
             <DialogContent>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>Họ và tên</FormLabel>
+                <FormLabel required>Họ và tên</FormLabel>
                 <Controller
                   name="fullname"
                   control={methods.control}
                   rules={{
+                    required: 'Họ và tên là bắt buộc',
                     pattern: {
                       value: /^[^\s]+(\s[^\s]+)+$/,
                       message: 'Họ và tên phải bao gồm ít nhất hai từ và không chứa khoảng trắng ở đầu hoặc cuối'
@@ -111,12 +112,13 @@ export const EditDialog = memo(
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>Ngày sinh</FormLabel>
+                <FormLabel required>Ngày sinh</FormLabel>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Controller
                     name="date_of_birth"
                     control={methods.control}
                     rules={{
+                      required: 'Ngày sinh là bắt buộc',
                       validate: {
                         minAge: (value) => {
                           if (!value) return true;
@@ -147,11 +149,12 @@ export const EditDialog = memo(
 
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>CCCD</FormLabel>
+                <FormLabel required>CCCD</FormLabel>
                 <Controller
                   name="citizen_id"
                   control={methods.control}
                   rules={{
+                    required: 'CCCD là bắt buộc',
                     pattern: {
                       value: /^\d{12}$/,
                       message: 'Số CCCD phải có 12 chữ số',
@@ -174,10 +177,13 @@ export const EditDialog = memo(
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <FormLabel>Địa chỉ</FormLabel>
+                <FormLabel required>Địa chỉ</FormLabel>
                 <Controller
                   name="address"
                   control={methods.control}
+                  rules={{
+                    required: 'Địa chỉ là bắt buộc'
+                  }}
                   render={({ field }) => (
                     <TextField
                       {...field}
