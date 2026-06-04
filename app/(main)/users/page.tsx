@@ -6,6 +6,8 @@ import { DataGrid, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid
 
 import {
   Button,
+  Grid,
+  MenuItem,
   Stack,
   TextField,
   Typography,
@@ -43,7 +45,7 @@ import {
 } from '@/model/user.model';
 import { toast } from 'react-toastify';
 import { Form } from '@/component/form.component';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { DataGridStyle } from '@/style object/data-grid.style';
 
 export default function UsersManagement() {
@@ -152,78 +154,107 @@ export default function UsersManagement() {
         Quản lý người dùng
       </Typography>
       <Stack
-        direction="row"
+        direction={{ xs: 'column', sm: 'row' }}
         spacing={2}
         mb={2}
-        alignItems="center"
+        alignItems={{ xs: 'stretch', lg: 'center' }}
         justifyContent="space-between"
       >
 
-        <Stack direction="row" spacing={1}>
-          <Button
-            variant="outlined"
-            color="success"
-            onClick={() => setCreateOpen(true)}
-          >
-            <AddCircleIcon />
-          </Button>
-
-          <Button
-            variant="outlined"
-            color="error"
-            disabled={!selectedIds.length}
-            onClick={() => {
-              const selectedNames = data?.data
-                ?.filter((user: UserDataModel) => selectedIds.includes(user.user_id))
-                .map((user: UserDataModel) => user.fullname)
-                .join(', ');
-
-              if (confirm(`Bạn có chắc chắn muốn xóa: ${selectedNames}?`)) {
-                handleDeleteMultiple();
-              }
-            }}
-          >
-            <DeleteIcon />
-          </Button>
-
-          <Button
-            variant="outlined"
-            color="primary"
-            disabled={!selectedIds.length}
-            onClick={() => setMultiEditOpen(true)}
-          >
-            <EditIcon />
-          </Button>
-
-        </Stack>
-        <Form methods={methods} onSubmit={onSubmit}>
+        <Grid size="auto">
           <Stack direction="row" spacing={1}>
-            <TextField
-              size="small"
-              label="Tìm theo họ tên"
-              {...methods.register('name')}
-            />
-            <TextField
-              size="small"
-              label="Tìm theo CCCD"
-              {...methods.register('cccd')}
-            />
-            <select
-              {...methods.register('active', {
-                setValueAs: (v) => v === '' ? undefined : v === 'true',
-              })}
+            <Button
+              variant="outlined"
+              color="success"
+              onClick={() => setCreateOpen(true)}
             >
-              <option value="">Tất cả</option>
-              <option value="true">Hoạt động</option>
-              <option value="false">Không hoạt động</option>
-            </select>
+              <AddCircleIcon />
+            </Button>
 
-            <SearchIconButtonStyle type="submit">
-              <SearchIcon />
-            </SearchIconButtonStyle>
+            <Button
+              variant="outlined"
+              color="error"
+              disabled={!selectedIds.length}
+              onClick={() => {
+                const selectedNames = data?.data
+                  ?.filter((user: UserDataModel) => selectedIds.includes(user.user_id))
+                  .map((user: UserDataModel) => user.fullname)
+                  .join(', ');
+
+                if (confirm(`Bạn có chắc chắn muốn xóa: ${selectedNames}?`)) {
+                  handleDeleteMultiple();
+                }
+              }}
+            >
+              <DeleteIcon />
+            </Button>
+
+            <Button
+              variant="outlined"
+              color="primary"
+              disabled={!selectedIds.length}
+              onClick={() => setMultiEditOpen(true)}
+            >
+              <EditIcon />
+            </Button>
+
           </Stack>
-        </Form>
+        </ Grid>
 
+        <Grid size="grow" display="flex" justifyContent="flex-end">
+          <Form methods={methods} onSubmit={onSubmit}>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12, sm: 4 }}>
+                <TextField
+                  size="small"
+                  label="Tìm theo họ tên"
+                  fullWidth
+                  {...methods.register('name')}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, sm: 4 }}>
+                <TextField
+                  size="small"
+                  label="Tìm theo CCCD"
+                  fullWidth
+                  {...methods.register('cccd')}
+                />
+              </Grid>
+              <Grid size={{ xs: 10, sm: 3 }}>
+                <Controller
+                  name="active"
+                  control={methods.control}
+                  render={({ field }) => (
+                    <TextField
+                      select
+                      label="Trạng thái"
+                      size="small"
+                      fullWidth
+                      value={field.value === undefined ? 'empty' : String(field.value)}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value === 'empty'
+                            ? undefined
+                            : e.target.value === 'true'
+                        )
+                      }
+                    >
+                      <MenuItem value="empty">Tất cả</MenuItem>
+                      <MenuItem value="true">Hoạt động</MenuItem>
+                      <MenuItem value="false">Không hoạt động</MenuItem>
+                    </TextField>
+                  )}
+                />
+              </Grid>
+
+              <Grid size={{ xs: 2, sm: 1 }}>
+                <SearchIconButtonStyle type="submit">
+                  <SearchIcon />
+                </SearchIconButtonStyle>
+              </Grid>
+            </Grid>
+          </Form>
+        </Grid>
       </Stack>
 
       <DataGridStyle>
