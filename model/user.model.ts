@@ -91,6 +91,7 @@ export interface UpdateUserModel {
   contract_number?: string;
   contract_signed_date?: Date;
   contract_expiry_date?: Date;
+  is_active?: boolean;
 }
 
 export type FilterUserForm = {

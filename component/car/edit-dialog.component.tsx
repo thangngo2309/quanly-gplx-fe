@@ -398,7 +398,11 @@ export const EditDialog = memo(
                                     name="isActive"
                                     control={methods.control}
                                     render={({ field }) => (
-                                        <RadioGroup {...field} row>
+                                        <RadioGroup
+                                            row
+                                            value={field.value ?? ''}
+                                            onChange={(e) => field.onChange(e.target.value === 'true')}
+                                        >
                                             <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
                                             <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />
                                         </RadioGroup>
