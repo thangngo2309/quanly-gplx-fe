@@ -24,6 +24,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { emptyToNull } from "@/utils/format-input";
+import { USER_NOT_EMPTY_FIELDS } from "@/utils/not-emty-field";
 
 export const EditMultiUserDialog = memo(
   ({ open, selectedIds, onClose, onSave, }: EditMultiUserDialogProps) => {
@@ -43,6 +44,12 @@ export const EditMultiUserDialog = memo(
     const onSubmit: SubmitHandler<UpdateMultiUserModel> = async (
       data
     ) => {
+      USER_NOT_EMPTY_FIELDS.forEach(field => {
+        if (data[field] === '' || data[field] == null) {
+          delete data[field];
+        }
+      });
+
       onSave(selectedIds, {
         ...data,
         recruitment_type: emptyToNull(data.recruitment_type),
