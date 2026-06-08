@@ -22,6 +22,7 @@ import { EditMultiCarDialogProps } from "@/model/car-dialog-props";
 import { UpdateMultiCarModel } from "@/model/car.model";
 import { CarCategory } from "@/enum/car.enum";
 import { autoTrim } from "@/utils/format-input";
+import { CAR_NOT_EMPTY_FIELDS } from "@/utils/not-emty-field";
 
 export const EditMultiCarDialog = memo(
     ({ open, selectedIds, onClose, onSave, }: EditMultiCarDialogProps) => {
@@ -38,9 +39,14 @@ export const EditMultiCarDialog = memo(
             if (open) { methods.reset(); }
         }, [open]);
 
-        const onSubmit: SubmitHandler<UpdateMultiCarModel> = async (
-            data
-        ) => { onSave(selectedIds, data); };
+        const onSubmit: SubmitHandler<UpdateMultiCarModel> = async (data) => {
+            CAR_NOT_EMPTY_FIELDS.forEach(field => {
+                if (data[field] === '' || data[field] == null) {
+                    delete data[field];
+                }
+            });
+            onSave(selectedIds, data);
+        };
 
         return (
             <Dialog
