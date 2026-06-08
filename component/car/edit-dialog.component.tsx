@@ -27,7 +27,7 @@ export const EditDialog = memo(
     ({ open, onClose, onSave, data }: EditCarDialogProps) => {
 
         const methods = useForm<UpdateCarModel>({
-            mode: 'onTouched',
+            mode: 'onChange',
             reValidateMode: 'onChange',
         });
 
@@ -67,11 +67,12 @@ export const EditDialog = memo(
                         <DialogContent>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Biển số xe (VD: 51A-123.58 hoặc 51A-1234)</FormLabel>
+                                <FormLabel required>Biển số xe (VD: 51A-123.58 hoặc 51A-1234)</FormLabel>
                                 <Controller
                                     name="registrationNumber"
                                     control={methods.control}
                                     rules={{
+                                        required: 'Biển số xe là bắt buộc',
                                         pattern: {
                                             value: /^([0-9]{2})[A-Z]-[0-9]{3}\.[0-9]{2}$|^([0-9]{2})[A-Z]-[0-9]{4}$/,
                                             message: 'Biển số xe không đúng định dạng (VD: 51A-123.58 hoặc 51A-1234)',
@@ -93,10 +94,13 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Thương hiệu</FormLabel>
+                                <FormLabel required>Thương hiệu</FormLabel>
                                 <Controller
                                     name="brand"
                                     control={methods.control}
+                                    rules={{
+                                        required: 'Thương hiệu là bắt buộc',
+                                    }}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -116,10 +120,13 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Hạng xe</FormLabel>
+                                <FormLabel required>Hạng xe</FormLabel>
                                 <Controller
                                     name="category"
                                     control={methods.control}
+                                    rules={{
+                                        required: 'Hạng xe là bắt buộc',
+                                    }}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -144,11 +151,12 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Năm sản xuất</FormLabel>
+                                <FormLabel required>Năm sản xuất</FormLabel>
                                 <Controller
                                     name="manufacturingYear"
                                     control={methods.control}
                                     rules={{
+                                        required: 'Năm sản xuất là bắt buộc',
                                         min: {
                                             value: 2000,
                                             message: 'Năm sản xuất phải lớn hơn hoặc bằng 2000',
@@ -169,10 +177,13 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Chủ sở hữu</FormLabel>
+                                <FormLabel required>Chủ sở hữu</FormLabel>
                                 <Controller
                                     name="owner"
                                     control={methods.control}
+                                    rules={{
+                                        required: 'Chủ sở hữu là bắt buộc',
+                                    }}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -187,10 +198,13 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Phanh kép</FormLabel>
+                                <FormLabel required>Phanh kép</FormLabel>
                                 <Controller
                                     name="hasDualBrake"
                                     control={methods.control}
+                                    rules={{
+                                        required: 'Phanh kép là bắt buộc',
+                                    }}
                                     render={({ field }) => (
                                         <RadioGroup
                                             row
@@ -205,10 +219,13 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Số GP xe tập lái</FormLabel>
+                                <FormLabel required>Số GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseNumber"
                                     control={methods.control}
+                                    rules={{
+                                        required: 'Số giấy phép lái xe tập lái là bắt buộc',
+                                    }}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -226,11 +243,12 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày cấp GP xe tập lái</FormLabel>
+                                <FormLabel required>Ngày cấp GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseIssueDate"
                                     control={methods.control}
                                     rules={{
+                                        required: 'Ngày cấp GP lái xe tập lái là bắt buộc',
                                     }}
                                     render={({ field }) => (
                                         <TextField
@@ -250,11 +268,12 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày hết hạn GP xe tập lái</FormLabel>
+                                <FormLabel required>Ngày hết hạn GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseExpiryDate"
                                     control={methods.control}
                                     rules={{
+                                        required: 'Ngày hết hạn GP lái xe tập lái là bắt buộc',
                                         validate: (value) => {
                                             const issueDate = methods.getValues('practiceVehicleLicenseIssueDate');
                                             if (value && issueDate && value <= issueDate) {
@@ -278,10 +297,13 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày cấp đăng kiểm</FormLabel>
+                                <FormLabel required>Ngày cấp đăng kiểm</FormLabel>
                                 <Controller
                                     name="inspectionIssueDate"
                                     control={methods.control}
+                                    rules={{
+                                        required: 'Ngày cấp đăng kiểm là bắt buộc',
+                                    }}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -300,11 +322,12 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày hết hạn đăng kiểm</FormLabel>
+                                <FormLabel required>Ngày hết hạn đăng kiểm</FormLabel>
                                 <Controller
                                     name="inspectionExpiryDate"
                                     control={methods.control}
                                     rules={{
+                                        required: 'Ngày hết hạn đăng kiểm là bắt buộc',
                                         validate: (value) => {
                                             const issueDate = methods.getValues('inspectionIssueDate');
                                             if (value && issueDate && value <= issueDate) {
@@ -328,10 +351,13 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày hết hạn bảo hiểm</FormLabel>
+                                <FormLabel required>Ngày hết hạn bảo hiểm</FormLabel>
                                 <Controller
                                     name="insuranceExpiryDate"
                                     control={methods.control}
+                                    rules={{
+                                        required: 'Ngày hết hạn bảo hiểm là bắt buộc',
+                                    }}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -347,11 +373,12 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Số imei DAT</FormLabel>
+                                <FormLabel required>Số imei DAT</FormLabel>
                                 <Controller
                                     name="imeiDat"
                                     control={methods.control}
                                     rules={{
+                                        required: 'Số IMEI DAT là bắt buộc',
                                         pattern: {
                                             value: /^[0-9]{15}$/,
                                             message: 'Số IMEI phải có đúng 15 chữ số',
@@ -371,10 +398,13 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Số seri</FormLabel>
+                                <FormLabel required>Số seri</FormLabel>
                                 <Controller
                                     name="serialNumber"
                                     control={methods.control}
+                                    rules={{
+                                        required: 'Số seri là bắt buộc',
+                                    }}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
