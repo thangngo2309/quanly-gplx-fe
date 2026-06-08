@@ -205,7 +205,7 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Số giấy phép lái xe thực hành</FormLabel>
+                                <FormLabel>Số GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseNumber"
                                     control={methods.control}
@@ -226,7 +226,7 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày cấp GP lái xe thực hành</FormLabel>
+                                <FormLabel>Ngày cấp GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseIssueDate"
                                     control={methods.control}
@@ -250,7 +250,7 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày hết hạn GP lái xe thực hành</FormLabel>
+                                <FormLabel>Ngày hết hạn GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseExpiryDate"
                                     control={methods.control}

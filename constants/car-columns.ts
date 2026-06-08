@@ -47,7 +47,7 @@ export const CAR_COLUMNS: GridColDef[] = [
   },
   {
     field: 'practiceVehicleLicenseNumber',
-    headerName: 'Số giấy phép lái xe thực hành',
+    headerName: 'Số GP xe tập lái',
     width: 200,
     sortable: false,
   },

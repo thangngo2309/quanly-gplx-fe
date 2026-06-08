@@ -174,7 +174,7 @@ export const EditMultiCarDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày cấp GP lái xe thực hành</FormLabel>
+                                <FormLabel>Ngày cấp GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseIssueDate"
                                     control={methods.control}
@@ -196,7 +196,7 @@ export const EditMultiCarDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày hết hạn GP lái xe thực hành</FormLabel>
+                                <FormLabel>Ngày hết hạn GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseExpiryDate"
                                     control={methods.control}

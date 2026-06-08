@@ -212,12 +212,12 @@ export const CreateDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel required>Số giấy phép lái xe thực hành</FormLabel>
+                                <FormLabel required>Số GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseNumber"
                                     control={methods.control}
                                     rules={{
-                                        required: 'Vui lòng nhập số giấy phép lái xe thực hành',
+                                        required: 'Vui lòng nhập số giấy phép xe tập lái',
                                     }}
                                     render={({ field }) => (
                                         <TextField
@@ -237,12 +237,12 @@ export const CreateDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel required>Ngày cấp GP lái xe thực hành</FormLabel>
+                                <FormLabel required>Ngày cấp GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseIssueDate"
                                     control={methods.control}
                                     rules={{
-                                        required: 'Vui lòng nhập ngày cấp GP lái xe thực hành'
+                                        required: 'Vui lòng nhập ngày cấp GP xe tập lái'
                                     }}
                                     render={({ field }) => (
                                         <TextField
@@ -259,7 +259,7 @@ export const CreateDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel required>Ngày hết hạn GP lái xe thực hành</FormLabel>
+                                <FormLabel required>Ngày hết hạn GP xe tập lái</FormLabel>
                                 <Controller
                                     name="practiceVehicleLicenseExpiryDate"
                                     control={methods.control}
