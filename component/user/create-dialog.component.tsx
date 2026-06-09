@@ -20,11 +20,10 @@ import { memo, useEffect, useState } from "react";
 import { Form } from "@/component/form.component";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { CreateUserDialogProps } from "@/model/user-dialog-props";
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { debouncedUniqueUsername, debouncedUniqueCitizenId, debouncedUniqueTeacherCert, debouncedUniqueHealthCert, debouncedUniqueContract } from "@/utils/debounced-user";
 import { emptyToNull } from "@/utils/format-input";
+import { DatePickerField } from "../date-picker.component";
 
 export const CreateDialog = memo(
     ({ open, onClose, onSave }: CreateUserDialogProps) => {
@@ -228,41 +227,25 @@ export const CreateDialog = memo(
                                 />
                             </FormControl>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel required>Ngày sinh</FormLabel>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <Controller
-                                        name="date_of_birth"
-                                        control={methods.control}
-                                        rules={{
-                                            required: 'Vui lòng nhập ngày sinh',
-                                            validate: {
-                                                minAge: (value) => {
-                                                    if (!value) return true;
-                                                    const d = dayjs(value).startOf('day');
-                                                    const today = dayjs().startOf('day');
-                                                    return today.diff(d, 'year') >= 18 || 'Người dùng phải từ 18 tuổi trở lên';
-                                                }
-                                            }
-                                        }}
-                                        render={({ field }) => (
-                                            <DatePicker
-                                                {...field}
-                                                format="DD/MM/YYYY"
-                                                value={field.value ? dayjs(field.value) : null}
-                                                slotProps={{
-                                                    textField: {
-                                                        fullWidth: true,
-                                                        variant: 'outlined',
-                                                        error: !!errors.date_of_birth,
-                                                        helperText: errors.date_of_birth?.message,
-                                                    },
-                                                }}
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
-                            </FormControl>
+                            <DatePickerField
+                                name="date_of_birth"
+                                control={methods.control}
+                                label="Ngày sinh"
+                                required
+                                error={!!errors.date_of_birth}
+                                helperText={errors.date_of_birth?.message}
+                                rules={{
+                                    required: 'Vui lòng nhập ngày sinh',
+                                    validate: {
+                                        minAge: (value: Date) => {
+                                            if (!value) return true;
+                                            const d = dayjs(value).startOf('day');
+                                            const today = dayjs().startOf('day');
+                                            return today.diff(d, 'year') >= 18 || 'Người dùng phải từ 18 tuổi trở lên';
+                                        }
+                                    }
+                                }}
+                            />
 
                             <FormControl fullWidth margin="dense">
                                 <FormLabel required>CCCD</FormLabel>
@@ -497,40 +480,23 @@ export const CreateDialog = memo(
                                 />
                             </FormControl>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày cấp chứng chỉ</FormLabel>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <Controller
-                                        name="teacher_certificate_issue_date"
-                                        control={methods.control}
-                                        rules={{
-                                            validate: {
-                                                notInFuture: (value) => {
-                                                    if (!value) return true;
-                                                    const d = dayjs(value).startOf('day');
-                                                    const today = dayjs().startOf('day');
-                                                    return d.isBefore(today) || d.isSame(today) || 'Không được là ngày tương lai';
-                                                }
-                                            }
-                                        }}
-                                        render={({ field, fieldState }) => (
-                                            <DatePicker
-                                                {...field}
-                                                format="DD/MM/YYYY"
-                                                value={field.value ? dayjs(field.value) : null}
-                                                slotProps={{
-                                                    textField: {
-                                                        fullWidth: true,
-                                                        variant: "outlined",
-                                                        error: !!fieldState.error,
-                                                        helperText: fieldState.error?.message
-                                                    }
-                                                }}
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
-                            </FormControl>
+                            <DatePickerField
+                                name="teacher_certificate_issue_date"
+                                control={methods.control}
+                                label="Ngày cấp chứng chỉ giáo viên"
+                                error={!!errors.teacher_certificate_issue_date}
+                                helperText={errors.teacher_certificate_issue_date?.message}
+                                rules={{
+                                    validate: {
+                                        notInFuture: (value: Date) => {
+                                            if (!value) return true;
+                                            const d = dayjs(value).startOf('day');
+                                            const today = dayjs().startOf('day');
+                                            return d.isBefore(today) || d.isSame(today) || 'Không được là ngày tương lai';
+                                        }
+                                    }
+                                }}
+                            />
 
                             <FormControl fullWidth margin="dense">
                                 <FormLabel>
@@ -581,30 +547,13 @@ export const CreateDialog = memo(
                                 />
                             </FormControl>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày hết hạn chứng chỉ sức khỏe</FormLabel>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <Controller
-                                        name="health_certificate_expiry_date"
-                                        control={methods.control}
-                                        render={({ field, fieldState }) => (
-                                            <DatePicker
-                                                {...field}
-                                                format="DD/MM/YYYY"
-                                                value={field.value ? dayjs(field.value) : null}
-                                                slotProps={{
-                                                    textField: {
-                                                        fullWidth: true,
-                                                        variant: "outlined",
-                                                        error: !!fieldState.error,
-                                                        helperText: fieldState.error?.message
-                                                    }
-                                                }}
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
-                            </FormControl>
+                            <DatePickerField
+                                name="health_certificate_expiry_date"
+                                control={methods.control}
+                                label="Ngày hết hạn chứng chỉ sức khỏe"
+                                error={!!errors.health_certificate_expiry_date}
+                                helperText={errors.health_certificate_expiry_date?.message}
+                            />
 
                             <FormControl fullWidth margin="dense">
                                 <FormLabel>
@@ -634,76 +583,40 @@ export const CreateDialog = memo(
                                 />
                             </FormControl>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày ký hợp đồng</FormLabel>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <Controller
-                                        name="contract_signed_date"
-                                        control={methods.control}
-                                        rules={{
-                                            validate: {
-                                                notInFuture: (value) => {
-                                                    if (!value) return true;
-                                                    const d = dayjs(value).startOf('day');
-                                                    const today = dayjs().startOf('day');
-                                                    return d.isBefore(today) || d.isSame(today) || 'Không được là ngày tương lai';
-                                                }
-                                            }
-                                        }}
-                                        render={({ field, fieldState }) => (
-                                            <DatePicker
-                                                {...field}
-                                                format="DD/MM/YYYY"
-                                                value={field.value ? dayjs(field.value) : null}
-                                                onChange={(date) => {
-                                                    field.onChange(date);
-                                                    methods.trigger('contract_expiry_date');
-                                                }}
-                                                slotProps={{
-                                                    textField: {
-                                                        fullWidth: true,
-                                                        variant: "outlined",
-                                                        error: !!fieldState.error,
-                                                        helperText: fieldState.error?.message
-                                                    }
-                                                }}
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
-                            </FormControl>
+                            <DatePickerField
+                                name="contract_signed_date"
+                                control={methods.control}
+                                label="Ngày ký hợp đồng"
+                                error={!!errors.contract_signed_date}
+                                helperText={errors.contract_signed_date?.message}
+                                rules={{
+                                    validate: {
+                                        notInFuture: (value: Date) => {
+                                            if (!value) return true;
+                                            const d = dayjs(value).startOf('day');
+                                            const today = dayjs().startOf('day');
+                                            return d.isBefore(today) || d.isSame(today) || 'Không được là ngày tương lai';
+                                        }
+                                    }
+                                }}
+                                triggerOnBlur="contract_expiry_date"
+                            />
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Ngày hết hạn hợp đồng</FormLabel>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <Controller
-                                        name="contract_expiry_date"
-                                        control={methods.control}
-                                        rules={{
-                                            validate: (value) => {
-                                                const signed = methods.getValues('contract_signed_date');
-                                                if (!value || !signed) return true;
-                                                return dayjs(value).startOf('day').isAfter(dayjs(signed).startOf('day')) || 'Ngày hết hạn phải sau ngày ký hợp đồng';
-                                            }
-                                        }}
-                                        render={({ field, fieldState }) => (
-                                            <DatePicker
-                                                {...field}
-                                                format="DD/MM/YYYY"
-                                                value={field.value ? dayjs(field.value) : null}
-                                                slotProps={{
-                                                    textField: {
-                                                        fullWidth: true,
-                                                        variant: "outlined",
-                                                        error: !!fieldState.error,
-                                                        helperText: fieldState.error?.message
-                                                    }
-                                                }}
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
-                            </FormControl>
+                            <DatePickerField
+                                name="contract_expiry_date"
+                                control={methods.control}
+                                label="Ngày hết hạn hợp đồng"
+                                error={!!errors.contract_expiry_date}
+                                helperText={errors.contract_expiry_date?.message}
+                                rules={{
+                                    validate: (value: Date) => {
+                                        const signed = methods.getValues('contract_signed_date');
+                                        if (!value || !signed) return true;
+                                        return dayjs(value).startOf('day').isAfter(dayjs(signed).startOf('day')) || 'Ngày hết hạn phải sau ngày ký hợp đồng';
+                                    }
+                                }}
+                                triggerOnBlur="contract_signed_date"
+                            />
 
                         </DialogContent>
 
