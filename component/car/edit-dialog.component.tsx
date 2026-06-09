@@ -22,6 +22,8 @@ import { EditCarDialogProps } from "@/model/car-dialog-props";
 import { UpdateCarModel } from "@/model/car.model";
 import { autoTrim, autoTrimUppercaseRemoveSpecialChars } from "@/utils/format-input";
 import { CarCategory } from "@/enum/car.enum";
+import dayjs from "dayjs";
+import { DatePickerField } from "../date-picker.component";
 
 export const EditDialog = memo(
     ({ open, onClose, onSave, data }: EditCarDialogProps) => {
@@ -242,135 +244,80 @@ export const EditDialog = memo(
                                 />
                             </FormControl>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel required>Ngày cấp GP xe tập lái</FormLabel>
-                                <Controller
-                                    name="practiceVehicleLicenseIssueDate"
-                                    control={methods.control}
-                                    rules={{
-                                        required: 'Ngày cấp GP lái xe tập lái là bắt buộc',
-                                    }}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            onChange={(e) => {
-                                                field.onChange(e.target.value);
-                                                methods.trigger('inspectionExpiryDate');
-                                            }}
-                                            fullWidth
-                                            type="date"
-                                            variant="outlined"
-                                            error={!!errors.practiceVehicleLicenseIssueDate}
-                                            helperText={errors.practiceVehicleLicenseIssueDate?.message}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
+                            <DatePickerField
+                                name="practiceVehicleLicenseIssueDate"
+                                control={methods.control}
+                                label="Ngày cấp GP xe tập lái"
+                                required
+                                error={!!methods.formState.errors.practiceVehicleLicenseIssueDate}
+                                helperText={methods.formState.errors.practiceVehicleLicenseIssueDate?.message}
+                                rules={{
+                                    required: 'Ngày cấp GP lái xe tập lái là bắt buộc',
+                                }}
+                                triggerOnBlur="practiceVehicleLicenseExpiryDate"
+                            />
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel required>Ngày hết hạn GP xe tập lái</FormLabel>
-                                <Controller
-                                    name="practiceVehicleLicenseExpiryDate"
-                                    control={methods.control}
-                                    rules={{
-                                        required: 'Ngày hết hạn GP lái xe tập lái là bắt buộc',
-                                        validate: (value) => {
-                                            const issueDate = methods.getValues('practiceVehicleLicenseIssueDate');
-                                            if (value && issueDate && value <= issueDate) {
-                                                return 'Ngày hết hạn phải sau ngày cấp';
-                                            }
-                                            return true;
-                                        },
-                                    }}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            value={field.value ?? ''}
-                                            fullWidth
-                                            type="date"
-                                            variant="outlined"
-                                            error={!!errors.practiceVehicleLicenseExpiryDate}
-                                            helperText={errors.practiceVehicleLicenseExpiryDate?.message}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
+                            <DatePickerField
+                                name="practiceVehicleLicenseExpiryDate"
+                                control={methods.control}
+                                label="Ngày hết hạn GP xe tập lái"
+                                required
+                                error={!!methods.formState.errors.practiceVehicleLicenseExpiryDate}
+                                helperText={methods.formState.errors.practiceVehicleLicenseExpiryDate?.message}
+                                rules={{
+                                    required: 'Ngày hết hạn GP lái xe tập lái là bắt buộc',
+                                    validate: (value: Date) => {
+                                        const issueDate = methods.getValues('practiceVehicleLicenseIssueDate');
+                                        if (!value || !issueDate) return true;
+                                        return dayjs(value).startOf('day').isAfter(dayjs(issueDate).startOf('day'))
+                                            || 'Ngày hết hạn phải sau ngày cấp';
+                                    },
+                                }}
+                                triggerOnBlur="practiceVehicleLicenseIssueDate"
+                            />
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel required>Ngày cấp đăng kiểm</FormLabel>
-                                <Controller
-                                    name="inspectionIssueDate"
-                                    control={methods.control}
-                                    rules={{
-                                        required: 'Ngày cấp đăng kiểm là bắt buộc',
-                                    }}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            onChange={(e) => {
-                                                field.onChange(e.target.value);
-                                                methods.trigger('practiceVehicleLicenseExpiryDate');
-                                            }}
-                                            fullWidth
-                                            type="date"
-                                            variant="outlined"
-                                            error={!!errors.inspectionIssueDate}
-                                            helperText={errors.inspectionIssueDate?.message}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
+                            <DatePickerField
+                                name="inspectionIssueDate"
+                                control={methods.control}
+                                label="Ngày cấp đăng kiểm"
+                                required
+                                error={!!errors.inspectionIssueDate}
+                                helperText={errors.inspectionIssueDate?.message}
+                                rules={{
+                                    required: 'Vui lòng nhập ngày cấp đăng kiểm'
+                                }}
+                                triggerOnBlur="inspectionExpiryDate"
+                            />
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel required>Ngày hết hạn đăng kiểm</FormLabel>
-                                <Controller
-                                    name="inspectionExpiryDate"
-                                    control={methods.control}
-                                    rules={{
-                                        required: 'Ngày hết hạn đăng kiểm là bắt buộc',
-                                        validate: (value) => {
-                                            const issueDate = methods.getValues('inspectionIssueDate');
-                                            if (value && issueDate && value <= issueDate) {
-                                                return 'Ngày hết hạn phải sau ngày cấp';
-                                            }
-                                            return true;
-                                        },
-                                    }}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            value={field.value ?? ''}
-                                            fullWidth
-                                            type="date"
-                                            variant="outlined"
-                                            error={!!errors.inspectionExpiryDate}
-                                            helperText={errors.inspectionExpiryDate?.message}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
+                            <DatePickerField
+                                name="inspectionExpiryDate"
+                                control={methods.control}
+                                label="Ngày hết hạn đăng kiểm"
+                                required
+                                error={!!errors.inspectionExpiryDate}
+                                helperText={errors.inspectionExpiryDate?.message}
+                                rules={{
+                                    required: 'Vui lòng nhập ngày hết hạn đăng kiểm',
+                                    validate: (value: Date) => {
+                                        const issueDate = methods.getValues('inspectionIssueDate');
+                                        if (!value || !issueDate) return true;
+                                        return dayjs(value).startOf('day').isAfter(dayjs(issueDate).startOf('day')) || 'Ngày hết hạn phải sau ngày cấp';
+                                    },
+                                }}
+                                triggerOnBlur="inspectionIssueDate"
+                            />
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel required>Ngày hết hạn bảo hiểm</FormLabel>
-                                <Controller
-                                    name="insuranceExpiryDate"
-                                    control={methods.control}
-                                    rules={{
-                                        required: 'Ngày hết hạn bảo hiểm là bắt buộc',
-                                    }}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            value={field.value ?? ''}
-                                            fullWidth
-                                            type="date"
-                                            variant="outlined"
-                                            error={!!errors.insuranceExpiryDate}
-                                            helperText={errors.insuranceExpiryDate?.message}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
+                            <DatePickerField
+                                name="insuranceExpiryDate"
+                                control={methods.control}
+                                label="Ngày hết hạn bảo hiểm"
+                                required
+                                error={!!errors.insuranceExpiryDate}
+                                helperText={errors.insuranceExpiryDate?.message}
+                                rules={{
+                                    required: 'Vui lòng nhập ngày hết hạn bảo hiểm',
+                                }}
+                            />
 
                             <FormControl fullWidth margin="dense">
                                 <FormLabel required>Số imei DAT</FormLabel>
