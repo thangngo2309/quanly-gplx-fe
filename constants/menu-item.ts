@@ -9,7 +9,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 export const menuItems = [
   { label: 'Dashboard', icon: HomeIcon, path: '/' },
   { label: 'Quản lý người dùng', icon: GroupIcon, path: '/users' },
-  { label: 'Quản lý giáo viên', icon: SchoolIcon, path: '/teachers' },
   { label: 'Quản lý xe tập lái', icon: DirectionsCarIcon, path: '/car' },
 ];
 
