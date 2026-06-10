@@ -51,6 +51,7 @@ import { toast } from 'react-toastify';
 import { Form } from '@/component/form.component';
 import { Controller, useForm } from 'react-hook-form';
 import { Grid } from '@mui/system';
+import Tooltip from '@mui/material/Tooltip';
 
 export default function CarsManagement() {
 
@@ -166,40 +167,46 @@ export default function CarsManagement() {
 
         <Grid size="auto">
           <Stack direction="row" spacing={1}>
-            <Button
-              variant="outlined"
-              color="success"
-              onClick={() => setCreateOpen(true)}
-            >
-              <AddCircleIcon />
-            </Button>
+            <Tooltip title="Tạo mới">
+              <Button
+                variant="outlined"
+                color="success"
+                onClick={() => setCreateOpen(true)}
+              >
+                <AddCircleIcon />
+              </Button>
+            </Tooltip>
 
-            <Button
-              variant="outlined"
-              color="error"
-              disabled={!selectedIds.length}
-              onClick={() => {
-                const selectedNames = data?.data
-                  ?.filter((car: CarDataModel) => selectedIds.includes(car.car_id))
-                  .map((car: CarDataModel) => car.registrationNumber)
-                  .join(', ');
+            <Tooltip title="Xóa hàng loạt">
+              <Button
+                variant="outlined"
+                color="error"
+                disabled={!selectedIds.length}
+                onClick={() => {
+                  const selectedNames = data?.data
+                    ?.filter((car: CarDataModel) => selectedIds.includes(car.car_id))
+                    .map((car: CarDataModel) => car.registrationNumber)
+                    .join(', ');
 
-                if (confirm(`Bạn có chắc chắn muốn xóa: ${selectedNames}?`)) {
-                  handleDeleteMultiple();
-                }
-              }}
-            >
-              <DeleteIcon />
-            </Button>
+                  if (confirm(`Bạn có chắc chắn muốn xóa: ${selectedNames}?`)) {
+                    handleDeleteMultiple();
+                  }
+                }}
+              >
+                <DeleteIcon />
+              </Button>
+            </Tooltip>
 
-            <Button
-              variant="outlined"
-              color="primary"
-              disabled={!selectedIds.length}
-              onClick={() => setMultiEditOpen(true)}
-            >
-              <EditIcon />
-            </Button>
+            <Tooltip title="Chỉnh sửa hàng loạt">
+              <Button
+                variant="outlined"
+                color="primary"
+                disabled={!selectedIds.length}
+                onClick={() => setMultiEditOpen(true)}
+              >
+                <EditIcon />
+              </Button>
+            </Tooltip>
           </Stack>
         </Grid>
 
@@ -250,9 +257,11 @@ export default function CarsManagement() {
               </Grid>
 
               <Grid size={{ xs: 2, sm: 1 }}>
-                <SearchIconButtonStyle type="submit">
-                  <SearchIcon />
-                </SearchIconButtonStyle>
+                <Tooltip title="Tìm kiếm">
+                  <SearchIconButtonStyle type="submit">
+                    <SearchIcon />
+                  </SearchIconButtonStyle>
+                </Tooltip>
               </Grid>
             </Grid>
           </Form>

@@ -36,6 +36,7 @@ import { EditDialog } from '@/component/user/edit-dialog.component';
 import { EditMultiUserDialog } from '@/component/user/edit-multi-dialog.component';
 import { SearchIconButtonStyle } from '@/style object/user-page.style';
 import { FilterUserForm } from '@/model/user.model';
+import Tooltip from '@mui/material/Tooltip';
 
 import {
   CreateUserModel,
@@ -82,10 +83,10 @@ export default function UsersManagement() {
         name: filter.name,
         cccd: filter.cccd,
         active: filter.active,
-        sortBy: sortModel[0]?.field || filter.sortBy, 
+        sortBy: sortModel[0]?.field || filter.sortBy,
         sortDirection: sortModel[0]
-        ? sortModel[0].sort === 'desc' ? 'DESC' : 'ASC'
-        : filter.sortDirection, 
+          ? sortModel[0].sort === 'desc' ? 'DESC' : 'ASC'
+          : filter.sortDirection,
       },
       pagination.page + 1,
       pagination.pageSize
@@ -165,40 +166,46 @@ export default function UsersManagement() {
 
         <Grid size="auto">
           <Stack direction="row" spacing={1}>
-            <Button
-              variant="outlined"
-              color="success"
-              onClick={() => setCreateOpen(true)}
-            >
-              <AddCircleIcon />
-            </Button>
+            <Tooltip title="Tạo mới">
+              <Button
+                variant="outlined"
+                color="success"
+                onClick={() => setCreateOpen(true)}
+              >
+                <AddCircleIcon />
+              </Button>
+            </Tooltip>
 
-            <Button
-              variant="outlined"
-              color="error"
-              disabled={!selectedIds.length}
-              onClick={() => {
-                const selectedNames = data?.data
-                  ?.filter((user: UserDataModel) => selectedIds.includes(user.user_id))
-                  .map((user: UserDataModel) => user.fullname)
-                  .join(', ');
+            <Tooltip title="Xóa hàng loạt">
+              <Button
+                variant="outlined"
+                color="error"
+                disabled={!selectedIds.length}
+                onClick={() => {
+                  const selectedNames = data?.data
+                    ?.filter((user: UserDataModel) => selectedIds.includes(user.user_id))
+                    .map((user: UserDataModel) => user.fullname)
+                    .join(', ');
 
-                if (confirm(`Bạn có chắc chắn muốn xóa: ${selectedNames}?`)) {
-                  handleDeleteMultiple();
-                }
-              }}
-            >
-              <DeleteIcon />
-            </Button>
+                  if (confirm(`Bạn có chắc chắn muốn xóa: ${selectedNames}?`)) {
+                    handleDeleteMultiple();
+                  }
+                }}
+              >
+                <DeleteIcon />
+              </Button>
+            </Tooltip>
 
-            <Button
-              variant="outlined"
-              color="primary"
-              disabled={!selectedIds.length}
-              onClick={() => setMultiEditOpen(true)}
-            >
-              <EditIcon />
-            </Button>
+            <Tooltip title="Chỉnh sửa hàng loạt">
+              <Button
+                variant="outlined"
+                color="primary"
+                disabled={!selectedIds.length}
+                onClick={() => setMultiEditOpen(true)}
+              >
+                <EditIcon />
+              </Button>
+            </Tooltip>
 
           </Stack>
         </ Grid>
@@ -250,9 +257,11 @@ export default function UsersManagement() {
               </Grid>
 
               <Grid size={{ xs: 2, sm: 1 }}>
+                <Tooltip title="Tìm kiếm">  
                 <SearchIconButtonStyle type="submit">
                   <SearchIcon />
                 </SearchIconButtonStyle>
+                </Tooltip>
               </Grid>
             </Grid>
           </Form>
