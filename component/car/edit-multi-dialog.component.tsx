@@ -30,7 +30,7 @@ export const EditMultiCarDialog = memo(
     ({ open, selectedIds, onClose, onSave, }: EditMultiCarDialogProps) => {
 
         const methods = useForm<UpdateMultiCarModel>({
-            mode: "onTouched",
+            mode: "onChange",
             reValidateMode: "onChange",
             defaultValues: {},
         });

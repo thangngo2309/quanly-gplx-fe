@@ -29,7 +29,7 @@ export const CreateDialog = memo(
     ({ open, onClose, onSave }: CreateCarDialogProps) => {
 
         const methods = useForm<CreateCarModel>({
-            mode: 'onBlur',
+            mode: 'onChange',
             reValidateMode: 'onChange',
         });
 
