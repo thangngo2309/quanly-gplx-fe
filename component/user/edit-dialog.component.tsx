@@ -13,6 +13,7 @@ import {
   FormControlLabel,
   RadioGroup,
   Radio,
+  Typography,
 } from "@mui/material";
 
 import { RecruitmentType, RecruitmentTypeLabel, TeachingSubject, UserPedagogyLevel } from "@/enum/user.enum";
@@ -105,6 +106,7 @@ export const EditDialog = memo(
                       {...field}
                       value={field.value ?? ''}
                       fullWidth
+                      placeholder="VD: Nguyễn Văn An"
                       variant="outlined"
                       error={!!errors.fullname}
                       helperText={errors.fullname?.message}
@@ -151,6 +153,7 @@ export const EditDialog = memo(
                       {...field}
                       value={field.value ?? ''}
                       fullWidth
+                      placeholder="VD: 079123456789 (12 ký tự số)"
                       variant="outlined"
                       error={!!errors.citizen_id}
                       helperText={
@@ -174,6 +177,7 @@ export const EditDialog = memo(
                       {...field}
                       value={field.value ?? ''}
                       fullWidth
+                      placeholder="VD: Xóm A, Xã B, Tỉnh C"
                       variant="outlined"
                       error={!!errors.address}
                       helperText={errors.address?.message}
@@ -200,7 +204,7 @@ export const EditDialog = memo(
                 />
               </FormControl>
 
-              <FormControl fullWidth margin="dense">
+             <FormControl fullWidth margin="dense">
                 <FormLabel>Loại hợp đồng</FormLabel>
                 <Controller
                   name="recruitment_type"
@@ -212,6 +216,15 @@ export const EditDialog = memo(
                       select
                       fullWidth
                       variant="outlined"
+                      slotProps={{
+                        select: {
+                          displayEmpty: true,
+                          renderValue: (value: unknown) => {
+                            if (!value) return <Typography>Chọn</Typography>;
+                            return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                          },
+                        },
+                      }}
                     >
                       <MenuItem value="">-- Trống --</MenuItem>
                       {Object.values(RecruitmentType).map((r) => (
@@ -220,7 +233,7 @@ export const EditDialog = memo(
                     </TextField>
                   )}
                 />
-              </FormControl>
+              </FormControl> 
 
               <FormControl fullWidth margin="dense">
                 <FormLabel>Trình độ học vấn</FormLabel>
@@ -238,6 +251,7 @@ export const EditDialog = memo(
                       {...field}
                       value={field.value ?? ''}
                       fullWidth
+                      placeholder="VD: 12/12, 9/12"
                       variant="outlined"
                       error={!!errors.education_level}
                       helperText={errors.education_level?.message}
@@ -256,6 +270,7 @@ export const EditDialog = memo(
                       {...field}
                       value={field.value ?? ''}
                       fullWidth
+                      placeholder="VD: Đại học, Cao đẳng + Chuyên ngành"
                       variant="outlined"
                       error={!!errors.professional_level}
                       helperText={errors.professional_level?.message}
@@ -276,6 +291,15 @@ export const EditDialog = memo(
                       select
                       fullWidth
                       variant="outlined"
+                      slotProps={{
+                        select: {
+                          displayEmpty: true,
+                          renderValue: (value: unknown) => {
+                            if (!value) return <Typography>Chọn</Typography>;
+                            return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                          },
+                        },
+                      }}
                     >
                       <MenuItem value="">-- Trống --</MenuItem>
                       {Object.values(UserPedagogyLevel).map((l) => (
@@ -298,6 +322,15 @@ export const EditDialog = memo(
                       select
                       fullWidth
                       variant="outlined"
+                      slotProps={{
+                        select: {
+                          displayEmpty: true,
+                          renderValue: (value: unknown) => {
+                            if (!value) return <Typography>Chọn</Typography>;
+                            return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                          },
+                        },
+                      }}
                     >
                       <MenuItem value="">-- Trống --</MenuItem>
                       {Object.values(TeachingSubject).map((s) => (
@@ -325,6 +358,7 @@ export const EditDialog = memo(
                       {...field}
                       value={field.value ?? ''}
                       fullWidth
+                      placeholder="VD: 2017/387848"
                       variant="outlined"
                       error={!!errors.teacher_certificate_number}
                       helperText={errors.teacher_certificate_number?.message}
@@ -363,6 +397,7 @@ export const EditDialog = memo(
                       {...field}
                       value={field.value ?? ''}
                       fullWidth
+                      placeholder="VD: Sở Xây dựng Đà Nẵng"
                       variant="outlined"
                       error={!!errors.teacher_certificate_issue_place}
                       helperText={errors.teacher_certificate_issue_place?.message}
@@ -390,6 +425,7 @@ export const EditDialog = memo(
                       {...field}
                       value={field.value ?? ''}
                       fullWidth
+                      placeholder="VD: SK/19283"
                       variant="outlined"
                       error={!!errors.health_certificate_number}
                       helperText={errors.health_certificate_number?.message}
@@ -422,7 +458,9 @@ export const EditDialog = memo(
                     <TextField
                       {...field}
                       value={field.value ?? ''}
-                      fullWidth variant="outlined"
+                      fullWidth
+                      placeholder="VD: HD/183828"
+                      variant="outlined"
                       error={!!errors.contract_number}
                       helperText={errors.contract_number?.message}
                     />

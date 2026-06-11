@@ -40,6 +40,11 @@ export const DatePickerField = <T extends FieldValues>({
                         onChange={(newDate) => {
                             field.onChange(newDate ? newDate.format('YYYY-MM-DD') : null);
                         }}
+                        localeText={{
+                            fieldDayPlaceholder: () => '30',
+                            fieldMonthPlaceholder: () => '12',
+                            fieldYearPlaceholder: () => '2025',
+                        }}
                         slotProps={{
                             textField: {
                                 fullWidth: true,
