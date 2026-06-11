@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   FormLabel,
   Checkbox,
+  Typography,
 } from "@mui/material";
 
 import { memo, useEffect } from "react";
@@ -154,6 +155,15 @@ export const EditMultiUserDialog = memo(
                       select
                       fullWidth
                       variant="outlined"
+                      slotProps={{
+                        select: {
+                          displayEmpty: true,
+                          renderValue: (value: unknown) => {
+                            if (!value) return <Typography>Chọn</Typography>;
+                            return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                          },
+                        },
+                      }}
                     >
                       <MenuItem value="">-- Trống --</MenuItem>
                       {Object.values(
@@ -186,7 +196,7 @@ export const EditMultiUserDialog = memo(
                     <TextField
                       {...field}
                       value={field.value ?? ''}
-                      placeholder="Ví dụ: 12/12"
+                      placeholder="VD: 12/12, 9/12"
                       fullWidth
                       variant="outlined"
                       error={!!errors.education_level}
@@ -227,6 +237,15 @@ export const EditMultiUserDialog = memo(
                       select
                       fullWidth
                       variant="outlined"
+                      slotProps={{
+                        select: {
+                          displayEmpty: true,
+                          renderValue: (value: unknown) => {
+                            if (!value) return <Typography>Chọn</Typography>;
+                            return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                          },
+                        },
+                      }}
                     >
                       <MenuItem value="">-- Trống --</MenuItem>
                       {Object.values(UserPedagogyLevel).map((l) => (
@@ -250,6 +269,15 @@ export const EditMultiUserDialog = memo(
                       select
                       fullWidth
                       variant="outlined"
+                      slotProps={{
+                        select: {
+                          displayEmpty: true,
+                          renderValue: (value: unknown) => {
+                            if (!value) return <Typography>Chọn</Typography>;
+                            return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                          },
+                        },
+                      }}
                     >
                       <MenuItem value="">-- Trống --</MenuItem>
                       {Object.values(
@@ -291,7 +319,7 @@ export const EditMultiUserDialog = memo(
                     <TextField
                       {...field}
                       value={field.value ?? ''}
-                      placeholder="Ví dụ: Sở Giáo dục và Đào tạo TP.HCM"
+                      placeholder="VD: Sở Xây dựng Đà Nẵng"
                       fullWidth
                       variant="outlined"
                       error={!!errors.teacher_certificate_issue_place}

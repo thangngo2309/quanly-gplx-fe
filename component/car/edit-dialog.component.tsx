@@ -13,6 +13,7 @@ import {
     RadioGroup,
     Radio,
     MenuItem,
+    Typography,
 } from "@mui/material";
 
 import { memo, useEffect } from "react";
@@ -86,6 +87,7 @@ export const EditDialog = memo(
                                             value={field.value ?? ''}
                                             type="text"
                                             fullWidth
+                                            placeholder="VD: 51A-123.58 hoặc 51A-1234"
                                             variant="outlined"
                                             error={!!errors.registrationNumber}
                                             helperText={errors.registrationNumber?.message}
@@ -113,6 +115,7 @@ export const EditDialog = memo(
                                             }}
                                             type="text"
                                             fullWidth
+                                            placeholder="VD: Toyota, Honda"
                                             variant="outlined"
                                             error={!!errors.brand}
                                             helperText={errors.brand?.message}
@@ -138,6 +141,15 @@ export const EditDialog = memo(
                                             variant="outlined"
                                             error={!!errors.category}
                                             helperText={errors.category?.message}
+                                            slotProps={{
+                                                select: {
+                                                    displayEmpty: true,
+                                                    renderValue: (value: unknown) => {
+                                                        if (!value) return <Typography>Chọn</Typography>;
+                                                        return <>{value as string}</>;
+                                                    },
+                                                },
+                                            }}
                                         >
                                             {Object.values(CarCategory).map((category) => (
                                                 <MenuItem
@@ -170,6 +182,7 @@ export const EditDialog = memo(
                                             value={field.value ?? ''}
                                             type="number"
                                             fullWidth
+                                            placeholder="VD: 2020"
                                             variant="outlined"
                                             error={!!errors.manufacturingYear}
                                             helperText={errors.manufacturingYear?.message}
@@ -191,6 +204,7 @@ export const EditDialog = memo(
                                             {...field}
                                             value={field.value ?? ''}
                                             fullWidth
+                                            placeholder="VD: Nguyễn Văn An"
                                             variant="outlined"
                                             error={!!errors.owner}
                                             helperText={errors.owner?.message}
@@ -236,6 +250,7 @@ export const EditDialog = memo(
                                                 field.onChange(formatted);
                                             }}
                                             fullWidth
+                                            placeholder="VD: GP-123456"
                                             variant="outlined"
                                             error={!!errors.practiceVehicleLicenseNumber}
                                             helperText={errors.practiceVehicleLicenseNumber?.message}
@@ -336,6 +351,7 @@ export const EditDialog = memo(
                                             {...field}
                                             value={field.value ?? ''}
                                             fullWidth
+                                            placeholder="Nhập 15 chữ số (VD: 123123123123456)"
                                             variant="outlined"
                                             error={!!errors.imeiDat}
                                             helperText={errors.imeiDat?.message}
@@ -361,6 +377,7 @@ export const EditDialog = memo(
                                                 field.onChange(formatted);
                                             }}
                                             fullWidth
+                                            placeholder="VD: 18-DG-28"
                                             variant="outlined"
                                             error={!!errors.serialNumber}
                                             helperText={errors.serialNumber?.message}

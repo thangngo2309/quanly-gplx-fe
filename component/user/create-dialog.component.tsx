@@ -12,6 +12,7 @@ import {
     MenuItem,
     InputAdornment,
     IconButton,
+    Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { RecruitmentType, RecruitmentTypeLabel, TeachingSubject, UserPedagogyLevel, UserRole } from "@/enum/user.enum";
@@ -34,7 +35,7 @@ export const CreateDialog = memo(
             mode: 'onChange',
             reValidateMode: 'onChange',
             defaultValues: {
-                role: UserRole.USER,
+                role: UserRole.USER
             },
         });
 
@@ -145,6 +146,7 @@ export const CreateDialog = memo(
                                             value={field.value ?? ''}
                                             type={showPassword ? 'text' : 'password'}
                                             fullWidth
+                                            placeholder="********"
                                             variant="outlined"
                                             error={!!errors.password}
                                             helperText={errors.password?.message}
@@ -182,6 +184,7 @@ export const CreateDialog = memo(
                                             value={field.value ?? ''}
                                             type={showConfirmPassword ? "text" : "password"}
                                             fullWidth
+                                            placeholder="********"
                                             variant="outlined"
                                             error={!!errors.confirmPassword}
                                             helperText={errors.confirmPassword?.message}
@@ -265,7 +268,7 @@ export const CreateDialog = memo(
                                             {...field}
                                             value={field.value ?? ''}
                                             fullWidth
-                                            placeholder="Ví dụ: 123456789012"
+                                            placeholder="VD: 079123456789 (12 ký tự số)"
                                             variant="outlined"
                                             error={!!errors.citizen_id}
                                             helperText={
@@ -338,6 +341,15 @@ export const CreateDialog = memo(
                                             select
                                             fullWidth
                                             variant="outlined"
+                                            slotProps={{
+                                                select: {
+                                                    displayEmpty: true,
+                                                    renderValue: (value: unknown) => {
+                                                        if (!value) return <Typography>Chọn</Typography>;
+                                                        return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                                                    },
+                                                },
+                                            }}
                                         >
                                             <MenuItem value="">-- Trống --</MenuItem>
                                             {Object.values(
@@ -370,7 +382,7 @@ export const CreateDialog = memo(
                                         <TextField
                                             {...field}
                                             value={field.value ?? ''}
-                                            placeholder="Ví dụ: 12/12"
+                                            placeholder="VD: 12/12, 9/12"
                                             fullWidth
                                             variant="outlined"
                                             error={!!errors.education_level}
@@ -413,6 +425,15 @@ export const CreateDialog = memo(
                                             fullWidth
                                             variant="outlined"
                                             select
+                                            slotProps={{
+                                                select: {
+                                                    displayEmpty: true,
+                                                    renderValue: (value: unknown) => {
+                                                        if (!value) return <Typography>Chọn</Typography>;
+                                                        return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                                                    },
+                                                },
+                                            }}
                                         >
                                             <MenuItem value="">-- Trống --</MenuItem>
                                             {Object.values(UserPedagogyLevel).map((level) => (
@@ -437,6 +458,15 @@ export const CreateDialog = memo(
                                             select
                                             fullWidth
                                             variant="outlined"
+                                            slotProps={{
+                                                select: {
+                                                    displayEmpty: true,
+                                                    renderValue: (value: unknown) => {
+                                                        if (!value) return <Typography>Chọn</Typography>;
+                                                        return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                                                    },
+                                                },
+                                            }}
                                         >
                                             <MenuItem value="">-- Trống --</MenuItem>
                                             {Object.values(
@@ -470,7 +500,7 @@ export const CreateDialog = memo(
                                         <TextField
                                             {...field}
                                             value={field.value ?? ''}
-                                            placeholder="Ví dụ: SP12345678"
+                                            placeholder="VD: 2017/387848"
                                             fullWidth
                                             variant="outlined"
                                             error={!!errors.teacher_certificate_number}
@@ -510,7 +540,7 @@ export const CreateDialog = memo(
                                             {...field}
                                             value={field.value ?? ''}
                                             fullWidth
-                                            placeholder="Ví dụ: Sở Giáo dục và Đào tạo TP.HCM"
+                                            placeholder="VD: Sở Xây dựng Đà Nẵng"
                                             variant="outlined"
                                             error={!!errors.teacher_certificate_issue_place}
                                             helperText={errors.teacher_certificate_issue_place?.message}
@@ -537,7 +567,7 @@ export const CreateDialog = memo(
                                         <TextField
                                             {...field}
                                             value={field.value ?? ''}
-                                            placeholder="Ví dụ: CCSK12345678"
+                                            placeholder="VD: SK/19283"
                                             fullWidth
                                             variant="outlined"
                                             error={!!errors.health_certificate_number}
@@ -573,7 +603,7 @@ export const CreateDialog = memo(
                                         <TextField
                                             {...field}
                                             value={field.value ?? ''}
-                                            placeholder="Ví dụ: HD12345678"
+                                            placeholder="Ví dụ: HD/183828"
                                             fullWidth
                                             variant="outlined"
                                             error={!!errors.contract_number}

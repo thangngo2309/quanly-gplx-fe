@@ -13,6 +13,7 @@ import {
     Radio,
     FormControlLabel,
     MenuItem,
+    Typography,
 } from "@mui/material";
 
 import { memo, useEffect } from "react";
@@ -82,6 +83,7 @@ export const EditMultiCarDialog = memo(
                                             }}
                                             type="text"
                                             fullWidth
+                                            placeholder="VD: Toyota, Honda"
                                             variant="outlined"
                                             error={!!errors.brand}
                                             helperText={errors.brand?.message}
@@ -104,6 +106,15 @@ export const EditMultiCarDialog = memo(
                                             variant="outlined"
                                             error={!!errors.category}
                                             helperText={errors.category?.message}
+                                            slotProps={{
+                                                select: {
+                                                    displayEmpty: true,
+                                                    renderValue: (value: unknown) => {
+                                                        if (!value) return <Typography>Chọn</Typography>;
+                                                        return <>{value as string}</>;
+                                                    },
+                                                },
+                                            }}
                                         >
                                             {Object.values(CarCategory).map((category) => (
                                                 <MenuItem
@@ -135,6 +146,7 @@ export const EditMultiCarDialog = memo(
                                             value={field.value ?? ''}
                                             type="number"
                                             fullWidth
+                                            placeholder="VD: 2020"
                                             variant="outlined"
                                             error={!!errors.manufacturingYear}
                                             helperText={errors.manufacturingYear?.message}
@@ -155,6 +167,7 @@ export const EditMultiCarDialog = memo(
                                             {...field}
                                             value={field.value ?? ''}
                                             fullWidth
+                                            placeholder="VD: Nguyễn Văn An"
                                             variant="outlined"
                                             error={!!errors.owner}
                                             helperText={errors.owner?.message}

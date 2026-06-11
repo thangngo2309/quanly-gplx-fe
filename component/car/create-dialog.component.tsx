@@ -13,6 +13,7 @@ import {
     Radio,
     FormControlLabel,
     MenuItem,
+    Typography,
 } from "@mui/material";
 
 import { memo, useEffect } from "react";
@@ -103,7 +104,7 @@ export const CreateDialog = memo(
                                             }}
                                             type="text"
                                             fullWidth
-                                            placeholder="VD: Toyota, Honda..."
+                                            placeholder="VD: Toyota, Honda"
                                             variant="outlined"
                                             error={!!errors.brand}
                                             helperText={errors.brand?.message}
@@ -118,7 +119,7 @@ export const CreateDialog = memo(
                                     name="category"
                                     control={methods.control}
                                     rules={{
-                                        required: 'Vui lòng chọn hạng xe'
+                                        required: 'Hạng xe là bắt buộc',
                                     }}
                                     render={({ field }) => (
                                         <TextField
@@ -129,6 +130,15 @@ export const CreateDialog = memo(
                                             variant="outlined"
                                             error={!!errors.category}
                                             helperText={errors.category?.message}
+                                            slotProps={{
+                                                select: {
+                                                    displayEmpty: true,
+                                                    renderValue: (value: unknown) => {
+                                                        if (!value) return <Typography>Chọn</Typography>;
+                                                        return <>{value as string}</>;
+                                                    },
+                                                },
+                                            }}
                                         >
                                             {Object.values(CarCategory).map((category) => (
                                                 <MenuItem
@@ -229,7 +239,7 @@ export const CreateDialog = memo(
                                                 field.onChange(formatted);
                                             }}
                                             fullWidth
-                                            placeholder="VD: ABC/12345"
+                                            placeholder="VD: GP-123456"
                                             variant="outlined"
                                             error={!!errors.practiceVehicleLicenseNumber}
                                             helperText={errors.practiceVehicleLicenseNumber?.message}
@@ -331,7 +341,7 @@ export const CreateDialog = memo(
                                             value={field.value ?? ''}
                                             fullWidth
                                             variant="outlined"
-                                            placeholder="VD: 123456789012345"
+                                            placeholder="Nhập 15 chữ số (VD: 123123123123456)"
                                             error={!!errors.imeiDat}
                                             helperText={errors.imeiDat?.message}
                                         />
@@ -356,7 +366,7 @@ export const CreateDialog = memo(
                                             }}
                                             fullWidth
                                             variant="outlined"
-                                            placeholder="VD: ABC-12345"
+                                            placeholder="VD: 18-DG-28"
                                             error={!!errors.serialNumber}
                                             helperText={errors.serialNumber?.message}
                                         />
