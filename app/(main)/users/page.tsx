@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box';
 
-import { DataGrid, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
+import { GridSortModel } from '@mui/x-data-grid';
 
 import {
   Button,
@@ -47,7 +47,7 @@ import {
 import { toast } from 'react-toastify';
 import { Form } from '@/component/form.component';
 import { Controller, useForm } from 'react-hook-form';
-import { DataGridStyle } from '@/style object/data-grid.style';
+import { CommonDataTable } from '@/component/data-grid/common-data-table.component';
 
 export default function UsersManagement() {
 
@@ -257,10 +257,10 @@ export default function UsersManagement() {
               </Grid>
 
               <Grid size={{ xs: 2, sm: 1 }}>
-                <Tooltip title="Tìm kiếm">  
-                <SearchIconButtonStyle type="submit">
-                  <SearchIcon />
-                </SearchIconButtonStyle>
+                <Tooltip title="Tìm kiếm">
+                  <SearchIconButtonStyle type="submit">
+                    <SearchIcon />
+                  </SearchIconButtonStyle>
                 </Tooltip>
               </Grid>
             </Grid>
@@ -268,33 +268,17 @@ export default function UsersManagement() {
         </Grid>
       </Stack>
 
-      <DataGridStyle>
-        <DataGrid
-          checkboxSelection
-          disableRowSelectionOnClick
-          columns={columns}
-          rows={data?.data || []}
-          rowCount={data?.meta?.itemCount || 0}
-          pagination
-          onPaginationModelChange={setPagination}
-          paginationMode="server"
-          pageSizeOptions={[10, 25, 50]}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 10 },
-            },
-          }}
-          sortingMode="server"
-          onSortModelChange={(model) => setSortModel(model)}
-          getRowId={(row) => row.user_id}
-          onRowSelectionModelChange={(model: GridRowSelectionModel) => {
-            setSelectedIds(Array.from(model.ids) as number[]);
-            if (model.type === 'exclude') {
-              setSelectedIds(data?.data?.map((row: UserDataModel) => row.user_id) || []);
-            }
-          }}
-        />
-      </DataGridStyle>
+      <CommonDataTable<UserDataModel>
+        columns={columns}
+        rows={data?.data || []}
+        rowCount={data?.meta?.itemCount || 0}
+        paginationModel={pagination}
+        onPaginationModelChange={setPagination}
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
+        getRowId={(row) => row.user_id}
+        onSelectedIdsChange={setSelectedIds}
+      />
 
       <CreateDialog
         open={createOpen}

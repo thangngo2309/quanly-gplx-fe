@@ -2,11 +2,7 @@
 
 import Box from '@mui/material/Box';
 
-import {
-  DataGrid,
-  GridRowSelectionModel,
-  GridSortModel,
-} from '@mui/x-data-grid';
+import { GridSortModel } from '@mui/x-data-grid';
 
 import {
   Button,
@@ -39,7 +35,6 @@ import { EditDialog } from '@/component/car/edit-dialog.component';
 import { EditMultiCarDialog } from '@/component/car/edit-multi-dialog.component';
 import { SearchIconButtonStyle } from '@/style object/user-page.style';
 import { CarModel, FilterCarForm } from '@/model/car.model';
-import { DataGridStyle } from '@/style object/data-grid.style';
 
 import {
   CreateCarModel,
@@ -52,6 +47,7 @@ import { Form } from '@/component/form.component';
 import { Controller, useForm } from 'react-hook-form';
 import { Grid } from '@mui/system';
 import Tooltip from '@mui/material/Tooltip';
+import { CommonDataTable } from '@/component/data-grid/common-data-table.component';
 
 export default function CarsManagement() {
 
@@ -269,34 +265,17 @@ export default function CarsManagement() {
 
       </Stack>
 
-      <DataGridStyle>
-        <DataGrid
-          columnBufferPx={100}
-          checkboxSelection
-          disableRowSelectionOnClick
-          columns={columns}
-          rows={data?.data || []}
-          rowCount={data?.meta?.itemCount || 0}
-          pagination
-          onPaginationModelChange={setPagination}
-          paginationMode="server"
-          pageSizeOptions={[10, 25, 50]}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 10 },
-            },
-          }}
-          sortingMode="server"
-          onSortModelChange={(model) => setSortModel(model)}
-          getRowId={(row) => row.car_id}
-          onRowSelectionModelChange={(model: GridRowSelectionModel) => {
-            setSelectedIds(Array.from(model.ids) as number[]);
-            if (model.type === 'exclude') {
-              setSelectedIds(data?.data?.map((row: CarDataModel) => row.car_id) || []);
-            }
-          }}
-        />
-      </DataGridStyle>
+      <CommonDataTable<CarDataModel>
+        columns={columns}
+        rows={data?.data || []}
+        rowCount={data?.meta?.itemCount || 0}
+        paginationModel={pagination}
+        onPaginationModelChange={setPagination}
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
+        getRowId={(row) => row.car_id}
+        onSelectedIdsChange={setSelectedIds}
+      />
 
       <CreateDialog
         open={createOpen}
