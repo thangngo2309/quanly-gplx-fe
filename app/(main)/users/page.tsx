@@ -9,6 +9,8 @@ import {
   Grid,
   MenuItem,
   Stack,
+  Tab,
+  Tabs,
   TextField,
   Typography,
 } from '@mui/material';
@@ -27,7 +29,7 @@ import {
   UpdateMultipleUser,
 } from '@/api/user';
 
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, SyntheticEvent } from 'react';
 
 import { USER_COLUMNS } from '@/constants/user-columns';
 import { ActionColumn } from '@/component/data-grid/action-column';
@@ -48,6 +50,8 @@ import { toast } from 'react-toastify';
 import { Form } from '@/component/form.component';
 import { Controller, useForm } from 'react-hook-form';
 import { CommonDataTable } from '@/component/data-grid/common-data-table.component';
+import { UserRole } from '@/enum/user.enum';
+import { FIELDS_BY_ROLE } from '@/constants/user-tabs-config';
 
 export default function UsersManagement() {
 
@@ -62,10 +66,12 @@ export default function UsersManagement() {
   const [filter, setFilter] = useState<FilterUserForm>({
     name: '',
     cccd: '',
+    role: UserRole.ADMIN,
     active: undefined,
     sortBy: 'user_id',
     sortDirection: 'DESC',
   });
+  const [activeTab, setActiveTab] = useState<UserRole>(UserRole.ADMIN);
 
   useEffect(() => {
     fetchData();
@@ -73,7 +79,7 @@ export default function UsersManagement() {
 
   useEffect(() => {
     fetchData();
-  }, [pagination, filter, sortModel])
+  }, [pagination, filter, sortModel, activeTab])
 
   const methods = useForm<FilterUserForm>();
 
@@ -82,6 +88,7 @@ export default function UsersManagement() {
       {
         name: filter.name,
         cccd: filter.cccd,
+        role: activeTab,
         active: filter.active,
         sortBy: sortModel[0]?.field || filter.sortBy,
         sortDirection: sortModel[0]
@@ -134,9 +141,18 @@ export default function UsersManagement() {
     toast.success('Xóa người dùng thành công');
   };
 
+  const handleTabChange = (_: SyntheticEvent, newValue: UserRole) => {
+    setActiveTab(newValue);
+    setSelectedIds([]);
+    setPagination(prev => ({ ...prev, page: 0 }));
+  };
+
   const columns = useMemo(() => {
+    const allowedFields = FIELDS_BY_ROLE[activeTab] ?? [];
+    const filteredColumns = USER_COLUMNS.filter(col => allowedFields.includes(col.field));
+
     return [
-      ...USER_COLUMNS,
+      ...filteredColumns,
       ActionColumn<UserDataModel>({
         onEdit: (row) => {
           setSelectedUser(row);
@@ -147,8 +163,7 @@ export default function UsersManagement() {
         getDeleteLabel: (row) => row.fullname,
       }),
     ];
-  }, []);
-
+  }, [activeTab]);
 
   return (
     <Box>
@@ -268,6 +283,12 @@ export default function UsersManagement() {
         </Grid>
       </Stack>
 
+      <Tabs value={activeTab} onChange={handleTabChange}>
+        <Tab label="Quản trị viên" value={UserRole.ADMIN} />
+        <Tab label="Giáo viên" value={UserRole.TEACHER} />
+        <Tab label="Người dùng" value={UserRole.USER} />
+      </Tabs>
+
       <CommonDataTable<UserDataModel>
         columns={columns}
         rows={data?.data || []}
@@ -282,7 +303,7 @@ export default function UsersManagement() {
 
       <CreateDialog
         open={createOpen}
-        selectedIds={[]}
+        role={activeTab}
         onClose={() => setCreateOpen(false)}
         onSave={handleCreate}
       />
@@ -291,6 +312,7 @@ export default function UsersManagement() {
         <EditDialog
           open={editOpen}
           selectedId={selectedUser?.user_id || 0}
+          role={activeTab}
           onClose={() => setEditOpen(false)}
           onSave={handleEdit}
           data={selectedUser}
@@ -300,6 +322,7 @@ export default function UsersManagement() {
       <EditMultiUserDialog
         open={multiEditOpen}
         selectedIds={selectedIds}
+        role={activeTab}
         onClose={() => setMultiEditOpen(false)}
         onSave={handleMultiEdit}
       />
