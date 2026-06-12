@@ -11,7 +11,8 @@ export const USER_COLUMNS: GridColDef[] = [
   {
     field: 'fullname',
     headerName: 'Họ và tên',
-    width: 220,
+    minWidth: 150,
+    flex: 1,
   },
   {
     field: 'date_of_birth',
@@ -27,7 +28,8 @@ export const USER_COLUMNS: GridColDef[] = [
   {
     field: 'address',
     headerName: 'Địa chỉ',
-    width: 250,
+    minWidth: 120,
+    flex: 1,
   },
   {
     field: 'role',
