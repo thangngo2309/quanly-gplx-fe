@@ -46,3 +46,18 @@ export async function deleteMultipleCar(car_ids: number[]) {
     const response = await api.post('/car/delete-multiple', { car_ids });
     return response.data;
 }
+
+export async function uniqueRegistrationNumber(registrationNumber: string, id?: number) {
+    const response = await api.post('/car/unique-registration-number', { registrationNumber, id });
+    return response.data;
+}
+
+export async function uniqueImeiDat(imeiDat: string, id?: number) {
+    const response = await api.post('/car/unique-imei-dat', { imeiDat, id });
+    return response.data;
+}
+
+export async function uniqueSerialNumber(serialNumber: string, id?: number) {
+    const response = await api.post('/car/unique-serial-number', { serialNumber, id });
+    return response.data;
+}
