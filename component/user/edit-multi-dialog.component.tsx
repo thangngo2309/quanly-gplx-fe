@@ -245,7 +245,7 @@ export const EditMultiUserDialog = memo(
                               displayEmpty: true,
                               renderValue: (value: unknown) => {
                                 if (!value) return <Typography>Chọn</Typography>;
-                                return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                                return <>{value as string}</>;
                               },
                             },
                           }}
@@ -277,7 +277,7 @@ export const EditMultiUserDialog = memo(
                               displayEmpty: true,
                               renderValue: (value: unknown) => {
                                 if (!value) return <Typography>Chọn</Typography>;
-                                return <>{RecruitmentTypeLabel[value as RecruitmentType]}</>;
+                                return <>{value as string}</>;
                               },
                             },
                           }}
