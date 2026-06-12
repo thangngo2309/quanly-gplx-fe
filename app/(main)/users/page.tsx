@@ -102,7 +102,10 @@ export default function UsersManagement() {
   };
 
   const onSubmit = (formData: FilterUserForm) => {
-    setFilter(formData);
+    setFilter(prev => ({
+      ...prev,
+      ...formData,
+    }));
     setPagination(prev => ({ ...prev, page: 0 }));
   };
 
