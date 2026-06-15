@@ -7,7 +7,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 export const menuItems = [
-  { label: 'Dashboard', icon: HomeIcon, path: '/' },
+  { label: 'Tổng quan', icon: HomeIcon, path: '/' },
   { label: 'Quản lý người dùng', icon: GroupIcon, path: '/users' },
   { label: 'Quản lý xe tập lái', icon: DirectionsCarIcon, path: '/car' },
 ];
