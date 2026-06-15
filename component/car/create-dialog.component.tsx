@@ -201,12 +201,12 @@ export const CreateDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel required>Chủ sở hữu</FormLabel>
+                                <FormLabel required>Chủ sở hữu/hợp đồng</FormLabel>
                                 <Controller
                                     name="owner"
                                     control={methods.control}
                                     rules={{
-                                        required: 'Vui lòng nhập chủ sở hữu xe'
+                                        required: 'Vui lòng nhập Chủ sở hữu/hợp đồng'
                                     }}
                                     render={({ field }) => (
                                         <TextField
@@ -223,12 +223,12 @@ export const CreateDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel required>Phanh kép</FormLabel>
+                                <FormLabel required>Phanh phụ</FormLabel>
                                 <Controller
                                     name="hasDualBrake"
                                     control={methods.control}
                                     rules={{
-                                        required: 'Vui lòng chọn phanh kép',
+                                        required: 'Vui lòng chọn phanh phụ',
                                     }}
                                     render={({ field }) => (
                                         <RadioGroup

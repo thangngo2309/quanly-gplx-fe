@@ -212,7 +212,7 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel required>Chủ sở hữu</FormLabel>
+                                <FormLabel required>Chủ sở hữu/hợp đồng</FormLabel>
                                 <Controller
                                     name="owner"
                                     control={methods.control}
@@ -234,12 +234,12 @@ export const EditDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel required>Phanh kép</FormLabel>
+                                <FormLabel required>Phanh phụ</FormLabel>
                                 <Controller
                                     name="hasDualBrake"
                                     control={methods.control}
                                     rules={{
-                                        required: 'Phanh kép là bắt buộc',
+                                        required: 'Phanh phụ là bắt buộc',
                                     }}
                                     render={({ field }) => (
                                         <RadioGroup

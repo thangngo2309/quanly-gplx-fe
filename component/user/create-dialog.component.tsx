@@ -463,7 +463,7 @@ export const CreateDialog = memo(
                                     </FormControl>
 
                                     <FormControl fullWidth margin="dense">
-                                        <FormLabel>Số chứng chỉ giáo viên</FormLabel>
+                                        <FormLabel>Số chứng nhận giáo viên</FormLabel>
                                         <Controller
                                             name="teacher_certificate_number"
                                             control={methods.control}
@@ -491,7 +491,7 @@ export const CreateDialog = memo(
                                     <DatePickerField
                                         name="teacher_certificate_issue_date"
                                         control={methods.control}
-                                        label="Ngày cấp chứng chỉ giáo viên"
+                                        label="Ngày cấp chứng nhận giáo viên"
                                         error={!!errors.teacher_certificate_issue_date}
                                         helperText={errors.teacher_certificate_issue_date?.message}
                                         rules={{
@@ -508,7 +508,7 @@ export const CreateDialog = memo(
 
                                     <FormControl fullWidth margin="dense">
                                         <FormLabel>
-                                            Nơi cấp chứng chỉ
+                                            Nơi cấp chứng nhận giáo viên
                                         </FormLabel>
                                         <Controller
                                             name="teacher_certificate_issue_place"
@@ -529,7 +529,7 @@ export const CreateDialog = memo(
 
                                     <FormControl fullWidth margin="dense">
                                         <FormLabel>
-                                            Số chứng chỉ sức khỏe
+                                            Số giấy khám sức khỏe
                                         </FormLabel>
                                         <Controller
                                             name="health_certificate_number"
@@ -558,7 +558,7 @@ export const CreateDialog = memo(
                                     <DatePickerField
                                         name="health_certificate_expiry_date"
                                         control={methods.control}
-                                        label="Ngày hết hạn chứng chỉ sức khỏe"
+                                        label="Ngày hết hạn giấy khám sức khỏe"
                                         error={!!errors.health_certificate_expiry_date}
                                         helperText={errors.health_certificate_expiry_date?.message}
                                     />

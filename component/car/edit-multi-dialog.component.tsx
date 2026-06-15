@@ -156,7 +156,7 @@ export const EditMultiCarDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Chủ sở hữu</FormLabel>
+                                <FormLabel>Chủ sở hữu/hợp đồng</FormLabel>
                                 <Controller
                                     name="owner"
                                     control={methods.control}
@@ -177,7 +177,7 @@ export const EditMultiCarDialog = memo(
                             </FormControl>
 
                             <FormControl fullWidth margin="dense">
-                                <FormLabel>Phanh kép</FormLabel>
+                                <FormLabel>Phanh phụ</FormLabel>
                                 <Controller
                                     name="hasDualBrake"
                                     control={methods.control}

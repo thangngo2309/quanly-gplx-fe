@@ -296,7 +296,7 @@ export const EditMultiUserDialog = memo(
                   <DatePickerField
                     name="teacher_certificate_issue_date"
                     control={methods.control}
-                    label="Ngày cấp chứng chỉ sư phạm"
+                    label="Ngày cấp chứng nhận giáo viên"
                     error={!!errors.teacher_certificate_issue_date}
                     helperText={errors.teacher_certificate_issue_date?.message}
                     rules={{
@@ -313,7 +313,7 @@ export const EditMultiUserDialog = memo(
 
                   <FormControl fullWidth margin="dense">
                     <FormLabel>
-                      Nơi cấp chứng chỉ
+                      Nơi cấp chứng nhận giáo viên
                     </FormLabel>
                     <Controller
                       name="teacher_certificate_issue_place"
@@ -335,7 +335,7 @@ export const EditMultiUserDialog = memo(
                   <DatePickerField
                     name="health_certificate_expiry_date"
                     control={methods.control}
-                    label="Ngày hết hạn chứng chỉ sức khỏe"
+                    label="Ngày hết hạn giấy khám sức khỏe"
                     error={!!errors.health_certificate_expiry_date}
                     helperText={errors.health_certificate_expiry_date?.message}
                   />
