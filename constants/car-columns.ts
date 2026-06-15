@@ -34,13 +34,13 @@ export const CAR_COLUMNS: GridColDef[] = [
   },
   {
     field: 'owner',
-    headerName: 'Chủ sở hữu',
+    headerName: 'Chủ sở hữu/hợp đồng',
     width: 170,
     sortable: false,
   },
   {
     field: 'hasDualBrake',
-    headerName: 'Phanh kép',
+    headerName: 'Phanh phụ',
     width: 120,
     type: 'boolean',
     sortable: false,

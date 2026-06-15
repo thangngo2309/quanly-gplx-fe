@@ -64,18 +64,18 @@ export const USER_COLUMNS: GridColDef[] = [
   },
   {
     field: 'teacher_certificate_number',
-    headerName: 'Số chứng chỉ GV',
+    headerName: 'Số chứng nhận giáo viên',
     width: 200,
   },
   {
     field: 'teacher_certificate_issue_date',
-    headerName: 'Ngày cấp CC GV',
+    headerName: 'Ngày cấp chứng nhận giáo viên',
     width: 170,
     renderCell: (params) => formatDateTime(params.value),
   },
   {
     field: 'teacher_certificate_issue_place',
-    headerName: 'Nơi cấp CC GV',
+    headerName: 'Nơi cấp chứng nhận giáo viên',
     width: 200,
   },
   {
@@ -85,7 +85,7 @@ export const USER_COLUMNS: GridColDef[] = [
   },
   {
     field: 'health_certificate_expiry_date',
-    headerName: 'Hạn giấy khám SK',
+    headerName: 'Ngày hết hạn giấy khám sức khỏe',
     width: 180,
     renderCell: (params) => formatDateTime(params.value),
   },
