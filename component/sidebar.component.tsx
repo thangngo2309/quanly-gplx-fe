@@ -14,6 +14,7 @@ import { Drawer, DrawerHeader, BoxContainer, BottomListWrapper, DrawerIconButton
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { clearAuthTokens } from '@/utils/localstorage';
+import Tooltip from '@mui/material/Tooltip';
 
 export default function Sidebar() {
   const theme = useTheme();
@@ -45,7 +46,9 @@ export default function Sidebar() {
             onClick={handleDrawerOpen}
             edge="start"
           >
-            <MenuIcon />
+            <Tooltip title="Danh mục" placement="right" arrow>
+              <MenuIcon />
+            </Tooltip>
           </DrawerIconButton>)}
 
         {open && (
@@ -69,20 +72,27 @@ export default function Sidebar() {
         <List>
           {menuItems.map(({ label, icon: Icon, path }) => (
             <ListItemm key={label} disablePadding>
-              <NavLink href={path}>
-                <ItemButton
-                  open={open}
-                  selected={path === '/' ? pathname === '/' : pathname.includes(path)}
-                >
-                  <ItemIcon open={open}>
-                    <Icon />
-                  </ItemIcon>
-                  <ItemText
-                    primary={label}
+              <Tooltip
+                title={label}
+                placement="right"
+                disableHoverListener={open}
+                arrow
+              >
+                <NavLink href={path}>
+                  <ItemButton
                     open={open}
-                  />
-                </ItemButton>
-              </NavLink>
+                    selected={path === '/' ? pathname === '/' : pathname.includes(path)}
+                  >
+                    <ItemIcon open={open}>
+                      <Icon />
+                    </ItemIcon>
+                    <ItemText
+                      primary={label}
+                      open={open}
+                    />
+                  </ItemButton>
+                </NavLink>
+              </Tooltip>
             </ListItemm>
           ))}
         </List>
@@ -91,24 +101,31 @@ export default function Sidebar() {
           <List>
             {bottomMenuItems.map(({ label, icon: Icon, path, danger }) => (
               <ListItemm key={label} disablePadding>
-                {danger ? (
-                  <ItemButtonDanger open={open} onClick={handleLogout}>
-                    <ItemIcon open={open}><Icon /></ItemIcon>
-                    <ItemText primary={label} open={open} />
-                  </ItemButtonDanger>
-                ) : (
-                  <NavLink href={path}>
-                    <ItemButton
-                      open={open}
-                      selected={path === '/' ? pathname === '/' : pathname.includes(path)}
-                    >
-                      <ItemIcon open={open}>
-                        <Icon />
-                      </ItemIcon>
+                <Tooltip
+                  title={label}
+                  placement="right"
+                  disableHoverListener={open}
+                  arrow
+                >
+                  {danger ? (
+                    <ItemButtonDanger open={open} onClick={handleLogout}>
+                      <ItemIcon open={open}><Icon /></ItemIcon>
                       <ItemText primary={label} open={open} />
-                    </ItemButton>
-                  </NavLink>
-                )}
+                    </ItemButtonDanger>
+                  ) : (
+                    <NavLink href={path}>
+                      <ItemButton
+                        open={open}
+                        selected={path === '/' ? pathname === '/' : pathname.includes(path)}
+                      >
+                        <ItemIcon open={open}>
+                          <Icon />
+                        </ItemIcon>
+                        <ItemText primary={label} open={open} />
+                      </ItemButton>
+                    </NavLink>
+                  )}
+                </Tooltip>
               </ListItemm>
             ))}
           </List>
