@@ -25,6 +25,7 @@ import { autoTrimUppercaseRemoveSpecialChars, autoTrim } from "@/utils/format-in
 import { CarCategory } from "@/enum/car.enum";
 import dayjs from "dayjs";
 import { DatePickerField } from "../date-picker.component";
+import { debounceUniqueImeiDat, debounceUniqueRegistrationNumber, debounceUniqueSerialNumber } from "@/utils/debounced-car";
 
 export const CreateDialog = memo(
     ({ open, onClose, onSave }: CreateCarDialogProps) => {
@@ -39,6 +40,24 @@ export const CreateDialog = memo(
         useEffect(() => { if (open) { methods.reset(); } }, [open]);
         const onSubmit: SubmitHandler<CreateCarModel> = async (data) => {
             onSave(data);
+        };
+
+        const checkRegistrationNumber = async (value: string) => {
+            if (!value) return true;
+            const res = await debounceUniqueRegistrationNumber(value);
+            return res || 'Biển số xe đã tồn tại';
+        };
+
+        const checkImeiDat = async (value: string) => {
+            if (!value) return true;
+            const res = await debounceUniqueImeiDat(value);
+            return res || 'Số IMEI DAT đã tồn tại';
+        };
+
+        const checkSerialNumber = async (value: string) => {
+            if (!value) return true;
+            const res = await debounceUniqueSerialNumber(value);
+            return res || 'Số seri đã tồn tại';
         };
 
         return (
@@ -69,6 +88,7 @@ export const CreateDialog = memo(
                                             value: /^([0-9]{2})[A-Z]-[0-9]{3}\.[0-9]{2}$|^([0-9]{2})[A-Z]-[0-9]{4}$/,
                                             message: 'Biển số xe không đúng định dạng (VD: 51A-123.58 hoặc 51A-1234)',
                                         },
+                                        validate: checkRegistrationNumber,
                                     }}
                                     render={({ field }) => (
                                         <TextField
@@ -334,6 +354,7 @@ export const CreateDialog = memo(
                                             value: /^[0-9]{15}$/,
                                             message: 'Số IMEI phải có đúng 15 chữ số',
                                         },
+                                        validate: checkImeiDat,
                                     }}
                                     render={({ field }) => (
                                         <TextField
@@ -356,6 +377,7 @@ export const CreateDialog = memo(
                                     control={methods.control}
                                     rules={{
                                         required: 'Vui lòng nhập số seri',
+                                        validate: checkSerialNumber,
                                     }}
                                     render={({ field }) => (
                                         <TextField
