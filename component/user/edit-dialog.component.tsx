@@ -30,6 +30,7 @@ import dayjs from "dayjs";
 import { debouncedUniqueCitizenId, debouncedUniqueTeacherCert, debouncedUniqueHealthCert, debouncedUniqueContract } from "@/utils/debounced-user";
 import { emptyToNull } from "@/utils/format-input";
 import { DatePickerField } from "../date-picker.component";
+import { USER_CAN_NULLABLE_FIELDS } from "@/utils/not-emty-field";
 
 export const EditDialog = memo(
   ({ open, role, onClose, onSave, data }: EditUserDialogProps) => {
@@ -49,6 +50,11 @@ export const EditDialog = memo(
     }, [open, data]);
 
     const onSubmit: SubmitHandler<UpdateUserModel> = async (data) => {
+      USER_CAN_NULLABLE_FIELDS.forEach(field => {
+        if (data[field] === '') {
+          data[field] = null as any;
+        }
+      });
       const { user_id, ...updatePayload } = data;
       onSave({
         ...updatePayload,
