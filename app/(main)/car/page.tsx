@@ -63,6 +63,7 @@ export default function CarsManagement() {
     registrationNumber: '',
     imeiDat: '',
     active: undefined,
+    sortBy: 'car_id',
     sortDirection: 'DESC',
   });
 
@@ -82,6 +83,7 @@ export default function CarsManagement() {
         registrationNumber: filter.registrationNumber,
         imeiDat: filter.imeiDat,
         active: filter.active,
+        sortBy: sortModel[0]?.field || filter.sortBy,
         sortDirection: sortModel[0]?.sort === 'asc' ? 'ASC' : 'DESC',
       },
       pagination.page + 1,
@@ -91,7 +93,10 @@ export default function CarsManagement() {
   };
 
   const onSubmit = (formData: FilterCarForm) => {
-    setFilter(formData);
+    setFilter(prev => ({
+      ...prev,
+      ...formData,
+    }));
     setPagination(prev => ({ ...prev, page: 0 }));
   };
 
