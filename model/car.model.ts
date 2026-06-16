@@ -79,5 +79,6 @@ export type FilterCarForm = {
   registrationNumber: string;
   imeiDat: string;
   active: boolean | undefined;
+  sortBy: string | 'car_id';
   sortDirection: 'ASC' | 'DESC';
 };
