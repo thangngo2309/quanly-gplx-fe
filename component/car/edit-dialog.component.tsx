@@ -44,13 +44,7 @@ export const EditDialog = memo(
         }, [open, data]);
 
         const onSubmit: SubmitHandler<UpdateCarModel> = async (formData) => {
-            const dirtyFields = methods.formState.dirtyFields;
-
-            const payload = Object.keys(dirtyFields).reduce((acc, key) => {
-                (acc as any)[key] = formData[key as keyof UpdateCarModel];
-                return acc;
-            }, {} as Partial<UpdateCarModel>);
-            onSave({ ...payload, hasDualBrake: payload.hasDualBrake === 'true', isActive: payload.isActive === 'true' });
+            onSave({...formData, hasDualBrake: formData.hasDualBrake?.toString() === 'true', isActive: formData.isActive?.toString() === 'true' });
         };
 
         const checkRegistrationNumber = async (value: string | undefined) => {
