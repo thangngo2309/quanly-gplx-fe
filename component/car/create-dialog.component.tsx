@@ -14,6 +14,7 @@ import {
     FormControlLabel,
     MenuItem,
     Typography,
+    FormHelperText,
 } from "@mui/material";
 
 import { memo, useEffect } from "react";
@@ -38,8 +39,8 @@ export const CreateDialog = memo(
         const errors = methods.formState.errors;
 
         useEffect(() => { if (open) { methods.reset(); } }, [open]);
-        const onSubmit: SubmitHandler<CreateCarModel> = async (data) => {
-            onSave(data);
+        const onSubmit: SubmitHandler<CreateCarModel> = (data) => {
+            onSave({ ...data, hasDualBrake: data.hasDualBrake === 'true' });
         };
 
         const checkRegistrationNumber = async (value: string) => {
@@ -231,14 +232,22 @@ export const CreateDialog = memo(
                                         required: 'Vui lòng chọn phanh phụ',
                                     }}
                                     render={({ field }) => (
-                                        <RadioGroup
-                                            row
-                                            value={field.value ?? ''}
-                                            onChange={(e) => field.onChange(e.target.value === 'true')}
-                                        >
-                                            <FormControlLabel value="true" control={<Radio />} label="Có" />
-                                            <FormControlLabel value="false" control={<Radio />} label="Không" />
-                                        </RadioGroup>
+                                        <>
+                                            <RadioGroup
+                                                {...field}
+                                                row
+                                                value={field.value || ""}
+                                            >
+                                                <FormControlLabel value="true" control={<Radio />} label="Có" />
+                                                <FormControlLabel value="false" control={<Radio />} label="Không" />
+                                            </RadioGroup>
+
+                                            {errors.hasDualBrake && (
+                                                <FormHelperText error>
+                                                    {errors.hasDualBrake?.message}
+                                                </FormHelperText>
+                                            )}
+                                        </>
                                     )}
                                 />
                             </FormControl>
@@ -273,8 +282,8 @@ export const CreateDialog = memo(
                                 control={methods.control}
                                 label="Ngày cấp GP xe tập lái"
                                 required
-                                error={!!methods.formState.errors.practiceVehicleLicenseIssueDate}
-                                helperText={methods.formState.errors.practiceVehicleLicenseIssueDate?.message}
+                                error={!!errors.practiceVehicleLicenseIssueDate}
+                                helperText={errors.practiceVehicleLicenseIssueDate?.message}
                                 rules={{
                                     required: 'Ngày cấp GP lái xe tập lái là bắt buộc',
                                 }}
@@ -286,8 +295,8 @@ export const CreateDialog = memo(
                                 control={methods.control}
                                 label="Ngày hết hạn GP xe tập lái"
                                 required
-                                error={!!methods.formState.errors.practiceVehicleLicenseExpiryDate}
-                                helperText={methods.formState.errors.practiceVehicleLicenseExpiryDate?.message}
+                                error={!!errors.practiceVehicleLicenseExpiryDate}
+                                helperText={errors.practiceVehicleLicenseExpiryDate?.message}
                                 rules={{
                                     required: 'Ngày hết hạn GP lái xe tập lái là bắt buộc',
                                     validate: (value: Date) => {
@@ -365,6 +374,11 @@ export const CreateDialog = memo(
                                             placeholder="Nhập 15 chữ số (VD: 123123123123456)"
                                             error={!!errors.imeiDat}
                                             helperText={errors.imeiDat?.message}
+                                            slotProps={{
+                                                htmlInput: {
+                                                    maxLength: 15,
+                                                },
+                                            }}
                                         />
                                     )}
                                 />

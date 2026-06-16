@@ -48,7 +48,7 @@ export const EditMultiCarDialog = memo(
                     delete data[field];
                 }
             });
-            onSave(selectedIds, data);
+            onSave(selectedIds, {...data, hasDualBrake: data.hasDualBrake === 'true', isActive: data.isActive === 'true' });
         };
 
         return (
@@ -183,9 +183,9 @@ export const EditMultiCarDialog = memo(
                                     control={methods.control}
                                     render={({ field }) => (
                                         <RadioGroup
+                                            {...field}
                                             row
-                                            value={field.value ?? ''}
-                                            onChange={(e) => field.onChange(e.target.value === 'true')}
+                                            value={field.value || ''}
                                         >
                                             <FormControlLabel value="true" control={<Radio />} label="Có" />
                                             <FormControlLabel value="false" control={<Radio />} label="Không" />
@@ -198,8 +198,8 @@ export const EditMultiCarDialog = memo(
                                 name="practiceVehicleLicenseIssueDate"
                                 control={methods.control}
                                 label="Ngày cấp GP xe tập lái"
-                                error={!!methods.formState.errors.practiceVehicleLicenseIssueDate}
-                                helperText={methods.formState.errors.practiceVehicleLicenseIssueDate?.message}
+                                error={!!errors.practiceVehicleLicenseIssueDate}
+                                helperText={errors.practiceVehicleLicenseIssueDate?.message}
                                 triggerOnBlur="practiceVehicleLicenseExpiryDate"
                             />
 
@@ -207,8 +207,8 @@ export const EditMultiCarDialog = memo(
                                 name="practiceVehicleLicenseExpiryDate"
                                 control={methods.control}
                                 label="Ngày hết hạn GP xe tập lái"
-                                error={!!methods.formState.errors.practiceVehicleLicenseExpiryDate}
-                                helperText={methods.formState.errors.practiceVehicleLicenseExpiryDate?.message}
+                                error={!!errors.practiceVehicleLicenseExpiryDate}
+                                helperText={errors.practiceVehicleLicenseExpiryDate?.message}
                                 rules={{
                                     validate: (value: Date) => {
                                         const issueDate = methods.getValues('practiceVehicleLicenseIssueDate');
@@ -261,9 +261,9 @@ export const EditMultiCarDialog = memo(
                                     control={methods.control}
                                     render={({ field }) => (
                                         <RadioGroup
+                                            {...field}
                                             row
-                                            value={field.value ?? ''}
-                                            onChange={(e) => field.onChange(e.target.value === 'true')}
+                                            value={field.value || ''}
                                         >
                                             <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
                                             <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />

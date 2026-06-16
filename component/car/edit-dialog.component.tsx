@@ -50,7 +50,7 @@ export const EditDialog = memo(
                 (acc as any)[key] = formData[key as keyof UpdateCarModel];
                 return acc;
             }, {} as Partial<UpdateCarModel>);
-            onSave(payload);
+            onSave({ ...payload, hasDualBrake: payload.hasDualBrake === 'true', isActive: payload.isActive === 'true' });
         };
 
         const checkRegistrationNumber = async (value: string | undefined) => {
@@ -238,14 +238,11 @@ export const EditDialog = memo(
                                 <Controller
                                     name="hasDualBrake"
                                     control={methods.control}
-                                    rules={{
-                                        required: 'Phanh phụ là bắt buộc',
-                                    }}
                                     render={({ field }) => (
                                         <RadioGroup
+                                            {...field}
                                             row
                                             value={field.value ?? ''}
-                                            onChange={(e) => field.onChange(e.target.value === 'true')}
                                         >
                                             <FormControlLabel value="true" control={<Radio />} label="Có" />
                                             <FormControlLabel value="false" control={<Radio />} label="Không" />
@@ -284,8 +281,8 @@ export const EditDialog = memo(
                                 control={methods.control}
                                 label="Ngày cấp GP xe tập lái"
                                 required
-                                error={!!methods.formState.errors.practiceVehicleLicenseIssueDate}
-                                helperText={methods.formState.errors.practiceVehicleLicenseIssueDate?.message}
+                                error={!!errors.practiceVehicleLicenseIssueDate}
+                                helperText={errors.practiceVehicleLicenseIssueDate?.message}
                                 rules={{
                                     required: 'Ngày cấp GP lái xe tập lái là bắt buộc',
                                 }}
@@ -297,8 +294,8 @@ export const EditDialog = memo(
                                 control={methods.control}
                                 label="Ngày hết hạn GP xe tập lái"
                                 required
-                                error={!!methods.formState.errors.practiceVehicleLicenseExpiryDate}
-                                helperText={methods.formState.errors.practiceVehicleLicenseExpiryDate?.message}
+                                error={!!errors.practiceVehicleLicenseExpiryDate}
+                                helperText={errors.practiceVehicleLicenseExpiryDate?.message}
                                 rules={{
                                     required: 'Ngày hết hạn GP lái xe tập lái là bắt buộc',
                                     validate: (value: Date) => {
@@ -376,6 +373,11 @@ export const EditDialog = memo(
                                             variant="outlined"
                                             error={!!errors.imeiDat}
                                             helperText={errors.imeiDat?.message}
+                                            slotProps={{
+                                                htmlInput: {
+                                                    maxLength: 15,
+                                                },
+                                            }}
                                         />
                                     )}
                                 />
@@ -415,9 +417,9 @@ export const EditDialog = memo(
                                     control={methods.control}
                                     render={({ field }) => (
                                         <RadioGroup
+                                            {...field}
                                             row
                                             value={field.value ?? ''}
-                                            onChange={(e) => field.onChange(e.target.value === 'true')}
                                         >
                                             <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
                                             <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />
