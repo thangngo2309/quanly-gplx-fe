@@ -48,7 +48,10 @@ export const EditMultiCarDialog = memo(
                     delete data[field];
                 }
             });
-            onSave(selectedIds, {...data, hasDualBrake: data.hasDualBrake === 'true', isActive: data.isActive === 'true' });
+            onSave(selectedIds, {
+                ...data,
+                hasDualBrake: data.hasDualBrake ? data.hasDualBrake?.toString() === 'true' : undefined, 
+                isActive: data.isActive ?data.isActive?.toString() === 'true' : undefined, });
         };
 
         return (
