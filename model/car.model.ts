@@ -6,7 +6,7 @@ export interface CreateCarModel {
     category: string;
     manufacturingYear: number;
     owner: string;
-    hasDualBrake: boolean;
+    hasDualBrake: boolean | string;
     practiceVehicleLicenseNumber: string;
     practiceVehicleLicenseIssueDate: Date;
     practiceVehicleLicenseExpiryDate: Date;
@@ -23,7 +23,7 @@ export interface UpdateCarModel {
     category?: string;
     manufacturingYear?: number;
     owner?: string;
-    hasDualBrake?: boolean;
+    hasDualBrake?: boolean | string;
     practiceVehicleLicenseNumber?: string;
     practiceVehicleLicenseIssueDate?: Date;
     practiceVehicleLicenseExpiryDate?: Date;
@@ -32,7 +32,7 @@ export interface UpdateCarModel {
     insuranceExpiryDate?: Date;
     imeiDat?: string;
     serialNumber?: string;
-    isActive?: boolean;
+    isActive?: boolean | string;
 }
 
 export interface UpdateMultiCarModel {
@@ -40,13 +40,13 @@ export interface UpdateMultiCarModel {
     category?: string;
     manufacturingYear?: number;
     owner?: string;
-    hasDualBrake?: boolean;
+    hasDualBrake?: boolean | string;
     practiceVehicleLicenseIssueDate?: Date;
     practiceVehicleLicenseExpiryDate?: Date;
     inspectionIssueDate?: Date;
     inspectionExpiryDate?: Date;
     insuranceExpiryDate?: Date;
-    isActive?: boolean;
+    isActive?: boolean | string;
 }
 
 export interface CarDataModel {
