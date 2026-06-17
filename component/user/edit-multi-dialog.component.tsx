@@ -11,8 +11,9 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  Checkbox,
   Typography,
+  RadioGroup,
+  Radio,
 } from "@mui/material";
 
 import { memo, useEffect } from "react";
@@ -56,6 +57,7 @@ export const EditMultiUserDialog = memo(
         recruitment_type: emptyToNull(data.recruitment_type),
         pedagogy_level: emptyToNull(data.pedagogy_level),
         teaching_subject: emptyToNull(data.teaching_subject),
+        is_active: data.is_active ? data.is_active?.toString() === 'true' : undefined,
       });
     };
 
@@ -122,24 +124,23 @@ export const EditMultiUserDialog = memo(
                 />
               </FormControl>
 
-              <Controller
-                name="is_active"
-                control={methods.control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    label="Kích hoạt"
-                    control={
-                      <Checkbox
-                        checked={!!field.value}
-                        onChange={(e) =>
-                          field.onChange(e.target.checked)
-                        }
-                        color="primary"
-                      />
-                    }
-                  />
-                )}
-              />
+              <FormControl fullWidth margin="dense">
+                <FormLabel>Trạng thái hoạt động</FormLabel>
+                <Controller
+                  name="is_active"
+                  control={methods.control}
+                  render={({ field }) => (
+                    <RadioGroup
+                      {...field}
+                      row
+                      value={field.value || ''}
+                    >
+                      <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
+                      <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />
+                    </RadioGroup>
+                  )}
+                />
+              </FormControl>
 
               {isTeacher && (
                 <>
