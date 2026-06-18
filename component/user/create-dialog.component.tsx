@@ -32,7 +32,7 @@ export const CreateDialog = memo(
         const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
         const methods = useForm<CreateUserModel>({
-            mode: 'onChange',
+            mode: 'all',
             reValidateMode: 'onChange',
             defaultValues: {
                 role: UserRole.USER
