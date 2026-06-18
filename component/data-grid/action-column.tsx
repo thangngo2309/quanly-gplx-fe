@@ -10,52 +10,53 @@ export const ActionColumn = <T,>({
     onDelete,
     getDeleteId,
     getDeleteLabel,
+    customAction
 }: ActionHandlers<T>): GridColDef => {
     return {
         field: "actions",
-        type: "actions",
         headerName: "Thao tác",
-        width: 120,
-        getActions: (params) => {
+        width: 150,
+        sortable: false,
+        align: "center",
+        renderCell: (params) => {
             const row = params.row as T;
-            const actions = [];
 
-            if (onEdit) {
-                actions.push(
-                    <Tooltip title="Chỉnh sửa">
-                        <IconButton color="primary" onClick={() => onEdit(row)}>
-                            <EditIcon />
-                        </IconButton>
-                    </Tooltip>
-                );
-            }
+            return (
+                <>
+                    {onEdit && (
+                        <Tooltip title="Chỉnh sửa">
+                            <IconButton color="primary" onClick={() => onEdit(row)}>
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                    )}
 
-            if (onDelete) {
-                actions.push(
-                    <Tooltip title="Xóa">
-                        <IconButton
-                            color="error"
-                            onClick={() => {
-                                const label = getDeleteLabel?.(row);
-                                const id = getDeleteId?.(row);
+                    {onDelete && (
+                        <Tooltip title="Xóa">
+                            <IconButton
+                                color="error"
+                                onClick={() => {
+                                    const label = getDeleteLabel?.(row);
+                                    const id = getDeleteId?.(row);
+                                    if (
+                                        id !== undefined &&
+                                        confirm(
+                                            `Bạn có chắc chắn muốn xóa ${label}?`
+                                        )
+                                    ) {
+                                        onDelete(id);
+                                    }
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                    )}
 
-                                if (
-                                    id !== undefined &&
-                                    confirm(
-                                        `Bạn có chắc chắn muốn xóa ${label}?`
-                                    )
-                                ) {
-                                    onDelete(id);
-                                }
-                            }}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                );
-            }
+                    {customAction?.(row)}
 
-            return actions;
+                </>
+            );
         },
     };
 };

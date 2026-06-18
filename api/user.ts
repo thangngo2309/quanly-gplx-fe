@@ -73,3 +73,8 @@ export async function uniqueContractNumber(contract_number: string, id?: number)
     const response = await api.post<{ isUnique: boolean }>(`/user/unique-contract-number`, { contract_number, id });
     return response.data;
 }
+
+export async function resetPasswordAPI(id: number) {
+    const response = await api.patch(`/user/reset-password/${id}`);
+    return response.data;
+}
