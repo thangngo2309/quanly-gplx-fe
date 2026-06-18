@@ -5,7 +5,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import { InfoRow, Label, Value } from '@/style object/profile.style';
-
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 type Props = {
     open: boolean;
     newPassword: string;
@@ -14,11 +14,6 @@ type Props = {
 
 export const ResetPasswordDialog = ({ open, newPassword, onClose }: Props) => {
     const [copied, setCopied] = useState(false);
-
-    const handleCopy = () => {
-        navigator.clipboard.writeText(newPassword);
-        setCopied(true);
-    };
 
     const handleClose = () => {
         setCopied(false);
@@ -39,9 +34,18 @@ export const ResetPasswordDialog = ({ open, newPassword, onClose }: Props) => {
             </DialogContent>
             <DialogActions>
                 <Tooltip title="Đã sao chép!" open={copied} disableFocusListener disableHoverListener disableTouchListener>
-                    <Button variant="contained" size="small" onClick={handleCopy} disabled={copied}>
-                        Sao chép
-                    </Button>
+                    <span>
+                        <CopyToClipboard
+                            text={newPassword}
+                            onCopy={() => {
+                                setCopied(true);
+                            }}
+                        >
+                            <Button variant="contained" size="small" disabled={copied}>
+                                Sao chép
+                            </Button>
+                        </CopyToClipboard>
+                    </span>
                 </Tooltip>
                 <Button onClick={handleClose}>Đóng</Button>
             </DialogActions>
