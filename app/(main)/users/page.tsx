@@ -27,6 +27,7 @@ import {
   getAllUser,
   updateUser,
   UpdateMultipleUser,
+  resetPasswordAPI,
 } from '@/api/user';
 
 import { useMemo, useState, useEffect, SyntheticEvent } from 'react';
@@ -52,6 +53,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { CommonDataTable } from '@/component/data-grid/common-data-table.component';
 import { UserRole } from '@/enum/user.enum';
 import { FIELDS_BY_ROLE } from '@/constants/user-tabs-config';
+import { ResetPasswordButton } from '@/component/user/user-action.component';
+import { useUserStore } from '@/store/useUser.store';
+import { ResetPasswordDialog } from '@/component/user/reset-password-dialog.component';
+import { ConfirmResetPasswordDialog } from '@/component/user/confirm-reset-password-dialog.component';
 
 export default function UsersManagement() {
 
@@ -72,6 +77,13 @@ export default function UsersManagement() {
     sortDirection: 'DESC',
   });
   const [activeTab, setActiveTab] = useState<UserRole>(UserRole.ADMIN);
+  const profile = useUserStore((state) => state.profile);
+  const [confirmResetDialog, setConfirmResetDialog] = useState(false);
+  const [selectUserResetPassword, setSelectUserResetPassword] = useState<UserDataModel | null>(null);
+  const [resetPasswordDialog, setResetPasswordDialog] = useState<{ open: boolean; password: string }>({
+    open: false,
+    password: '',
+  });
 
   useEffect(() => {
     fetchData();
@@ -150,6 +162,26 @@ export default function UsersManagement() {
     setPagination(prev => ({ ...prev, page: 0 }));
   };
 
+  const handleConfirmResetPassword = async () => {
+    if (!selectUserResetPassword) return;
+    try {
+      const res = await resetPasswordAPI(selectUserResetPassword.user_id);
+      const newPassword = res.password;
+
+      setConfirmResetDialog(false);
+
+      setResetPasswordDialog({
+        open: true,
+        password: newPassword,
+      });
+
+      toast.success('Đặt lại mật khẩu thành công');
+    } catch (error) {
+      toast.error('Đặt lại mật khẩu thất bại');
+    }
+  };
+
+
   const columns = useMemo(() => {
     const allowedFields = FIELDS_BY_ROLE[activeTab] ?? [];
     const filteredColumns = USER_COLUMNS.filter(col => allowedFields.includes(col.field));
@@ -164,9 +196,22 @@ export default function UsersManagement() {
         onDelete: handleDelete,
         getDeleteId: (row) => row.user_id,
         getDeleteLabel: (row) => row.fullname,
+
+        customAction: (user) => {
+          if (profile?.role !== UserRole.ADMIN) return null;
+          return (
+            <ResetPasswordButton
+              user={user}
+              onResetPassword={(row) => {
+                setSelectUserResetPassword(row);
+                setConfirmResetDialog(true);
+              }}
+            />
+          );
+        }
       }),
     ];
-  }, [activeTab]);
+  }, [activeTab, profile]);
 
   return (
     <Box>
@@ -328,6 +373,19 @@ export default function UsersManagement() {
         role={activeTab}
         onClose={() => setMultiEditOpen(false)}
         onSave={handleMultiEdit}
+      />
+
+      <ConfirmResetPasswordDialog
+        open={confirmResetDialog}
+        user={selectUserResetPassword}
+        onClose={() => setConfirmResetDialog(false)}
+        onConfirm={handleConfirmResetPassword}
+      />
+
+      <ResetPasswordDialog
+        open={resetPasswordDialog.open}
+        newPassword={resetPasswordDialog.password}
+        onClose={() => setResetPasswordDialog({ open: false, password: '' })}
       />
     </Box>
   );
