@@ -32,7 +32,7 @@ export const CreateDialog = memo(
     ({ open, onClose, onSave }: CreateCarDialogProps) => {
 
         const methods = useForm<CreateCarModel>({
-            mode: 'onChange',
+            mode: 'all',
             reValidateMode: 'onChange',
         });
 
