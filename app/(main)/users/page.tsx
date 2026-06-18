@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box';
 
-import { GridSortModel } from '@mui/x-data-grid';
+import { GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 
 import {
   Button,
@@ -68,6 +68,9 @@ export default function UsersManagement() {
   const [selectedUser, setSelectedUser] = useState<UserDataModel | null>(null);
   const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
   const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>(
+    { type: 'include', ids: new Set() }
+  );
   const [filter, setFilter] = useState<FilterUserForm>({
     name: '',
     cccd: '',
@@ -92,6 +95,11 @@ export default function UsersManagement() {
   useEffect(() => {
     fetchData();
   }, [pagination, filter, sortModel, activeTab])
+
+  useEffect(() => {
+    setRowSelectionModel({ type: 'include', ids: new Set() });
+    setSelectedIds([]);
+  }, [pagination.page]);
 
   const methods = useForm<FilterUserForm>();
 
@@ -159,6 +167,7 @@ export default function UsersManagement() {
   const handleTabChange = (_: SyntheticEvent, newValue: UserRole) => {
     setActiveTab(newValue);
     setSelectedIds([]);
+    setRowSelectionModel({ type: 'include', ids: new Set() });
     setPagination(prev => ({ ...prev, page: 0 }));
   };
 
@@ -346,7 +355,9 @@ export default function UsersManagement() {
         sortModel={sortModel}
         onSortModelChange={setSortModel}
         getRowId={(row) => row.user_id}
+        rowSelectionModel={rowSelectionModel}
         onSelectedIdsChange={setSelectedIds}
+        onRowSelectionModelChange={setRowSelectionModel}
       />
 
       <CreateDialog

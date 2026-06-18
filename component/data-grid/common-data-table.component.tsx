@@ -8,6 +8,8 @@ export function CommonDataTable<T>({
     rows,
     getRowId,
     onSelectedIdsChange,
+    rowSelectionModel,
+    onRowSelectionModelChange,
     ...props
 }: CommonDataTableProps<T>) {
     return (
@@ -31,6 +33,7 @@ export function CommonDataTable<T>({
                 rows={rows}
                 getRowId={getRowId}
                 {...props}
+                rowSelectionModel={rowSelectionModel}
                 onRowSelectionModelChange={(model) => {
                     let ids: number[];
 
@@ -40,6 +43,7 @@ export function CommonDataTable<T>({
                         ids = Array.from(model.ids) as number[];
                     }
                     onSelectedIdsChange?.(ids);
+                    onRowSelectionModelChange?.(model); 
                 }}
             />
         </DataGridStyle>
