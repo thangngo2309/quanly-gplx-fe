@@ -28,7 +28,7 @@ export const ConfirmResetPasswordDialog = ({
       <DialogActions>
         <Button onClick={onClose} color="inherit">Hủy bỏ</Button>
         <Button onClick={onConfirm} color="warning" variant="contained" autoFocus>
-          Xác nhận Reset
+          Đặt lại
         </Button>
       </DialogActions>
     </Dialog>
