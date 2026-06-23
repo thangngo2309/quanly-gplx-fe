@@ -1,5 +1,5 @@
 import HomeIcon from '@mui/icons-material/Home';
-import SchoolIcon from '@mui/icons-material/School';
+import BadgeIcon from '@mui/icons-material/Badge';
 import GroupIcon from '@mui/icons-material/Group';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
@@ -10,6 +10,7 @@ export const menuItems = [
   { label: 'Tổng quan', icon: HomeIcon, path: '/' },
   { label: 'Quản lý người dùng', icon: GroupIcon, path: '/users' },
   { label: 'Quản lý xe tập lái', icon: DirectionsCarIcon, path: '/car' },
+  { label: 'Quản lý giấy phép lái xe', icon: BadgeIcon, path: '/driver-license' }
 ];
 
 export const bottomMenuItems = [
