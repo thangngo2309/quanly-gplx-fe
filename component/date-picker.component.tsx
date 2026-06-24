@@ -2,6 +2,7 @@ import { FormControl, FormLabel } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Control, Controller, FieldValues, Path, useFormContext } from "react-hook-form";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 export interface DatePickerFieldProps<T extends FieldValues> {
     name: Path<T>;
@@ -24,7 +25,16 @@ export const DatePickerField = <T extends FieldValues>({
     triggerOnBlur,
     rules = {},
 }: DatePickerFieldProps<T>) => {
-    const { trigger } = useFormContext<T>();
+    const { trigger, watch, getFieldState } = useFormContext<T>();
+    const currentValue = watch(name);
+    useEffect(() => {
+        if (triggerOnBlur) {
+            const isDirty = getFieldState(triggerOnBlur).isDirty;
+            if (isDirty) {
+                trigger(triggerOnBlur);
+            }
+        }
+    }, [currentValue]);
     return (
         <FormControl fullWidth margin="dense">
             <FormLabel required={required}>{label}</FormLabel>
@@ -47,16 +57,11 @@ export const DatePickerField = <T extends FieldValues>({
                         }}
                         slotProps={{
                             textField: {
+                                ...field,
                                 fullWidth: true,
                                 variant: 'outlined',
                                 error: error,
                                 helperText: helperText,
-                                onBlur: async () => {
-                                    field.onBlur();
-                                    if (triggerOnBlur && trigger) {
-                                        await trigger(triggerOnBlur);
-                                    }
-                                },
                             },
                         }}
                     />
