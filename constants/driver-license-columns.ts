@@ -3,14 +3,14 @@ import { formatDateTime } from '@/utils/format-date';
 
 export const DRIVER_LICENSE_COLUMNS: GridColDef[] = [
     {
-        field: 'user_fullname',
+        field: 'u.fullname',
         headerName: 'Họ và tên',
         width: 150,
         valueGetter: (value, row) => row.user?.fullname || '',
         flex: 1,
     },
     {
-        field: 'user_date_of_birth',
+        field: 'u.date_of_birth',
         headerName: 'Ngày sinh',
         width: 150,
         valueGetter: (value, row) => {
