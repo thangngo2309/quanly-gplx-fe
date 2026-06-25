@@ -57,11 +57,11 @@ export const DatePickerField = <T extends FieldValues>({
                         }}
                         slotProps={{
                             textField: {
-                                ...field,
                                 fullWidth: true,
                                 variant: 'outlined',
                                 error: error,
                                 helperText: helperText,
+                                onBlur: field.onBlur,
                             },
                         }}
                     />
