@@ -61,7 +61,7 @@ export const EditDialog = memo(({ open, users, onClose, onSave, data }: EditDriv
                                         options={users}
                                         getOptionLabel={(option) => `${option.fullname} - ${option.citizen_id}`}
                                         value={users.find((u) => u.user_id === field.value) || null}
-                                        onChange={(_, value) => field.onChange(value?.user_id)}
+                                        onChange={(_, value) => field.onChange(value?.user_id ?? null)}
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
