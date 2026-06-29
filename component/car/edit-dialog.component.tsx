@@ -105,6 +105,11 @@ export const EditDialog = memo(
                                             variant="outlined"
                                             error={!!errors.registrationNumber}
                                             helperText={errors.registrationNumber?.message}
+                                            slotProps={{
+                                                htmlInput: {
+                                                    maxLength: 10,
+                                                },
+                                            }}
                                         />
                                     )}
                                 />

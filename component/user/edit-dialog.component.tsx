@@ -160,6 +160,11 @@ export const EditDialog = memo(
                       helperText={
                         errors.citizen_id?.message
                       }
+                      slotProps={{
+                        htmlInput: {
+                          maxLength: 12,
+                        },
+                      }}
                     />
                   )}
                 />
