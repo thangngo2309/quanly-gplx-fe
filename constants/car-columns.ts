@@ -1,5 +1,5 @@
 import { GridColDef } from '@mui/x-data-grid';
-import {formatDateTime} from '@/utils/format-date';
+import {formatDateTime, toUTC7} from '@/utils/format-date';
 
 export const CAR_COLUMNS: GridColDef[] = [
   {
@@ -91,13 +91,15 @@ export const CAR_COLUMNS: GridColDef[] = [
   {
     field: 'createdAt',
     headerName: 'Ngày tạo',
-    width: 120,
-    renderCell: (params) => formatDateTime(params.value),
+    minWidth: 160,
+    flex: 1,
+    renderCell: (params) => toUTC7(params.value),
   },
   {
     field: 'updatedAt',
     headerName: 'Ngày cập nhật',
-    width: 120,
-    renderCell: (params) => formatDateTime(params.value),
+    minWidth: 160,
+    flex: 1,
+    renderCell: (params) => toUTC7(params.value),
   },
 ];

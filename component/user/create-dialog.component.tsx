@@ -303,6 +303,15 @@ export const CreateDialog = memo(
                                 />
                             </FormControl>
 
+                            <DatePickerField
+                                name="test_date_time"
+                                control={methods.control}
+                                label="Ngày kiểm tra"
+                                error={!!errors.test_date_time}
+                                helperText={errors.test_date_time?.message}
+                                type="datetime"
+                            />
+
                             {isTeacher && (
                                 <>
                                     <FormControl fullWidth margin="dense">

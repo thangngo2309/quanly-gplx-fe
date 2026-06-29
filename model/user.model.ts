@@ -23,6 +23,7 @@ export interface CreateUserModel {
   contract_number?: string;
   contract_signed_date?: Date;
   contract_expiry_date?: Date;
+  test_date_time?: Date;
 }
 
 export interface UserDataModel {
@@ -49,6 +50,7 @@ export interface UserDataModel {
   created_at: Date;
   updated_at: Date;
   is_active: boolean;
+  test_date_time: Date;
 }
 
 export interface UserModel {
@@ -92,6 +94,7 @@ export interface UpdateUserModel {
   contract_signed_date?: Date;
   contract_expiry_date?: Date;
   is_active?: boolean;
+  test_date_time?: Date;
 }
 
 export type FilterUserForm = {

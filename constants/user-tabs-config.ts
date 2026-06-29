@@ -9,6 +9,7 @@ export const FIELDS_BY_ROLE: Record<UserRole, string[]> = {
     'citizen_id',
     'address',
     'is_active',
+    'test_date_time',
   ],
   [UserRole.TEACHER]: [
     'user_id',
