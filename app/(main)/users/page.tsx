@@ -72,11 +72,7 @@ export default function UsersManagement() {
     { type: 'include', ids: new Set() }
   );
   const [filter, setFilter] = useState<FilterUserForm>({
-    name: '',
-    cccd: '',
     role: UserRole.ADMIN,
-    active: undefined,
-    sortBy: 'user_id',
     sortDirection: 'DESC',
   });
   const [activeTab, setActiveTab] = useState<UserRole>(UserRole.ADMIN);
@@ -169,6 +165,11 @@ export default function UsersManagement() {
     setSelectedIds([]);
     setRowSelectionModel({ type: 'include', ids: new Set() });
     setPagination(prev => ({ ...prev, page: 0 }));
+    setFilter({
+      role: newValue,
+      sortDirection: 'DESC',
+    });
+    methods.reset();
   };
 
   const handleConfirmResetPassword = async () => {
