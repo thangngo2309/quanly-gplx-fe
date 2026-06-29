@@ -1,5 +1,6 @@
 import { FormControl, FormLabel } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { Control, Controller, FieldValues, Path, useFormContext } from "react-hook-form";
 import dayjs from "dayjs";
 import { useEffect } from "react";
@@ -13,6 +14,7 @@ export interface DatePickerFieldProps<T extends FieldValues> {
     helperText?: string;
     triggerOnBlur?: Path<T>;
     rules?: any;
+    type?: 'date' | 'datetime';
 }
 
 export const DatePickerField = <T extends FieldValues>({
@@ -24,9 +26,14 @@ export const DatePickerField = <T extends FieldValues>({
     helperText = '',
     triggerOnBlur,
     rules = {},
+    type = 'date',
 }: DatePickerFieldProps<T>) => {
     const { trigger, watch, getFieldState } = useFormContext<T>();
     const currentValue = watch(name);
+
+    const isDateTime = type === 'datetime';
+    const PickerComponent = isDateTime ? DateTimePicker : DatePicker;
+
     useEffect(() => {
         if (triggerOnBlur) {
             const isDirty = getFieldState(triggerOnBlur).isDirty;
@@ -43,12 +50,21 @@ export const DatePickerField = <T extends FieldValues>({
                 control={control}
                 rules={rules}
                 render={({ field }) => (
-                    <DatePicker
+                    <PickerComponent
                         {...field}
-                        format="DD/MM/YYYY"
+                        format={isDateTime ? "DD/MM/YYYY HH:mm:ss" : "DD/MM/YYYY"}
                         value={field.value ? dayjs(field.value) : null}
+                        timezone="Asia/Ho_Chi_Minh"
                         onChange={(newDate) => {
-                            field.onChange(newDate ? newDate.format('YYYY-MM-DD') : null);
+                            if (!newDate) {
+                                field.onChange(null);
+                                return;
+                            }
+                            if (isDateTime) {
+                                field.onChange(newDate.utc().format());
+                            } else {
+                                field.onChange(newDate.format('YYYY-MM-DD'));
+                            }
                         }}
                         localeText={{
                             fieldDayPlaceholder: () => '30',

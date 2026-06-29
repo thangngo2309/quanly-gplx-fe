@@ -1,5 +1,5 @@
 import { GridColDef } from '@mui/x-data-grid';
-import {formatDateTime} from '@/utils/format-date';
+import {formatDateTime, toUTC7} from '@/utils/format-date';
 import { RecruitmentType, RecruitmentTypeLabel } from '@/enum/user.enum';
 
 export const USER_COLUMNS: GridColDef[] = [
@@ -112,4 +112,10 @@ export const USER_COLUMNS: GridColDef[] = [
     width: 120,
     type: 'boolean',
   },
+  {
+    field: 'test_date_time',
+    headerName: 'Ngày giờ kiểm tra',
+    width: 180,
+    renderCell: (params) => toUTC7(params.value),
+  }
 ];
