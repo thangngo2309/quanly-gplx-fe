@@ -71,12 +71,7 @@ export default function DriverLicenseManagement() {
     const fetchUsers = async () => {
         try {
             const res = await getAllUser({
-                name: '',
-                cccd: '',
-                role: undefined as any,
                 active: true,
-                sortBy: '',
-                sortDirection: '' as any,
             });
             if (res && res.data) {
                 setUsers(res.data);

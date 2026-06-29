@@ -98,10 +98,10 @@ export interface UpdateUserModel {
 }
 
 export type FilterUserForm = {
-  name: string;
-  cccd: string;
-  role: UserRole;
-  active: boolean | undefined;
-  sortBy: string | 'user_id';
-  sortDirection: 'ASC' | 'DESC';
+  name?: string;
+  cccd?: string;
+  role?: UserRole;
+  active?: boolean;
+  sortBy?: string;
+  sortDirection?: 'ASC' | 'DESC';
 };
