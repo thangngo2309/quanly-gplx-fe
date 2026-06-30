@@ -287,19 +287,33 @@ export default function UsersManagement() {
           <Form methods={methods} onSubmit={onSubmit}>
             <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 4 }}>
-                <TextField
-                  size="small"
-                  label="Tìm theo họ tên"
-                  fullWidth
-                  {...methods.register('name')}
+                <Controller
+                  name="name"
+                  control={methods.control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      value={field.value ?? ''}
+                      size="small"
+                      label="Tìm theo họ tên"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 4 }}>
-                <TextField
-                  size="small"
-                  label="Tìm theo CCCD"
-                  fullWidth
-                  {...methods.register('cccd')}
+                <Controller
+                  name="cccd"
+                  control={methods.control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      value={field.value ?? ''}
+                      size="small"
+                      label="Tìm theo CCCD"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid size={{ xs: 10, sm: 3 }}>
