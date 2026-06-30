@@ -101,6 +101,11 @@ export const CreateDialog = memo(
                                             placeholder="VD: 51A-123.58 hoặc 51A-1234"
                                             error={!!errors.registrationNumber}
                                             helperText={errors.registrationNumber?.message}
+                                            slotProps={{
+                                                htmlInput: {
+                                                    maxLength: 10,
+                                                },
+                                            }}
                                         />
                                     )}
                                 />
