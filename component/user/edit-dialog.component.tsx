@@ -11,8 +11,6 @@ import {
   FormLabel,
   MenuItem,
   FormControlLabel,
-  RadioGroup,
-  Radio,
   Typography,
 } from "@mui/material";
 
@@ -30,6 +28,8 @@ import dayjs from "dayjs";
 import { debouncedUniqueCitizenId, debouncedUniqueTeacherCert, debouncedUniqueHealthCert, debouncedUniqueContract } from "@/utils/debounced-user";
 import { emptyToNull } from "@/utils/format-input";
 import { DatePickerField } from "../date-picker.component";
+import { RadioGroupField } from "../radio-button.component";
+import { ActiveStatusOptions } from "@/constants/radio-option";
 
 export const EditDialog = memo(
   ({ open, role, onClose, onSave, data }: EditUserDialogProps) => {
@@ -55,6 +55,7 @@ export const EditDialog = memo(
         recruitment_type: emptyToNull(updatePayload.recruitment_type),
         pedagogy_level: emptyToNull(updatePayload.pedagogy_level),
         teaching_subject: emptyToNull(updatePayload.teaching_subject),
+        is_active: updatePayload.is_active ? updatePayload.is_active?.toString() === 'true' : undefined,
       });
     };
 
@@ -192,22 +193,12 @@ export const EditDialog = memo(
                 />
               </FormControl>
 
-              <FormControl fullWidth margin="dense">
-                <FormLabel>Trạng thái hoạt động</FormLabel>
-                <Controller
-                  name="is_active"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <RadioGroup
-                      row
-                      value={field.value ?? ''}
-                      onChange={(e) => field.onChange(e.target.value === 'true')}
-                    >
-                      <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
-                      <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />
-                    </RadioGroup>
-                  )}
-                />
+              <RadioGroupField
+                name="is_active"
+                control={methods.control}
+                label="Trạng thái hoạt động"
+                options={ActiveStatusOptions}
+              />
 
                 <DatePickerField
                   name="test_date_time"
@@ -217,7 +208,6 @@ export const EditDialog = memo(
                   helperText={errors.test_date_time?.message}
                   type="datetime"
                 />
-              </FormControl>
               {isTeacher && (
                 <>
                   <FormControl fullWidth margin="dense">
