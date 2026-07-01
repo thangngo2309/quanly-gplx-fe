@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box';
 
-import { GridSortModel } from '@mui/x-data-grid';
+import { GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 
 import {
   Button,
@@ -66,6 +66,9 @@ export default function CarsManagement() {
     sortBy: 'car_id',
     sortDirection: 'DESC',
   });
+  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>(
+    { type: 'include', ids: new Set() }
+  );
 
   const methods = useForm<FilterCarForm>();
 
@@ -76,6 +79,11 @@ export default function CarsManagement() {
   useEffect(() => {
     fetchData();
   }, [pagination, sortModel, filter]);
+
+  useEffect(() => {
+    setRowSelectionModel({ type: 'include', ids: new Set() });
+    setSelectedIds([]);
+  }, [pagination.page]);
 
   const fetchData = async () => {
     const res = await getAllCar(
@@ -280,6 +288,8 @@ export default function CarsManagement() {
         onSortModelChange={setSortModel}
         getRowId={(row) => row.car_id}
         onSelectedIdsChange={setSelectedIds}
+        rowSelectionModel={rowSelectionModel}
+        onRowSelectionModelChange={setRowSelectionModel}
       />
 
       <CreateDialog
