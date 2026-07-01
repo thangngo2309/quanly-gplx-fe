@@ -9,12 +9,8 @@ import {
     DialogActions,
     Button,
     FormLabel,
-    RadioGroup,
-    Radio,
-    FormControlLabel,
     MenuItem,
     Typography,
-    FormHelperText,
 } from "@mui/material";
 
 import { memo, useEffect } from "react";
@@ -27,6 +23,8 @@ import { CarCategory } from "@/enum/car.enum";
 import dayjs from "dayjs";
 import { DatePickerField } from "../date-picker.component";
 import { debounceUniqueImeiDat, debounceUniqueRegistrationNumber, debounceUniqueSerialNumber } from "@/utils/debounced-car";
+import { RadioGroupField } from "../radio-button.component";
+import { YesNoOptions } from "@/constants/radio-option";
 
 export const CreateDialog = memo(
     ({ open, onClose, onSave }: CreateCarDialogProps) => {
@@ -228,34 +226,16 @@ export const CreateDialog = memo(
                                 />
                             </FormControl>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel required>Phanh phụ</FormLabel>
-                                <Controller
-                                    name="hasDualBrake"
-                                    control={methods.control}
-                                    rules={{
-                                        required: 'Vui lòng chọn phanh phụ',
-                                    }}
-                                    render={({ field }) => (
-                                        <>
-                                            <RadioGroup
-                                                {...field}
-                                                row
-                                                value={field.value || ""}
-                                            >
-                                                <FormControlLabel value="true" control={<Radio />} label="Có" />
-                                                <FormControlLabel value="false" control={<Radio />} label="Không" />
-                                            </RadioGroup>
-
-                                            {errors.hasDualBrake && (
-                                                <FormHelperText error>
-                                                    {errors.hasDualBrake?.message}
-                                                </FormHelperText>
-                                            )}
-                                        </>
-                                    )}
-                                />
-                            </FormControl>
+                            <RadioGroupField
+                                name="hasDualBrake"
+                                control={methods.control}
+                                label="Phanh phụ"
+                                options={YesNoOptions}
+                                required
+                                rules={{
+                                    required: 'Vui lòng chọn phanh phụ',
+                                }}
+                            />
 
                             <FormControl fullWidth margin="dense">
                                 <FormLabel required>Số GP xe tập lái</FormLabel>

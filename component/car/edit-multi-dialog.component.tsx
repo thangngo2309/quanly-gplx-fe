@@ -9,9 +9,6 @@ import {
     DialogActions,
     Button,
     FormLabel,
-    RadioGroup,
-    Radio,
-    FormControlLabel,
     MenuItem,
     Typography,
 } from "@mui/material";
@@ -26,6 +23,8 @@ import { autoTrim } from "@/utils/format-input";
 import { CAR_NOT_EMPTY_FIELDS } from "@/utils/not-emty-field";
 import dayjs from "dayjs";
 import { DatePickerField } from "../date-picker.component";
+import { RadioGroupField } from "../radio-button.component";
+import { ActiveStatusOptions, YesNoOptions } from "@/constants/radio-option";
 
 export const EditMultiCarDialog = memo(
     ({ open, selectedIds, onClose, onSave, }: EditMultiCarDialogProps) => {
@@ -50,7 +49,7 @@ export const EditMultiCarDialog = memo(
             });
             onSave(selectedIds, {
                 ...data,
-                hasDualBrake: data.hasDualBrake ? data.hasDualBrake?.toString() === 'true' : undefined, 
+                hasDualBrake: data.hasDualBrake ? data.hasDualBrake?.toString() === 'true' : undefined,
                 isActive: data.isActive ?data.isActive?.toString() === 'true' : undefined, });
         };
 
@@ -179,23 +178,12 @@ export const EditMultiCarDialog = memo(
                                 />
                             </FormControl>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Phanh phụ</FormLabel>
-                                <Controller
-                                    name="hasDualBrake"
-                                    control={methods.control}
-                                    render={({ field }) => (
-                                        <RadioGroup
-                                            {...field}
-                                            row
-                                            value={field.value || ''}
-                                        >
-                                            <FormControlLabel value="true" control={<Radio />} label="Có" />
-                                            <FormControlLabel value="false" control={<Radio />} label="Không" />
-                                        </RadioGroup>
-                                    )}
-                                />
-                            </FormControl>
+                            <RadioGroupField
+                                name="hasDualBrake"
+                                control={methods.control}
+                                label="Phanh phụ"
+                                options={YesNoOptions}
+                            />
 
                             <DatePickerField
                                 name="practiceVehicleLicenseIssueDate"
@@ -257,23 +245,12 @@ export const EditMultiCarDialog = memo(
                                 helperText={errors.insuranceExpiryDate?.message}
                             />
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Trạng thái hoạt động</FormLabel>
-                                <Controller
-                                    name="isActive"
-                                    control={methods.control}
-                                    render={({ field }) => (
-                                        <RadioGroup
-                                            {...field}
-                                            row
-                                            value={field.value || ''}
-                                        >
-                                            <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
-                                            <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />
-                                        </RadioGroup>
-                                    )}
-                                />
-                            </FormControl>
+                            <RadioGroupField
+                                name="isActive"
+                                control={methods.control}
+                                label="Trạng thái hoạt động"
+                                options={ActiveStatusOptions}
+                            />
 
                         </DialogContent>
 

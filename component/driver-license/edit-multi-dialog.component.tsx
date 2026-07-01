@@ -2,7 +2,7 @@
 
 import {
     Button, Dialog, DialogActions, DialogContent,
-    DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Switch, TextField,
+    DialogTitle, FormControl, FormControlLabel, FormLabel, TextField,
 } from '@mui/material';
 import { memo, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -11,6 +11,8 @@ import { EditMultiDriverLicenseDialogProps } from '@/model/driver-license-dialog
 import { Form } from '@/component/form.component';
 import { DatePickerField } from '../date-picker.component';
 import { UpdateMultiDriverLicenseModel } from '@/model/driver-license.model';
+import { RadioGroupField } from '../radio-button.component';
+import { ActiveStatusOptions } from '@/constants/radio-option';
 
 export const EditMultiDriverLicenseDialog = memo(({ open, selectedIds, onClose, onSave }: EditMultiDriverLicenseDialogProps) => {
     const methods = useForm<UpdateMultiDriverLicenseModel>({
@@ -113,23 +115,12 @@ export const EditMultiDriverLicenseDialog = memo(({ open, selectedIds, onClose, 
                             />
                         </FormControl>
 
-                        <FormControl fullWidth margin="dense">
-                            <FormLabel>Trạng thái hoạt động</FormLabel>
-                            <Controller
-                                name="is_active"
-                                control={methods.control}
-                                render={({ field }) => (
-                                    <RadioGroup
-                                        {...field}
-                                        row
-                                        value={field.value ?? ''}
-                                    >
-                                        <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
-                                        <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />
-                                    </RadioGroup>
-                                )}
-                            />
-                        </FormControl>
+                        <RadioGroupField
+                            name="is_active"
+                            control={methods.control}
+                            label="Trạng thái hoạt động"
+                            options={ActiveStatusOptions}
+                        />
                     </DialogContent>
 
                     <DialogActions>

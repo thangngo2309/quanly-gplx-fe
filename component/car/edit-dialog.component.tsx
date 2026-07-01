@@ -9,9 +9,6 @@ import {
     DialogActions,
     Button,
     FormLabel,
-    FormControlLabel,
-    RadioGroup,
-    Radio,
     MenuItem,
     Typography,
 } from "@mui/material";
@@ -26,6 +23,8 @@ import { CarCategory } from "@/enum/car.enum";
 import dayjs from "dayjs";
 import { DatePickerField } from "../date-picker.component";
 import { debounceUniqueImeiDat, debounceUniqueRegistrationNumber, debounceUniqueSerialNumber } from "@/utils/debounced-car";
+import { RadioGroupField } from "../radio-button.component";
+import { ActiveStatusOptions, YesNoOptions } from "@/constants/radio-option";
 
 export const EditDialog = memo(
     ({ open, onClose, onSave, data }: EditCarDialogProps) => {
@@ -232,23 +231,12 @@ export const EditDialog = memo(
                                 />
                             </FormControl>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel required>Phanh phụ</FormLabel>
-                                <Controller
-                                    name="hasDualBrake"
-                                    control={methods.control}
-                                    render={({ field }) => (
-                                        <RadioGroup
-                                            {...field}
-                                            row
-                                            value={field.value ?? ''}
-                                        >
-                                            <FormControlLabel value="true" control={<Radio />} label="Có" />
-                                            <FormControlLabel value="false" control={<Radio />} label="Không" />
-                                        </RadioGroup>
-                                    )}
-                                />
-                            </FormControl>
+                            <RadioGroupField
+                                name="hasDualBrake"
+                                control={methods.control}
+                                label="Phanh phụ"
+                                options={YesNoOptions}
+                            />
 
                             <FormControl fullWidth margin="dense">
                                 <FormLabel required>Số GP xe tập lái</FormLabel>
@@ -409,23 +397,12 @@ export const EditDialog = memo(
                                 />
                             </FormControl>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Trạng thái hoạt động</FormLabel>
-                                <Controller
-                                    name="isActive"
-                                    control={methods.control}
-                                    render={({ field }) => (
-                                        <RadioGroup
-                                            {...field}
-                                            row
-                                            value={field.value ?? ''}
-                                        >
-                                            <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
-                                            <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />
-                                        </RadioGroup>
-                                    )}
-                                />
-                            </FormControl>
+                            <RadioGroupField
+                                name="isActive"
+                                control={methods.control}
+                                label="Trạng thái hoạt động"
+                                options={ActiveStatusOptions}
+                            />
 
                         </DialogContent>
 

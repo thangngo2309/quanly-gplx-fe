@@ -9,11 +9,8 @@ import {
   Button,
   MenuItem,
   FormControl,
-  FormControlLabel,
   FormLabel,
   Typography,
-  RadioGroup,
-  Radio,
 } from "@mui/material";
 
 import { memo, useEffect } from "react";
@@ -26,6 +23,8 @@ import dayjs from "dayjs";
 import { emptyToNull } from "@/utils/format-input";
 import { USER_NOT_EMPTY_FIELDS } from "@/utils/not-emty-field";
 import { DatePickerField } from "../date-picker.component";
+import { RadioGroupField } from "../radio-button.component";
+import { ActiveStatusOptions } from "@/constants/radio-option";
 
 export const EditMultiUserDialog = memo(
   ({ open, selectedIds, role, onClose, onSave, }: EditMultiUserDialogProps) => {
@@ -124,23 +123,12 @@ export const EditMultiUserDialog = memo(
                 />
               </FormControl>
 
-              <FormControl fullWidth margin="dense">
-                <FormLabel>Trạng thái hoạt động</FormLabel>
-                <Controller
-                  name="is_active"
-                  control={methods.control}
-                  render={({ field }) => (
-                    <RadioGroup
-                      {...field}
-                      row
-                      value={field.value || ''}
-                    >
-                      <FormControlLabel value="true" control={<Radio />} label="Hoạt động" />
-                      <FormControlLabel value="false" control={<Radio />} label="Không hoạt động" />
-                    </RadioGroup>
-                  )}
-                />
-              </FormControl>
+              <RadioGroupField
+                name="is_active"
+                control={methods.control}
+                label="Trạng thái hoạt động"
+                options={ActiveStatusOptions}
+              />
 
               {isTeacher && (
                 <>
