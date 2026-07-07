@@ -55,11 +55,6 @@ export default function LoginPage() {
                   control={methods.control}
                   rules={{
                     required: 'Vui lòng nhập tên đăng nhập',
-                    minLength: { value: 3, message: 'Tên đăng nhập phải có ít nhất 3 ký tự' },
-                    pattern: {
-                      value: /^[a-zA-Z0-9_]+$/,
-                      message: 'Tên đăng nhập chỉ gồm chữ, số và dấu gạch dưới (_), không chứa dấu cách hoặc ký tự khác'
-                    }
                   }}
                   render={({ field }) => (
                     <TextField
@@ -82,7 +77,6 @@ export default function LoginPage() {
                   control={methods.control}
                   rules={{
                     required: 'Vui lòng nhập mật khẩu',
-                    minLength: { value: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự' }
                   }}
                   render={({ field }) => (
                     <TextField
