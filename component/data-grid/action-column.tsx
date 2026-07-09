@@ -10,7 +10,8 @@ export const ActionColumn = <T,>({
     onDelete,
     getDeleteId,
     getDeleteLabel,
-    customAction
+    customAction,
+    isHidden
 }: ActionHandlers<T>): GridColDef => {
     return {
         field: "actions",
@@ -20,6 +21,7 @@ export const ActionColumn = <T,>({
         align: "center",
         renderCell: (params) => {
             const row = params.row as T;
+            if (isHidden?.(params.row)) return null;
 
             return (
                 <>

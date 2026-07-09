@@ -6,4 +6,5 @@ export interface ActionHandlers<T> {
   getDeleteId?: (row: T) => number;
   getDeleteLabel?: (row: T) => string;
   customAction?: (row: T) => ReactNode;
+  isHidden?: (row: T) => boolean;
 }
