@@ -11,6 +11,7 @@ import {
     FormLabel,
     MenuItem,
     Typography,
+    Grid,
 } from "@mui/material";
 
 import { memo, useEffect } from "react";
@@ -50,224 +51,237 @@ export const EditMultiCarDialog = memo(
             onSave(selectedIds, {
                 ...data,
                 hasDualBrake: data.hasDualBrake ? data.hasDualBrake?.toString() === 'true' : undefined,
-                isActive: data.isActive ?data.isActive?.toString() === 'true' : undefined, });
+                isActive: data.isActive ? data.isActive?.toString() === 'true' : undefined,
+            });
         };
 
         return (
             <Dialog
                 open={open}
                 onClose={onClose}
-                maxWidth="sm"
+                maxWidth="lg"
                 fullWidth
                 scroll="paper"
             >
                 <DialogTitle>Cập nhật xe tập lái</DialogTitle>
 
-                {open && (
-                    <Form<UpdateMultiCarModel>
-                        onSubmit={onSubmit}
-                        methods={methods}
-                    >
-                        <DialogContent>
+                <Form<UpdateMultiCarModel>
+                    onSubmit={onSubmit}
+                    methods={methods}
+                >
+                    <DialogContent>
+                        <Grid container spacing={2}>
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <FormControl fullWidth margin="dense">
+                                    <FormLabel>Loại xe</FormLabel>
+                                    <Controller
+                                        name="vehicle_type"
+                                        control={methods.control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                value={field.value ?? ''}
+                                                type="text"
+                                                fullWidth
+                                                placeholder="VD: Xe con, Xe tải"
+                                                variant="outlined"
+                                                error={!!errors.vehicle_type}
+                                                helperText={errors.vehicle_type?.message}
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            </Grid>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Thương hiệu</FormLabel>
-                                <Controller
-                                    name="brand"
-                                    control={methods.control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            value={field.value ?? ''}
-                                            onChange={(e) => {
-                                                const formatted = autoTrim(e.target.value);
-                                                field.onChange(formatted);
-                                            }}
-                                            type="text"
-                                            fullWidth
-                                            placeholder="VD: Toyota, Honda"
-                                            variant="outlined"
-                                            error={!!errors.brand}
-                                            helperText={errors.brand?.message}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <FormControl fullWidth margin="dense">
+                                    <FormLabel>Thương hiệu</FormLabel>
+                                    <Controller
+                                        name="brand"
+                                        control={methods.control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                value={field.value ?? ''}
+                                                onChange={(e) => {
+                                                    const formatted = autoTrim(e.target.value);
+                                                    field.onChange(formatted);
+                                                }}
+                                                type="text"
+                                                fullWidth
+                                                placeholder="VD: Toyota, Honda"
+                                                variant="outlined"
+                                                error={!!errors.brand}
+                                                helperText={errors.brand?.message}
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            </Grid>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Hạng xe</FormLabel>
-                                <Controller
-                                    name="category"
-                                    control={methods.control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            value={field.value ?? ''}
-                                            select
-                                            fullWidth
-                                            variant="outlined"
-                                            error={!!errors.category}
-                                            helperText={errors.category?.message}
-                                            slotProps={{
-                                                select: {
-                                                    displayEmpty: true,
-                                                    renderValue: (value: unknown) => {
-                                                        if (!value) return <Typography>Chọn</Typography>;
-                                                        return <>{value as string}</>;
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <FormControl fullWidth margin="dense">
+                                    <FormLabel>Hạng xe</FormLabel>
+                                    <Controller
+                                        name="category"
+                                        control={methods.control}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                value={field.value ?? ''}
+                                                select
+                                                fullWidth
+                                                variant="outlined"
+                                                error={!!errors.category}
+                                                helperText={errors.category?.message}
+                                                slotProps={{
+                                                    select: {
+                                                        displayEmpty: true,
+                                                        renderValue: (value: unknown) => {
+                                                            if (!value) return <Typography>Chọn</Typography>;
+                                                            return <>{value as string}</>;
+                                                        },
                                                     },
-                                                },
-                                            }}
-                                        >
-                                            {Object.values(CarCategory).map((category) => (
-                                                <MenuItem
-                                                    key={category}
-                                                    value={category}
-                                                >
-                                                    {category}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    )}
-                                />
-                            </FormControl>
+                                                }}
+                                            >
+                                                {Object.values(CarCategory).map((category) => (
+                                                    <MenuItem
+                                                        key={category}
+                                                        value={category}
+                                                    >
+                                                        {category}
+                                                    </MenuItem>
+                                                ))}
+                                            </TextField>
+                                        )}
+                                    />
+                                </FormControl>
+                            </Grid>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Năm sản xuất</FormLabel>
-                                <Controller
-                                    name="manufacturingYear"
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <FormControl fullWidth margin="dense">
+                                    <FormLabel>Năm sản xuất</FormLabel>
+                                    <Controller
+                                        name="manufacturingYear"
+                                        control={methods.control}
+                                        rules={{
+                                            min: {
+                                                value: 2000,
+                                                message: 'Năm sản xuất phải lớn hơn hoặc bằng 2000',
+                                            },
+                                        }}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                value={field.value ?? ''}
+                                                type="number"
+                                                fullWidth
+                                                placeholder="VD: 2020"
+                                                variant="outlined"
+                                                error={!!errors.manufacturingYear}
+                                                helperText={errors.manufacturingYear?.message}
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <FormControl fullWidth margin="dense">
+                                    <FormLabel>Chủ sở hữu/hợp đồng</FormLabel>
+                                    <Controller
+                                        name="owner"
+                                        control={methods.control}
+                                        rules={{
+                                        }}
+                                        render={({ field }) => (
+                                            <TextField
+                                                {...field}
+                                                value={field.value ?? ''}
+                                                fullWidth
+                                                placeholder="VD: Nguyễn Văn An"
+                                                variant="outlined"
+                                                error={!!errors.owner}
+                                                helperText={errors.owner?.message}
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <RadioGroupField
+                                    name="hasDualBrake"
                                     control={methods.control}
+                                    label="Phanh phụ"
+                                    options={YesNoOptions}
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <DatePickerField
+                                    name="practiceVehicleLicenseIssueDate"
+                                    control={methods.control}
+                                    label="Ngày cấp GP xe tập lái"
+                                    error={!!errors.practiceVehicleLicenseIssueDate}
+                                    helperText={errors.practiceVehicleLicenseIssueDate?.message}
+                                    triggerOnBlur="practiceVehicleLicenseExpiryDate"
+                                />
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <DatePickerField
+                                    name="practiceVehicleLicenseExpiryDate"
+                                    control={methods.control}
+                                    label="Ngày hết hạn GP xe tập lái"
+                                    error={!!errors.practiceVehicleLicenseExpiryDate}
+                                    helperText={errors.practiceVehicleLicenseExpiryDate?.message}
                                     rules={{
-                                        min: {
-                                            value: 2000,
-                                            message: 'Năm sản xuất phải lớn hơn hoặc bằng 2000',
+                                        validate: (value: Date) => {
+                                            const issueDate = methods.getValues('practiceVehicleLicenseIssueDate');
+                                            if (!value || !issueDate) return true;
+                                            return dayjs(value).startOf('day').isAfter(dayjs(issueDate).startOf('day'))
+                                                || 'Ngày hết hạn phải sau ngày cấp';
                                         },
                                     }}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            value={field.value ?? ''}
-                                            type="number"
-                                            fullWidth
-                                            placeholder="VD: 2020"
-                                            variant="outlined"
-                                            error={!!errors.manufacturingYear}
-                                            helperText={errors.manufacturingYear?.message}
-                                        />
-                                    )}
+                                    triggerOnBlur="practiceVehicleLicenseIssueDate"
                                 />
-                            </FormControl>
+                            </Grid>
 
-                            <FormControl fullWidth margin="dense">
-                                <FormLabel>Chủ sở hữu/hợp đồng</FormLabel>
-                                <Controller
-                                    name="owner"
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <DatePickerField
+                                    name="insuranceExpiryDate"
                                     control={methods.control}
-                                    rules={{
-                                    }}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            value={field.value ?? ''}
-                                            fullWidth
-                                            placeholder="VD: Nguyễn Văn An"
-                                            variant="outlined"
-                                            error={!!errors.owner}
-                                            helperText={errors.owner?.message}
-                                        />
-                                    )}
+                                    label="Ngày hết hạn bảo hiểm"
+                                    error={!!errors.insuranceExpiryDate}
+                                    helperText={errors.insuranceExpiryDate?.message}
                                 />
-                            </FormControl>
+                            </Grid>
 
-                            <RadioGroupField
-                                name="hasDualBrake"
-                                control={methods.control}
-                                label="Phanh phụ"
-                                options={YesNoOptions}
-                            />
+                            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+                                <RadioGroupField
+                                    name="isActive"
+                                    control={methods.control}
+                                    label="Trạng thái hoạt động"
+                                    options={ActiveStatusOptions}
+                                />
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
 
-                            <DatePickerField
-                                name="practiceVehicleLicenseIssueDate"
-                                control={methods.control}
-                                label="Ngày cấp GP xe tập lái"
-                                error={!!errors.practiceVehicleLicenseIssueDate}
-                                helperText={errors.practiceVehicleLicenseIssueDate?.message}
-                                triggerOnBlur="practiceVehicleLicenseExpiryDate"
-                            />
+                    <DialogActions>
+                        <Button onClick={onClose}>
+                            Hủy
+                        </Button>
 
-                            <DatePickerField
-                                name="practiceVehicleLicenseExpiryDate"
-                                control={methods.control}
-                                label="Ngày hết hạn GP xe tập lái"
-                                error={!!errors.practiceVehicleLicenseExpiryDate}
-                                helperText={errors.practiceVehicleLicenseExpiryDate?.message}
-                                rules={{
-                                    validate: (value: Date) => {
-                                        const issueDate = methods.getValues('practiceVehicleLicenseIssueDate');
-                                        if (!value || !issueDate) return true;
-                                        return dayjs(value).startOf('day').isAfter(dayjs(issueDate).startOf('day'))
-                                            || 'Ngày hết hạn phải sau ngày cấp';
-                                    },
-                                }}
-                                triggerOnBlur="practiceVehicleLicenseIssueDate"
-                            />
-
-                            <DatePickerField
-                                name="inspectionIssueDate"
-                                control={methods.control}
-                                label="Ngày cấp đăng kiểm"
-                                error={!!errors.inspectionIssueDate}
-                                helperText={errors.inspectionIssueDate?.message}
-                                triggerOnBlur="inspectionExpiryDate"
-                            />
-
-                            <DatePickerField
-                                name="inspectionExpiryDate"
-                                control={methods.control}
-                                label="Ngày hết hạn đăng kiểm"
-                                error={!!errors.inspectionExpiryDate}
-                                helperText={errors.inspectionExpiryDate?.message}
-                                rules={{
-                                    validate: (value: Date) => {
-                                        const issueDate = methods.getValues('inspectionIssueDate');
-                                        if (!value || !issueDate) return true;
-                                        return dayjs(value).startOf('day').isAfter(dayjs(issueDate).startOf('day')) || 'Ngày hết hạn phải sau ngày cấp';
-                                    },
-                                }}
-                                triggerOnBlur="inspectionIssueDate"
-                            />
-
-
-                            <DatePickerField
-                                name="insuranceExpiryDate"
-                                control={methods.control}
-                                label="Ngày hết hạn bảo hiểm"
-                                error={!!errors.insuranceExpiryDate}
-                                helperText={errors.insuranceExpiryDate?.message}
-                            />
-
-                            <RadioGroupField
-                                name="isActive"
-                                control={methods.control}
-                                label="Trạng thái hoạt động"
-                                options={ActiveStatusOptions}
-                            />
-
-                        </DialogContent>
-
-                        <DialogActions>
-                            <Button onClick={onClose}>
-                                Hủy
-                            </Button>
-
-                            <Button
-                                type="submit"
-                                variant="contained"
-                            >
-                                Lưu
-                            </Button>
-                        </DialogActions>
-                    </Form>
-                )}
+                        <Button
+                            type="submit"
+                            variant="contained"
+                        >
+                            Lưu
+                        </Button>
+                    </DialogActions>
+                </Form>
             </Dialog>
         );
     }

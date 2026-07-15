@@ -2,6 +2,9 @@ import { MetaPaging } from "./meta-paging.model";
 
 export interface CreateCarModel {
     registrationNumber: string;
+    chassis_number: string;
+    engine_number: string;
+    vehicle_type: string;
     brand: string;
     category: string;
     manufacturingYear: number;
@@ -10,15 +13,19 @@ export interface CreateCarModel {
     practiceVehicleLicenseNumber: string;
     practiceVehicleLicenseIssueDate: Date;
     practiceVehicleLicenseExpiryDate: Date;
-    inspectionIssueDate: Date;
-    inspectionExpiryDate: Date;
     insuranceExpiryDate: Date;
     imeiDat: string;
     serialNumber: string;
+    inspection_issue_date: Date;
+    inspection_expiry_date: Date;
+    duration: number;
 }
 
 export interface UpdateCarModel {
     registrationNumber?: string;
+    chassis_number?: string;
+    engine_number?: string;
+    vehicle_type?: string;
     brand?: string;
     category?: string;
     manufacturingYear?: number;
@@ -27,8 +34,6 @@ export interface UpdateCarModel {
     practiceVehicleLicenseNumber?: string;
     practiceVehicleLicenseIssueDate?: Date;
     practiceVehicleLicenseExpiryDate?: Date;
-    inspectionIssueDate?: Date;
-    inspectionExpiryDate?: Date;
     insuranceExpiryDate?: Date;
     imeiDat?: string;
     serialNumber?: string;
@@ -36,6 +41,7 @@ export interface UpdateCarModel {
 }
 
 export interface UpdateMultiCarModel {
+    vehicle_type?: string;
     brand?: string;
     category?: string;
     manufacturingYear?: number;
@@ -43,31 +49,30 @@ export interface UpdateMultiCarModel {
     hasDualBrake?: boolean | string;
     practiceVehicleLicenseIssueDate?: Date;
     practiceVehicleLicenseExpiryDate?: Date;
-    inspectionIssueDate?: Date;
-    inspectionExpiryDate?: Date;
     insuranceExpiryDate?: Date;
     isActive?: boolean | string;
 }
 
 export interface CarDataModel {
-  car_id: number;
-  registrationNumber: string;
-  brand: string;
-  category: string;
-  manufacturingYear: number;
-  owner: string;
-  hasDualBrake: boolean;
-  practiceVehicleLicenseNumber: string;
-  practiceVehicleLicenseIssueDate: Date;
-  practiceVehicleLicenseExpiryDate: Date;
-  inspectionIssueDate: Date;
-  inspectionExpiryDate: Date;
-  insuranceExpiryDate: Date;
-  imeiDat: string;
-  serialNumber: string;
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+    car_id: number;
+    registrationNumber: string;
+    chassis_number: string;
+    engine_number: string;
+    vehicle_type: string;
+    brand: string;
+    category: string;
+    manufacturingYear: number;
+    owner: string;
+    hasDualBrake: boolean;
+    practiceVehicleLicenseNumber: string;
+    practiceVehicleLicenseIssueDate: Date;
+    practiceVehicleLicenseExpiryDate: Date;
+    insuranceExpiryDate: Date;
+    imeiDat: string;
+    serialNumber: string;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface CarModel {
@@ -76,9 +81,9 @@ export interface CarModel {
 }
 
 export type FilterCarForm = {
-  registrationNumber?: string;
-  imeiDat?: string;
-  active?: boolean | undefined;
-  sortBy?: string | 'car_id';
-  sortDirection?: 'ASC' | 'DESC';
+    registrationNumber?: string;
+    imeiDat?: string;
+    active?: boolean | undefined;
+    sortBy?: string | 'car_id';
+    sortDirection?: 'ASC' | 'DESC';
 };

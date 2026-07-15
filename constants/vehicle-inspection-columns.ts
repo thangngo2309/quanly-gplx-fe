@@ -24,11 +24,13 @@ export const VEHICLE_INSPECTION_COLUMNS: GridColDef[] = [
         field: 'car.chassis_number',
         headerName: 'Số khung',
         width: 150,
+        valueGetter: (value, row) => row.car?.chassis_number || '',
     },
     {
         field: 'car.engine_number',
         headerName: 'Số máy',
         width: 150,
+        valueGetter: (value, row) => row.car?.engine_number || '',
     },
     {
         field: 'car.manufacturingYear',
