@@ -13,6 +13,21 @@ export const CAR_COLUMNS: GridColDef[] = [
     width: 150,
   },
   {
+    field: 'chassis_number',
+    headerName: 'Số khung',
+    width: 150,
+  },
+  {
+    field: 'engine_number',
+    headerName: 'Số máy',
+    width: 150,
+  },
+  {
+    field: 'vehicle_type',
+    headerName: 'Loại xe',
+    width: 120,
+  },
+  {
     field: 'brand',
     headerName: 'Thương hiệu',
     width: 120,
@@ -47,7 +62,8 @@ export const CAR_COLUMNS: GridColDef[] = [
     field: 'practiceVehicleLicenseIssueDate',
     headerName: 'Ngày cấp GP xe tập lái',
     width: 180,
-    renderCell: (params) => formatDateTime(params.value),},
+    renderCell: (params) => formatDateTime(params.value),
+  },
   {
     field: 'practiceVehicleLicenseExpiryDate',
     headerName: 'Ngày hết hạn GP xe tập lái',
@@ -55,16 +71,22 @@ export const CAR_COLUMNS: GridColDef[] = [
     renderCell: (params) => formatDateTime(params.value),
   },
   {
-    field: 'inspectionIssueDate',
+    field: 'vehicle_inspection.inspection_issue_date',
     headerName: 'Ngày cấp đăng kiểm',
     width: 200,
-    renderCell: (params) => formatDateTime(params.value),
+    valueGetter: (value, row) => {
+      const inspection_issue_date = row.vehicle_inspection?.[0]?.inspection_issue_date;
+      return inspection_issue_date ? formatDateTime(inspection_issue_date) : '';
+    },
   },
   {
-    field: 'inspectionExpiryDate',
+    field: 'vehicle_inspection.inspection_expiry_date',
     headerName: 'Ngày hết hạn đăng kiểm',
     width: 180,
-    renderCell: (params) => formatDateTime(params.value),
+    valueGetter: (value, row) => {
+      const inspection_expiry_date = row.vehicle_inspection?.[0]?.inspection_expiry_date;
+      return inspection_expiry_date ? formatDateTime(inspection_expiry_date) : '';
+    }
   },
   {
     field: 'insuranceExpiryDate',

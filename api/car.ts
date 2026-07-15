@@ -61,3 +61,13 @@ export async function uniqueSerialNumber(serialNumber: string, id?: number) {
     const response = await api.post('/car/unique-serial-number', { serialNumber, id });
     return response.data;
 }
+
+export async function uniqueChassisNumber(chassis_number: string, id?: number) {
+    const response = await api.post('/car/unique-chassis-number', { chassis_number, id });
+    return response.data;
+}
+
+export async function uniqueEngineNumber(engine_number: string, id?: number) {
+    const response = await api.post('/car/unique-engine-number', { engine_number, id });
+    return response.data;
+}
