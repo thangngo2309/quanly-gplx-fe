@@ -9,6 +9,8 @@ export interface CreateUserModel {
   date_of_birth: string;
   citizen_id: string;
   address: string;
+  phone_number: string;
+  email: string;
   role: UserRole;
   recruitment_type?: RecruitmentType | null;
   education_level?: string;
@@ -33,6 +35,8 @@ export interface UserDataModel {
   date_of_birth: string;
   citizen_id: string;
   address: string;
+  phone_number: string;
+  email: string;
   role: UserRole;
   recruitment_type: RecruitmentType;
   education_level: string;
@@ -80,6 +84,8 @@ export interface UpdateUserModel {
   date_of_birth?: string;
   citizen_id?: string;
   address?: string;
+  phone_number?: string;
+  email?: string;
   recruitment_type?: RecruitmentType | null;
   education_level?: string;
   professional_level?: string;
@@ -104,4 +110,6 @@ export type FilterUserForm = {
   active?: boolean;
   sortBy?: string;
   sortDirection?: 'ASC' | 'DESC';
+  phone_number?: string;
+  email?: string;
 };

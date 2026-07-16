@@ -78,3 +78,13 @@ export async function resetPasswordAPI(id: number) {
     const response = await api.patch(`/user/reset-password/${id}`);
     return response.data;
 }
+
+export async function uniquePhoneNumber(phone_number: string, id?: number): Promise<{ isUnique: boolean }> {
+    const response = await api.post<{ isUnique: boolean }>(`/user/unique-phone-number`, { phone_number, id });
+    return response.data;
+}
+
+export async function uniqueEmail(email: string, id?: number): Promise<{ isUnique: boolean }> {
+    const response = await api.post<{ isUnique: boolean }>(`/user/unique-email`, { email, id });
+    return response.data;
+}
