@@ -25,8 +25,8 @@ import {
   Controller,
 } from "react-hook-form";
 import dayjs from "dayjs";
-import { debouncedUniqueCitizenId, debouncedUniqueTeacherCert, debouncedUniqueHealthCert, debouncedUniqueContract } from "@/utils/debounced-user";
-import { emptyToNull } from "@/utils/format-input";
+import { debouncedUniqueCitizenId, debouncedUniqueTeacherCert, debouncedUniqueHealthCert, debouncedUniqueContract, debouncedUniqueEmail, debouncedUniquePhoneNumber } from "@/utils/debounced-user";
+import { autoTrim, emptyToNull } from "@/utils/format-input";
 import { DatePickerField } from "../date-picker.component";
 import { RadioGroupField } from "../radio-button.component";
 import { ActiveStatusOptions } from "@/constants/radio-option";
@@ -82,6 +82,18 @@ export const EditDialog = memo(
       const res = await debouncedUniqueContract(value, Number(data.user_id));
       return res || 'Số hợp đồng đã tồn tại';
     };
+
+    const checkPhoneNumber = async (value: string | undefined) => {
+      if (!value) return true;
+      const res = await debouncedUniquePhoneNumber(value, Number(data.user_id));
+      return res || 'Số điện thoại đã tồn tại';
+    }
+
+    const checkEmail = async (value: string | undefined) => {
+      if (!value) return true;
+      const res = await debouncedUniqueEmail(value, Number(data.user_id));
+      return res || 'Email đã tồn tại';
+    }
 
     return (
       <Dialog open={open} onClose={onClose} keepMounted maxWidth="sm" fullWidth scroll="paper">
@@ -188,6 +200,73 @@ export const EditDialog = memo(
                       variant="outlined"
                       error={!!errors.address}
                       helperText={errors.address?.message}
+                    />
+                  )}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <FormLabel required>Số điện thoại</FormLabel>
+                <Controller
+                  name="phone_number"
+                  control={methods.control}
+                  rules={{
+                    required: 'Vui lòng nhập số điện thoại',
+                    pattern: {
+                      value: /^0[0-9]{1,9}$/,
+                      message: 'Số điện thoại có tối đa 10 chữ số và bắt đầu bằng số 0'
+                    },
+                    validate: checkPhoneNumber
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      value={field.value ?? ''}
+                      placeholder="Ví dụ: 0912345678"
+                      onChange={(e) => {
+                        const formatted = autoTrim(e.target.value);
+                        field.onChange(formatted);
+                      }}
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.phone_number}
+                      helperText={errors.phone_number?.message}
+                      slotProps={{
+                        htmlInput: {
+                          maxLength: 10,
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <FormLabel required>Email</FormLabel>
+                <Controller
+                  name="email"
+                  control={methods.control}
+                  rules={{
+                    required: 'Vui lòng nhập email',
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'Vui lòng nhập email hợp lệ'
+                    },
+                    validate: checkEmail
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      value={field.value ?? ''}
+                      placeholder="Ví dụ: example@email.com"
+                      onChange={(e) => {
+                        const formatted = autoTrim(e.target.value);
+                        field.onChange(formatted);
+                      }}
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.email}
+                      helperText={errors.email?.message}
                     />
                   )}
                 />
