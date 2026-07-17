@@ -32,6 +32,16 @@ export const USER_COLUMNS: GridColDef[] = [
     flex: 1,
   },
   {
+    field: 'phone_number',
+    headerName: 'Số điện thoại',
+    width: 150,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 200,
+  },
+  {
     field: 'role',
     headerName: 'Vai trò',
     width: 140,

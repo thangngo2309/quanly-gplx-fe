@@ -104,6 +104,7 @@ export default function UsersManagement() {
       {
         name: filter.name,
         cccd: filter.cccd,
+        phone_number: filter.phone_number,
         role: activeTab,
         active: filter.active,
         sortBy: sortModel[0]?.field || filter.sortBy,
@@ -286,7 +287,7 @@ export default function UsersManagement() {
         <Grid size="grow" display="flex" justifyContent="flex-end">
           <Form methods={methods} onSubmit={onSubmit}>
             <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 4 }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Controller
                   name="name"
                   control={methods.control}
@@ -301,7 +302,7 @@ export default function UsersManagement() {
                   )}
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 4 }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Controller
                   name="cccd"
                   control={methods.control}
@@ -316,7 +317,33 @@ export default function UsersManagement() {
                   )}
                 />
               </Grid>
-              <Grid size={{ xs: 10, sm: 3 }}>
+              <Grid size={{ xs: 12, sm: 6, md: 2.5 }}>
+                <Controller
+                  name="phone_number"
+                  control={methods.control}
+                  rules={{
+                    pattern: {
+                      value: /^0[0-9]{1,9}$/,
+                      message: 'Số điện thoại có tối đa 10 chữ số và bắt đầu bằng số 0'
+                    }
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      value={field.value ?? ''}
+                      size="small"
+                      label="Số điện thoại"
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value === '' ||(value.startsWith('0'))) {
+                          field.onChange(value);
+                        }
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid size={{ xs: 9, sm: 5, md: 2.5 }}>
                 <Controller
                   name="active"
                   control={methods.control}

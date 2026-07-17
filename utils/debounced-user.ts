@@ -1,4 +1,4 @@
-import { uniqueUsername, uniqueCitizenId, uniqueTeacherCertificateNumber, uniqueHealthCertificateNumber, uniqueContractNumber } from '@/api/user';
+import { uniqueUsername, uniqueCitizenId, uniqueTeacherCertificateNumber, uniqueHealthCertificateNumber, uniqueContractNumber, uniquePhoneNumber, uniqueEmail } from '@/api/user';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 export const debouncedUniqueUsername = AwesomeDebouncePromise(
@@ -29,6 +29,20 @@ export const debouncedUniqueHealthCert = AwesomeDebouncePromise(
 export const debouncedUniqueContract = AwesomeDebouncePromise(
     async (value: string, userId?: number) => {
         const res = await uniqueContractNumber(value, userId);
+        return res.isUnique;
+    }, 500
+);
+
+export const debouncedUniquePhoneNumber = AwesomeDebouncePromise(
+    async (value: string, userId?: number) => {
+        const res = await uniquePhoneNumber(value, userId);
+        return res.isUnique;
+    }, 500
+);
+
+export const debouncedUniqueEmail = AwesomeDebouncePromise(
+    async (value: string, userId?: number) => {
+        const res = await uniqueEmail(value, userId);
         return res.isUnique;
     }, 500
 );
