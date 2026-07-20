@@ -98,14 +98,11 @@ export const CreateDialog = memo(({ open, cars, onClose, onSave }: CreateVehicle
                         <Controller
                             name="inspection_expiry_date"
                             control={methods.control}
-                            rules={{ required: 'Vui lòng chọn ngày cấp và thời hạn đăng kiểm' }}
                             render={({ field }) => (
                                 <TextField
                                     disabled
                                     fullWidth
                                     value={field.value ? dayjs(field.value).format('DD/MM/YYYY') : ''}
-                                    error={!!errors.inspection_expiry_date}
-                                    helperText={errors.inspection_expiry_date?.message}
                                 />
                             )}
                         />
