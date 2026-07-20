@@ -213,8 +213,8 @@ export const EditDialog = memo(
                   rules={{
                     required: 'Vui lòng nhập số điện thoại',
                     pattern: {
-                      value: /^0[0-9]{1,9}$/,
-                      message: 'Số điện thoại có tối đa 10 chữ số và bắt đầu bằng số 0'
+                      value: /^0[0-9]{9}$/,
+                      message: 'Số điện thoại phải bao gồm 10 chữ số và bắt đầu bằng số 0'
                     },
                     validate: checkPhoneNumber
                   }}
