@@ -86,7 +86,7 @@ export const CreateDialog = memo(({ open, cars, onClose, onSave }: CreateVehicle
                             onChange={(_, value) => value && setDuration(value)}
                         >
                             {DurationOptions.map((o) => (
-                                <ToggleButton key={o.value} value={o.value} disabled={!issueDate}>
+                                <ToggleButton key={o.value} value={o.value} disabled={!issueDate} color="info">
                                     {o.label}
                                 </ToggleButton>
                             ))}

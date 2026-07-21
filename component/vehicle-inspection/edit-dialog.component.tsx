@@ -35,7 +35,7 @@ export const EditDialog = memo(({ open, cars, onClose, onSave, data }: EditVehic
             methods.reset(data);
             const issue = dayjs(data.inspection_issue_date);
             const expiry = dayjs(data.inspection_expiry_date);
-            const diffMonths = expiry.diff(issue, 'month');
+            const diffMonths = expiry.add(1, 'day').diff(issue, 'month');
             setDuration(DurationOptions.find((o) => o.value === diffMonths)?.value);
         }
     }, [open, data]);
@@ -95,7 +95,7 @@ export const EditDialog = memo(({ open, cars, onClose, onSave, data }: EditVehic
                             onChange={(_, value) => value && setDuration(value)}
                         >
                             {DurationOptions.map((o) => (
-                                <ToggleButton key={o.value} value={o.value} disabled={!issueDate}>
+                                <ToggleButton key={o.value} value={o.value} disabled={!issueDate} color="info">
                                     {o.label}
                                 </ToggleButton>
                             ))}
