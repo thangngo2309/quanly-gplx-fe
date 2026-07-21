@@ -16,8 +16,8 @@ export interface CreateCarModel {
     insuranceExpiryDate: Date;
     imeiDat: string;
     serialNumber: string;
-    inspection_issue_date: Date;
-    inspection_expiry_date: Date;
+    inspection_issue_date: string;
+    inspection_expiry_date: string;
     duration: number;
 }
 

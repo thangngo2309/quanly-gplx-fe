@@ -45,7 +45,7 @@ export const CreateDialog = memo(
 
         useEffect(() => {
             if (duration && issueDate) {
-                const expiry = dayjs(issueDate).add(duration, 'month').toDate();
+                const expiry = dayjs(issueDate).add(duration, 'month').subtract(1, 'day').format("YYYY-MM-DD");
                 methods.setValue('inspection_expiry_date', expiry);
             }
         }, [issueDate, duration]);

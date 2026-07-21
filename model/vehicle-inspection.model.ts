@@ -4,8 +4,8 @@ export interface VehicleInspectionDataModel {
     vehicle_inspection_id: number;
     car_id: number;
     car: Car;
-    inspection_issue_date: Date;
-    inspection_expiry_date: Date;
+    inspection_issue_date: string;
+    inspection_expiry_date: string;
     is_active: boolean;
     is_deleted: boolean;
     created_at: Date;
@@ -28,14 +28,14 @@ export interface VehicleInspectionModel {
 
 export interface CreateVehicleInspectionModel {
     car_id: number;
-    inspection_issue_date: Date;
-    inspection_expiry_date: Date;
+    inspection_issue_date: string;
+    inspection_expiry_date: string;
 }
 
 export interface UpdateVehicleInspectionModel {
     car_id?: number;
-    inspection_issue_date?: Date;
-    inspection_expiry_date?: Date;
+    inspection_issue_date?: string;
+    inspection_expiry_date?: string;
     is_active?: boolean;
 }
 
