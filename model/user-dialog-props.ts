@@ -1,5 +1,5 @@
 import { UserRole } from "@/enum/user.enum";
-import { CreateUserModel, UpdateMultiUserModel, UpdateUserModel, UserDataModel } from "@/model/user.model";
+import { ChangePasswordForm, CreateUserModel, UpdateMultiUserModel, UpdateUserModel, UserDataModel } from "@/model/user.model";
 
 export interface CreateUserDialogProps {
   open: boolean;
@@ -26,4 +26,11 @@ export interface EditMultiUserDialogProps {
     userIds: number[],
     formData: UpdateMultiUserModel
   ) => void;
+}
+
+export interface ChangePasswordDialogProps {
+  open: boolean;
+  user_id: number;
+  onClose: () => void;
+  onSave: (formData: ChangePasswordForm) => void;
 }

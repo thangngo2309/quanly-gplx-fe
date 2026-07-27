@@ -1,6 +1,6 @@
 import api from "./axios.config";
 import { toast } from "react-toastify";
-import { CreateUserModel, UpdateMultiUserModel, UpdateUserModel, UserModel } from "@/model/user.model";
+import { ChangePasswordForm, CreateUserModel, UpdateMultiUserModel, UpdateUserModel, UserModel } from "@/model/user.model";
 import { FilterUserForm } from '@/model/user.model';
 
 export async function createUser(userData: CreateUserModel): Promise<UserModel> {
@@ -86,5 +86,10 @@ export async function uniquePhoneNumber(phone_number: string, id?: number): Prom
 
 export async function uniqueEmail(email: string, id?: number): Promise<{ isUnique: boolean }> {
     const response = await api.post<{ isUnique: boolean }>(`/user/unique-email`, { email, id });
+    return response.data;
+}
+
+export async function changePassword(id: number, passwordsData: ChangePasswordForm) {
+    const response = await api.post(`/user/change-password/${id}`, passwordsData);
     return response.data;
 }
