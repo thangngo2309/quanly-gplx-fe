@@ -52,6 +52,8 @@ export interface User{
     user_id: number;
     fullname: string;
     date_of_birth: Date;
+    is_active: boolean;
+    is_deleted: boolean;
 }
 
 export interface FilterDriverLicense {
