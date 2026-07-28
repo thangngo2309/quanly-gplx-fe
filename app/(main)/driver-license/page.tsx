@@ -175,6 +175,7 @@ export default function DriverLicenseManagement() {
             onDelete: handleDelete,
             getDeleteId: (row) => row.driver_license_id,
             getDeleteLabel: (row) => row.license_number,
+            isHidden: (row) => !row.user.is_active || row.user.is_deleted,
             customAction: (row) => (
                 <RenewDrivingLicenseButton
                     driver_license={row}
@@ -313,6 +314,7 @@ export default function DriverLicenseManagement() {
                 rowSelectionModel={rowSelectionModel}
                 onRowSelectionModelChange={setRowSelectionModel}
                 onSelectedIdsChange={setSelectedIds}
+                isRowSelectable={(params) => params.row.user.is_active && !params.row.user.is_deleted}
             />
 
             <CreateDialog
