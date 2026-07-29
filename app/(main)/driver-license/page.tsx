@@ -43,6 +43,7 @@ import {
 import { RenewDrivingLicenseButton } from '@/component/driver-license/driver-license-action.component';
 import { RenewDriverLicenseDialog } from '@/component/driver-license/renew-dialog.component';
 import { UserOption } from '@/model/driver-license-dialog-props';
+import { EmailSendStatus } from '@/constants/email-send-status';
 export default function DriverLicenseManagement() {
     const [data, setData] = useState<DriverLicenseModel | null>(null);
     const [users, setUsers] = useState<UserOption[]>([]);
@@ -175,7 +176,7 @@ export default function DriverLicenseManagement() {
             onDelete: handleDelete,
             getDeleteId: (row) => row.driver_license_id,
             getDeleteLabel: (row) => row.license_number,
-            isHidden: (row) => !row.user.is_active || row.user.is_deleted,
+            isHidden: (row) => !row.user.is_active || row.user.is_deleted || row.email_send_status === EmailSendStatus.FAILED || row.email_send_status === EmailSendStatus.QUEUED,
             customAction: (row) => (
                 <RenewDrivingLicenseButton
                     driver_license={row}
@@ -314,7 +315,9 @@ export default function DriverLicenseManagement() {
                 rowSelectionModel={rowSelectionModel}
                 onRowSelectionModelChange={setRowSelectionModel}
                 onSelectedIdsChange={setSelectedIds}
-                isRowSelectable={(params) => params.row.user.is_active && !params.row.user.is_deleted}
+                isRowSelectable={(params) =>
+                    params.row.user.is_active && !params.row.user.is_deleted &&
+                    (params.row.email_send_status === EmailSendStatus.SUCCESS || params.row.email_send_status === EmailSendStatus.PENDING)}
             />
 
             <CreateDialog
