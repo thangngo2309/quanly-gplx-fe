@@ -71,3 +71,8 @@ export async function uniqueEngineNumber(engine_number: string, id?: number) {
     const response = await api.post('/car/unique-engine-number', { engine_number, id });
     return response.data;
 }
+
+export async function getVehicleInspectionByCarId(carId: number) {
+    const response = await api.get(`/car/${carId}/vehicle-inspection`);
+    return response.data;
+}

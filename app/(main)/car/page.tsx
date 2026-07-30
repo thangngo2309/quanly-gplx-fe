@@ -22,6 +22,7 @@ import {
   deleteCar,
   deleteMultipleCar,
   getAllCar,
+  getVehicleInspectionByCarId,
   updateCar,
   updateMultipleCar,
 } from '@/api/car';
@@ -48,6 +49,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { Grid } from '@mui/system';
 import Tooltip from '@mui/material/Tooltip';
 import { CommonDataTable } from '@/component/data-grid/common-data-table.component';
+import { ViewVehicleInspectionHistoryButton } from '@/component/car/car-action.component';
+import { VehicleInspectionDataModel } from '@/model/vehicle-inspection.model';
+import { ViewVehicleInspectionHistoryDialog } from '@/component/car/view-vehicle-inspection-history.component';
 
 export default function CarsManagement() {
 
@@ -69,6 +73,8 @@ export default function CarsManagement() {
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>(
     { type: 'include', ids: new Set() }
   );
+  const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
+  const [historyData, setHistoryData] = useState<VehicleInspectionDataModel[]>([]);
 
   const methods = useForm<FilterCarForm>();
 
@@ -144,6 +150,12 @@ export default function CarsManagement() {
     toast.success('Xóa xe thành công');
   };
 
+  const handleViewHistory = async (carId: number) => {
+    const response = await getVehicleInspectionByCarId(carId);
+    setHistoryData(response);
+    setOpenHistoryDialog(true);
+  }
+
   const columns = useMemo(() => {
     return [
       ...CAR_COLUMNS,
@@ -155,6 +167,15 @@ export default function CarsManagement() {
         onDelete: handleDelete,
         getDeleteId: (row) => row.car_id,
         getDeleteLabel: (row) => row.registrationNumber,
+        customAction: (row) => (
+          <ViewVehicleInspectionHistoryButton
+            carId={row.car_id}
+            onGet={(carId) => {
+              setSelectedCar(row);
+              handleViewHistory(carId);
+            }}
+          />
+        ),
       }),
     ];
   }, []);
@@ -312,6 +333,13 @@ export default function CarsManagement() {
         selectedIds={selectedIds}
         onClose={() => setMultiEditOpen(false)}
         onSave={handleMultiEdit}
+      />
+
+      <ViewVehicleInspectionHistoryDialog
+        open={openHistoryDialog}
+        onClose={() => setOpenHistoryDialog(false)}
+        data={historyData}
+        selectedCar={selectedCar}
       />
     </Box>
   );
