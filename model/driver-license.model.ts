@@ -13,6 +13,7 @@ export interface DriverLicenseDataModel {
     created_at: Date;
     updated_at: Date;
     user: User;
+    email_send_status: string;
 }
 
 export interface DriverLicenseModel {
