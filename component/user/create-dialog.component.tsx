@@ -42,7 +42,13 @@ export const CreateDialog = memo(
         const errors = methods.formState.errors;
         const isTeacher = role === UserRole.TEACHER;
 
-        useEffect(() => { if (open) { methods.reset(); } }, [open]);
+        useEffect(() => {
+            if (open) {
+                methods.reset();
+                setShowPassword(false);
+                setShowConfirmPassword(false);
+            }
+        }, [open]);
 
         const onSubmit: SubmitHandler<CreateUserModel> = async (data) => {
             const { confirmPassword, ...formData } = data;
