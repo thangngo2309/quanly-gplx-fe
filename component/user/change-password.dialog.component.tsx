@@ -16,7 +16,14 @@ export const ChangePasswordDialog = memo(
             reValidateMode: 'onChange',
         });
         const { watch, control, reset, formState: { errors }, trigger } = methods;
-        useEffect(() => { if (open) { reset(); } }, [open]);
+        useEffect(() => {
+            if (open) {
+                reset();
+                setShowOldPassword(false);
+                setShowNewPassword(false);
+                setShowConfirmPassword(false);
+            }
+        }, [open]);
 
         const onSubmit = (data: ChangePasswordForm) => {
             onSave(data);
