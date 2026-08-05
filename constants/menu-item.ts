@@ -6,6 +6,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArticleIcon from '@mui/icons-material/Article';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 
 export const menuItems = [
   { label: 'Tổng quan', icon: HomeIcon, path: '/' },
@@ -13,6 +14,7 @@ export const menuItems = [
   { label: 'Quản lý xe tập lái', icon: DirectionsCarIcon, path: '/car' },
   { label: 'Quản lý giấy phép lái xe', icon: BadgeIcon, path: '/driver-license' },
   { label: 'Lịch sử đăng kiểm xe', icon: ArticleIcon, path: '/vehicle-inspection' },
+  { label: 'Lịch sử thông báo', icon: NotificationsActiveIcon, path: '/notification-log' },
 ];
 
 export const bottomMenuItems = [
