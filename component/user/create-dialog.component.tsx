@@ -135,6 +135,7 @@ export const CreateDialog = memo(
                                             {...field}
                                             value={field.value ?? ''}
                                             fullWidth
+                                            placeholder="Ví dụ: user123"
                                             variant="outlined"
                                             error={!!errors.username}
                                             helperText={errors.username?.message}
