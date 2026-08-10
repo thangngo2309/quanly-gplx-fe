@@ -6,7 +6,10 @@ import { GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 
 import {
   Button,
+  FormControl,
+  InputLabel,
   MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -34,7 +37,6 @@ import { ActionColumn } from '@/component/data-grid/action-column';
 import { CreateDialog } from '@/component/car/create-dialog.component';
 import { EditDialog } from '@/component/car/edit-dialog.component';
 import { EditMultiCarDialog } from '@/component/car/edit-multi-dialog.component';
-import { SearchIconButtonStyle } from '@/style object/user-page.style';
 import { CarModel, FilterCarForm } from '@/model/car.model';
 
 import {
@@ -52,6 +54,7 @@ import { CommonDataTable } from '@/component/data-grid/common-data-table.compone
 import { ViewVehicleInspectionHistoryButton } from '@/component/car/car-action.component';
 import { VehicleInspectionDataModel } from '@/model/vehicle-inspection.model';
 import { ViewVehicleInspectionHistoryDialog } from '@/component/car/view-vehicle-inspection-history.component';
+import { styles } from '@/style object/sx.style';
 
 export default function CarsManagement() {
 
@@ -187,18 +190,19 @@ export default function CarsManagement() {
         Quản lý xe tập lái
       </Typography>
 
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
+      <Grid
+        container
         spacing={2}
         mb={2}
         alignItems={{ xs: 'stretch', lg: 'center' }}
         justifyContent="space-between"
       >
 
-        <Grid size="auto">
+        <Grid size={{ xs: 12, sm: 5 }}>
           <Stack direction="row" spacing={1}>
             <Tooltip title="Tạo mới">
               <Button
+                sx={styles.minHeightButton}
                 variant="outlined"
                 color="success"
                 onClick={() => setCreateOpen(true)}
@@ -209,6 +213,7 @@ export default function CarsManagement() {
 
             <Tooltip title="Xóa hàng loạt">
               <Button
+                sx={styles.minHeightButton}
                 variant="outlined"
                 color="error"
                 disabled={!selectedIds.length}
@@ -229,6 +234,7 @@ export default function CarsManagement() {
 
             <Tooltip title="Chỉnh sửa hàng loạt">
               <Button
+                sx={styles.minHeightButton}
                 variant="outlined"
                 color="primary"
                 disabled={!selectedIds.length}
@@ -240,10 +246,10 @@ export default function CarsManagement() {
           </Stack>
         </Grid>
 
-        <Grid size="grow" display="flex" justifyContent="flex-end">
-          <Form methods={methods} onSubmit={onSubmit}>
+        <Grid size={{ xs: 12, sm: 7 }}>
+          <Form methods={methods} onSubmit={onSubmit} sx={styles.searchForm}>
             <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 4 }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3.5 }}>
                 <TextField
                   size="small"
                   label="Tìm theo biển số xe"
@@ -251,7 +257,7 @@ export default function CarsManagement() {
                   {...methods.register('registrationNumber')}
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 4 }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3.5 }}>
                 <TextField
                   size="small"
                   label="Tìm theo IMEI"
@@ -259,45 +265,48 @@ export default function CarsManagement() {
                   {...methods.register('imeiDat')}
                 />
               </Grid>
-              <Grid size={{ xs: 10, sm: 3 }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Controller
                   name="active"
                   control={methods.control}
                   render={({ field }) => (
-                    <TextField
-                      select
-                      label="Trạng thái"
-                      size="small"
-                      fullWidth
-                      value={field.value === undefined ? 'empty' : String(field.value)}
-                      onChange={(e) =>
-                        field.onChange(
-                          e.target.value === 'empty'
-                            ? undefined
-                            : e.target.value === 'true'
-                        )
-                      }
-                    >
-                      <MenuItem value="empty">Tất cả</MenuItem>
-                      <MenuItem value="true">Hoạt động</MenuItem>
-                      <MenuItem value="false">Không hoạt động</MenuItem>
-                    </TextField>
+                    <FormControl fullWidth>
+                      <InputLabel id="active-label">Trạng thái</InputLabel>
+                      <Select
+                        labelId="active-label"
+                        label="Trạng thái"
+                        size="small"
+                        fullWidth
+                        value={field.value === undefined ? 'empty' : String(field.value)}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value === 'empty'
+                              ? undefined
+                              : e.target.value === 'true'
+                          )
+                        }
+                      >
+                        <MenuItem value="empty">Tất cả</MenuItem>
+                        <MenuItem value="true">Hoạt động</MenuItem>
+                        <MenuItem value="false">Không hoạt động</MenuItem>
+                      </Select>
+                    </FormControl>
                   )}
                 />
               </Grid>
 
-              <Grid size={{ xs: 2, sm: 1 }}>
+              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                 <Tooltip title="Tìm kiếm">
-                  <SearchIconButtonStyle type="submit">
+                  <Button variant="outlined" type="submit" fullWidth sx={[styles.minWidthSearchButton, styles.minHeightButton]}>
                     <SearchIcon />
-                  </SearchIconButtonStyle>
+                  </Button>
                 </Tooltip>
               </Grid>
             </Grid>
           </Form>
         </Grid>
 
-      </Stack>
+      </Grid>
 
       <CommonDataTable<CarDataModel>
         columns={columns}

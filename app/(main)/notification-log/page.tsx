@@ -1,12 +1,10 @@
 'use client';
 
 import { getAllNotificationLog, retryNotificationLog } from "@/api/notification-log";
-import { getAllUser } from "@/api/user";
 import { CommonDataTable } from "@/component/data-grid/common-data-table.component";
 import { NotificationType, ReferenceType, SendStatus } from "@/constants/notification-log";
 import { FilterNotificationLog, NotificationLogDataModel, NotificationLogModel } from "@/model/notification-log.model";
-import { UserDataModel } from "@/model/user.model";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, MenuItem, Stack, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { GridColDef, GridSortModel } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -17,9 +15,9 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import { Form } from '@/component/form.component';
 import { Controller, useForm } from 'react-hook-form';
-import { SearchIconButtonStyle } from "@/style object/user-page.style";
 import dayjs from "dayjs";
 import { toUTC7 } from "@/utils/format-date";
+import { styles } from "@/style object/sx.style";
 
 export default function NotificationLogPage() {
     const [data, setData] = useState<NotificationLogModel | null>(null);
@@ -199,123 +197,142 @@ export default function NotificationLogPage() {
                 Lịch sử thông báo
             </Typography>
 
-            <Form methods={methods} onSubmit={onSubmit}>
-                <Grid container spacing={2} alignItems="center" mb={3}>
-                    <Grid size={{ xs: 12, sm: 6, md: "grow" }}>
-                        <Controller
-                            name="fullname"
-                            control={methods.control}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    value={field.value ?? ''}
-                                    size="small"
-                                    label="Tìm theo họ tên"
-                                    fullWidth
+            <Grid
+                container
+                spacing={2}
+                mb={2}
+                alignItems={{ xs: 'stretch', lg: 'center' }}
+                justifyContent="space-between"
+            >
+                <Grid size={{ xs: 12, sm: 5 }}></Grid>
+                <Grid size={{ xs: 12, sm: 7 }}>
+                    <Form methods={methods} onSubmit={onSubmit} sx={styles.searchForm}>
+                        <Grid container spacing={2}>
+                            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+                                <Controller
+                                    name="fullname"
+                                    control={methods.control}
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            value={field.value ?? ''}
+                                            size="small"
+                                            label="Tìm theo họ tên"
+                                            fullWidth
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6, md: "grow" }}>
-                        <Controller
-                            name="recipient"
-                            control={methods.control}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    value={field.value ?? ''}
-                                    size="small"
-                                    label="Nơi nhận"
-                                    fullWidth
+                            </Grid>
+                            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+                                <Controller
+                                    name="recipient"
+                                    control={methods.control}
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            value={field.value ?? ''}
+                                            size="small"
+                                            label="Nơi nhận"
+                                            fullWidth
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6, md: "grow" }}>
-                        <Controller
-                            name="notification_type"
-                            control={methods.control}
-                            render={({ field }) => (
-                                <TextField
-                                    select
-                                    size="small"
-                                    label="Loại thông báo"
-                                    fullWidth
-                                    value={field.value ?? 'empty'}
-                                    onChange={(e) =>
-                                        field.onChange(
-                                            e.target.value === 'empty' ? undefined : e.target.value
-                                        )
-                                    }
-                                >
-                                    <MenuItem value="empty">Tất cả</MenuItem>
-                                    {NotificationType.map((value) => (
-                                        <MenuItem key={value} value={value}>{value}</MenuItem>
-                                    ))}
-                                </TextField>
-                            )}
-                        />
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6, md: "grow" }}>
-                        <Controller
-                            name="reference_type"
-                            control={methods.control}
-                            render={({ field }) => (
-                                <TextField
-                                    select
-                                    size="small"
-                                    label="Loại dữ liệu"
-                                    fullWidth
-                                    value={field.value ?? 'empty'}
-                                    onChange={(e) =>
-                                        field.onChange(
-                                            e.target.value === 'empty' ? undefined : e.target.value
-                                        )
-                                    }
-                                >
-                                    <MenuItem value="empty">Tất cả</MenuItem>
-                                    {ReferenceType.map((value) => (
-                                        <MenuItem key={value} value={value}>{value}</MenuItem>
-                                    ))}
-                                </TextField>
-                            )}
-                        />
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6, md: "grow" }}>
-                        <Controller
-                            name="send_status"
-                            control={methods.control}
-                            render={({ field }) => (
-                                <TextField
-                                    select
-                                    size="small"
-                                    label="Trạng thái"
-                                    fullWidth
-                                    value={field.value ?? 'empty'}
-                                    onChange={(e) =>
-                                        field.onChange(
-                                            e.target.value === 'empty' ? undefined : e.target.value
-                                        )
-                                    }
-                                >
-                                    <MenuItem value="empty">Tất cả</MenuItem>
-                                    {Object.values(SendStatus).map((status) => (
-                                        <MenuItem key={status} value={status}>{status}</MenuItem>
-                                    ))}
-                                </TextField>
-                            )}
-                        />
-                    </Grid>
-                    <Grid size="auto">
-                        <Tooltip title="Tìm kiếm">
-                            <SearchIconButtonStyle type="submit">
-                                <SearchIcon />
-                            </SearchIconButtonStyle>
-                        </Tooltip>
-                    </Grid>
+                            </Grid>
+                            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+                                <Controller
+                                    name="notification_type"
+                                    control={methods.control}
+                                    render={({ field }) => (
+                                        <FormControl fullWidth>
+                                            <InputLabel id="notification-type-label">Loại thông báo</InputLabel>
+                                            <Select
+                                                labelId="notification-type-label"
+                                                size="small"
+                                                label="Loại thông báo"
+                                                fullWidth
+                                                value={field.value ?? 'empty'}
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        e.target.value === 'empty' ? undefined : e.target.value
+                                                    )
+                                                }
+                                            >
+                                                <MenuItem value="empty">Tất cả</MenuItem>
+                                                {NotificationType.map((value) => (
+                                                    <MenuItem key={value} value={value}>{value}</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    )}
+                                />
+                            </Grid>
+                            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+                                <Controller
+                                    name="reference_type"
+                                    control={methods.control}
+                                    render={({ field }) => (
+                                        <FormControl fullWidth>
+                                            <InputLabel id="reference-type-label">Loại dữ liệu</InputLabel>
+                                            <Select
+                                                labelId="reference-type-label"
+                                                size="small"
+                                                label="Loại dữ liệu"
+                                                fullWidth
+                                                value={field.value ?? 'empty'}
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        e.target.value === 'empty' ? undefined : e.target.value
+                                                    )
+                                                }
+                                            >
+                                                <MenuItem value="empty">Tất cả</MenuItem>
+                                                {ReferenceType.map((value) => (
+                                                    <MenuItem key={value} value={value}>{value}</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    )}
+                                />
+                            </Grid>
+                            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+                                <Controller
+                                    name="send_status"
+                                    control={methods.control}
+                                    render={({ field }) => (
+                                        <FormControl fullWidth>
+                                            <InputLabel id="send-status-label">Trạng thái</InputLabel>
+                                            <Select
+                                                labelId="send-status-label"
+                                                size="small"
+                                                label="Trạng thái"
+                                                fullWidth
+                                                value={field.value ?? 'empty'}
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        e.target.value === 'empty' ? undefined : e.target.value
+                                                    )
+                                                }
+                                            >
+                                                <MenuItem value="empty">Tất cả</MenuItem>
+                                                {Object.values(SendStatus).map((status) => (
+                                                    <MenuItem key={status} value={status}>{status}</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    )}
+                                />
+                            </Grid>
+                            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+                                <Tooltip title="Tìm kiếm">
+                                    <Button variant="outlined" type="submit" fullWidth sx={[styles.minWidthSearchButton, styles.minHeightButton]}>
+                                        <SearchIcon />
+                                    </Button>
+                                </Tooltip>
+                            </Grid>
+                        </Grid>
+                    </Form>
                 </Grid>
-            </Form>
-
+            </Grid>
             <CommonDataTable<NotificationLogDataModel>
                 columns={columns}
                 rows={data?.data || []}
@@ -348,7 +365,7 @@ export default function NotificationLogPage() {
 
                         <Stack spacing={1}>
                             <Typography variant="body1" color="text.secondary">
-                                Thông báo lỗi:,
+                                Thông báo lỗi:
                             </Typography>
                             <Typography variant="body1" fontWeight="medium" color="error">
                                 {selectedNotificationLog?.error_message}
